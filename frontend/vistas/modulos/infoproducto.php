@@ -309,7 +309,7 @@ $url = @Ruta::ctrRuta();
                                 <i class="fa fa-shopping-cart" style="margin: 0px 5px"></i>
                                 ' . $infoproducto['ventasGratis'] . ' inscritos |
                                  <i class="fa fa-eye" style="margin: 0px 5px"></i>
-                                visto por ' . $infoproducto['vistasGratis'] . ' personas
+                                visto por <span class="vistas" tipo="' . $infoproducto['precio'] . '">' . $infoproducto['vistasGratis'] . '</span> personas
                                 
                             </span>
                         </h4>
@@ -322,7 +322,7 @@ $url = @Ruta::ctrRuta();
                                 <i class="fa fa-shopping-cart" style="margin: 0px 5px"></i>
                                 ' . $infoproducto['ventasGratis'] . ' inscritos <br>
                                  <i class="fa fa-eye" style="margin: 0px 5px"></i>
-                                visto por ' . $infoproducto['vistasGratis'] . ' personas
+                                visto por <span class="vistas" tipo="' . $infoproducto['precio'] . '">' . $infoproducto['vistasGratis'] . '</span> personas
                                 
                           </small>
                         </h4>
@@ -336,7 +336,7 @@ $url = @Ruta::ctrRuta();
                                 <i class="fa fa-shopping-cart" style="margin: 0px 5px"></i>
                                 ' . $infoproducto['ventas'] . ' ventas |
                                  <i class="fa fa-eye" style="margin: 0px 5px"></i>
-                                visto por ' . $infoproducto['vistas'] . ' personas
+                                visto por <span class="vistas" tipo="' . $infoproducto['precio'] . '">' . $infoproducto['vistas'] . '</span> personas
                                 
                             </span>
                         </h4>
@@ -349,7 +349,7 @@ $url = @Ruta::ctrRuta();
                                 <i class="fa fa-shopping-cart" style="margin: 0px 5px"></i>
                                 ' . $infoproducto['ventas'] . ' ventas <br>
                                  <i class="fa fa-eye" style="margin: 0px 5px"></i>
-                                visto por ' . $infoproducto['vistas'] . ' personas
+                                visto por <span class="vistas" tipo="' . $infoproducto['precio'] . '">' . $infoproducto['vistas'] . '</span> personas
                             </small>    
                          
                         </h4>';
@@ -368,7 +368,7 @@ $url = @Ruta::ctrRuta();
                                 <i class="fa fa-shopping-cart" style="margin: 0px 5px"></i>
                                 ' . $infoproducto['ventasGratis'] . ' solicitudes |
                                  <i class="fa fa-eye" style="margin: 0px 5px"></i>
-                                visto por ' . $infoproducto['vistasGratis'] . ' personas
+                                visto por <span class="vistas" tipo="' . $infoproducto['precio'] . '">' . $infoproducto['vistasGratis'] . '</span> personas
                                 
                             </span>
                         </h4>
@@ -381,7 +381,7 @@ $url = @Ruta::ctrRuta();
                                 <i class="fa fa-shopping-cart" style="margin: 0px 5px"></i>
                                 ' . $infoproducto['ventasGratis'] . ' solicitudes <br>
                                  <i class="fa fa-eye" style="margin: 0px 5px"></i>
-                                visto por ' . $infoproducto['vistasGratis'] . ' personas
+                                visto por <span class="vistas" tipo="' . $infoproducto['precio'] . '">' . $infoproducto['vistasGratis'] . '</span> personas
                               </small>  
                            
                         </h4>';
@@ -398,7 +398,7 @@ $url = @Ruta::ctrRuta();
                                 <i class="fa fa-shopping-cart" style="margin: 0px 5px"></i>
                                 ' . $infoproducto['ventas'] . ' ventas |
                                  <i class="fa fa-eye" style="margin: 0px 5px"></i>
-                                visto por ' . $infoproducto['vistas'] . ' personas
+                                visto por <span class="vistas" tipo="' . $infoproducto['precio'] . '">' . $infoproducto['vistas'] . '</span> personas
                             </span>
                         </h4>
                         <h4 class="col-md-0 col-lg-0 col-xs-12">
@@ -409,7 +409,7 @@ $url = @Ruta::ctrRuta();
                                 <i class="fa fa-shopping-cart" style="margin: 0px 5px"></i>
                                 ' . $infoproducto['ventas'] . ' ventas <br>
                                  <i class="fa fa-eye" style="margin: 0px 5px"></i>
-                                visto por ' . $infoproducto['vistas'] . ' personas
+                                visto por <span class="vistas" tipo="' . $infoproducto['precio'] . '">' . $infoproducto['vistas'] . '</span> personas
                             </small>
                         </h4>
                         
@@ -533,35 +533,12 @@ $url = @Ruta::ctrRuta();
         </div>
     </div>
     </div>
-
-
     <!--=============================================-->
     <!--ARTICULOS RELACIONADOS-->
     <!--=============================================-->
 
-
+    <hr>
 <?php
-echo '<div class="container-fluid well well-sm barraProductos">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 organizarProductos">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-default btnGrid" id="btnGrid' . $i . '">
-                        <i class="fa fa-th"></i>
-                        <span class="visible-lg visible-md visible-sm pull-right"> GRID</span>
-                    </button>
-                    <button class="btn btn-default btnList" id="btnList' . $i . '">
-                        <i class="fa fa-list"></i>
-                        <span class="visible-lg visible-md visible-sm pull-right"> LIST</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>';
-
-//vitrina de productos
-
 echo '<div class="container-fluid productos">
     <div class="container">
         <div class="row">
@@ -571,9 +548,14 @@ echo '<div class="container-fluid productos">
                         <small>PRODUCTOS RELACIONADOS</small>
                     </h1>
                 </div>';
+$item = "id";
+$valor = $infoproducto['id_categoria'];
+//hacemos la consulta para traer los detstacados similares al producto abierto
+$rutaArticulosDestacados = ControladorProductos::ctrMostrarSubCategorias($item, $valor);
+//var_dump($rutaArticulosDestacados[0]['ruta']); //categoria del producto actual
 
-                echo '<div class="col-sm-6 col-xs-12">
-                    <a href="' . $rutasModulos[$i] . '">
+echo '<div class="col-sm-6 col-xs-12">
+                    <a href="' . $url . $rutaArticulosDestacados[0]['ruta'] . '">
                         <button class="btn btn-default backColor pull-right">
                             <span class="fa fa-angle-rigth"></span> VER MAS
                         </button>
@@ -582,63 +564,81 @@ echo '<div class="container-fluid productos">
             </div>
 
         </div>
-        <hr>
+        <hr>';
 
-        <ul class="grid' . $i . '" style="">';
 
-foreach ($modulos[$i] as $key => $value) {
-    echo ' <li class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+//para traer los 4 articulos del controlador, definimos los parametros
+$ordenar = "";
+$item = "id_subcategoria";
+$valor = $infoproducto['id_subcategoria'];
+$base = 0;
+$tope = 4;
+$modo = "Rand()"; //enviaremos la funcion para que escoja aleatoriamente
+
+$relacionados = ControladorProductos::ctrMostrarProductos($ordenar, $item, $valor, $base, $tope, $modo);
+//validando si viene informacion, de lo contrario mostrresmo un mensaje
+if (!$relacionados) {
+    echo '<div class="col-xs-12 error404">
+        <h1>
+        <small>!Oops¡</small>    
+    </h1>
+    <h2>No hay productos relacionados</h2>
+    </div>';
+} else {
+    echo '<ul class="grid0">';
+    foreach ($relacionados as $key => $value) {
+        echo ' <li class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <figure>
-                    <a href="' . $value['ruta'] . '" class="pixelProducto">
+                    <a href="' . $url . $value['ruta'] . '" class="pixelProducto">
                         <img src="' . $servidor . $value['portada'] . '"
                              alt="" class="img-responsive">
                     </a>
                 </figure>
                 <h4>
                     <small>
-                        <a href="' . $value['ruta'] . '" class="pixelProducto">
+                        <a href="' . $url . $value['ruta'] . '" class="pixelProducto">
                             ' . $value['titulo'] . ' <br>
 
                             <span style="color:rgba(0,0,0,0)">-</span>';
 
 
-    //0 -> en la BD siginidica que no es nuevo
-    if ($value['nuevo'] != 0) {
-        echo '<span class="label label-warning fonstSize">Nuevo </span> <span style="color:rgba(0,0,0,0)">-</span>';
-    }
+        //0 -> en la BD siginidica que no es nuevo
+        if ($value['nuevo'] != 0) {
+            echo '<span class="label label-warning fonstSize">Nuevo </span> <span style="color:rgba(0,0,0,0)">-</span>';
+        }
 
-    // 0 -> en la bd siginifica que no tiene oferta
-    if ($value['oferta'] != 0) {
-        echo '<span class="label label-warning fonstSize"> ' . $value['descuentoOferta'] . '% off </span> ';
-    }
+        // 0 -> en la bd siginifica que no tiene oferta
+        if ($value['oferta'] != 0) {
+            echo '<span class="label label-warning fonstSize"> ' . $value['descuentoOferta'] . '% off </span> ';
+        }
 
-    echo '</a>
+        echo '</a>
                     </small>
                 </h4>
                 <div class="col-xs-6 precio">';
 
-    if ($value['precio'] == 0) {
-        echo ' <h2>
+        if ($value['precio'] == 0) {
+            echo ' <h2>
                         <small>GRATIS</small>
                     </h2>';
-    } else {
-        if ($value['oferta'] != 0) {
-            echo ' <h2>
+        } else {
+            if ($value['oferta'] != 0) {
+                echo ' <h2>
                         <strong class="oferta">USD $' . $value['precio'] . '</strong>
                         <small>$' . $value['precioOferta'] . '</small>
                     </h2>
                     ';
-        } else {
-            echo ' <h2>
+            } else {
+                echo ' <h2>
                         <small>USD $' . $value['precio'] . '</small>
                     </h2>';
+            }
+
+
         }
 
 
-    }
-
-
-    echo '</div>
+        echo '</div>
                 <div class="col-xs-6 enlaces">
                     <div class="btn btn-group pull-right">
                         <button class="btn btn-default btn-xs deseos" idProducto="' . $value['id'] . '" data-toggle="tooltip"
@@ -646,10 +646,10 @@ foreach ($modulos[$i] as $key => $value) {
                             <i class="fa fa-heart"></i>
                         </button>';
 
-    if ($value['tipo'] == "virtual") {
+        if ($value['tipo'] == "virtual") {
 
-        if ($value['oferta'] != 0) {
-            echo ' <button class="btn btn-default btn-xs agregarCarrito" idProducto="' . $value['id'] . '"
+            if ($value['oferta'] != 0) {
+                echo ' <button class="btn btn-default btn-xs agregarCarrito" idProducto="' . $value['id'] . '"
                                        imagen="' . $servidor . $value['portada'] . '"
                                        titulo="' . $value['titulo'] . '"
                                        precio="' . $value['precioOferta'] . '" tipo="' . $value['tipo'] . '" peso="' . $value['peso'] . '" data-toggle="tooltip"
@@ -657,8 +657,8 @@ foreach ($modulos[$i] as $key => $value) {
                         >
                             <i class="fa fa-shopping-cart"></i>
                         </button>';
-        } else {
-            echo ' <button class="btn btn-default btn-xs agregarCarrito" idProducto="' . $value['id'] . '"
+            } else {
+                echo ' <button class="btn btn-default btn-xs agregarCarrito" idProducto="' . $value['id'] . '"
                                        imagen="' . $servidor . $value['portada'] . '"
                                        titulo="' . $value['titulo'] . '"
                                        precio="' . $value['precio'] . '" tipo="' . $value['tipo'] . '" peso="' . $value['peso'] . '" data-toggle="tooltip"
@@ -666,11 +666,11 @@ foreach ($modulos[$i] as $key => $value) {
                         >
                             <i class="fa fa-shopping-cart"></i>
                         </button>';
+            }
+
+
         }
-
-
-    }
-    echo '<a href="' . $value['ruta'] . '" class="pixelProducto">
+        echo '<a href="' . $value['ruta'] . '" class="pixelProducto">
                             <button class="btn btn-default btn-xs deseos" idProducto="' . $value['id'] . '" data-toggle="tooltip"
                                     title="Ver producto">
                                 <i class="fa fa-eye"></i>
@@ -680,8 +680,9 @@ foreach ($modulos[$i] as $key => $value) {
                 </div>
 
             </li>';
+    }
+    echo '</ul></div></div>';
 }
 
-echo '</ul></div></div>';
 
 ?>

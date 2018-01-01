@@ -2,6 +2,11 @@
  CARRUSEL
  =============================================*/
 
+
+//varaible que trae toda la rua del servidor
+//var rutaOculta = $('#rutaOculta').val();  // la variabl eya esta creada en un archivo superor
+
+
 $(".flexslider").flexslider({
 
     animation: "slide",
@@ -59,6 +64,56 @@ $(".infoproducto figure.visor img").mousemove(function (event) {
     $('.lupa img').css({
         "margin-left": -posX + "px",
         "margin-top": -posY + "px   "
+    });
+
+});
+
+
+/*=============================================
+ CONTADOR DE VISTAS
+ =============================================*/
+//usamos la funcion load, para que inmediatemnete cargue el dom, ejecute esa funcion
+var contador = 0;
+$(window).on("load", function () {
+    var vistas = $('span.vistas').html();
+    var tipo = $('span.vistas').attr('tipo');  // captura el atributo tipo que contiene el precio del articulo
+    var item = ""; // variable que decidira que columan de la bd actualizar
+    //console.log("cantidad de vistas ", vistas);
+    console.log("tipo ", tipo);
+    contador = Number(vistas) + 1;
+
+    //modificamos en la vista el contador
+    $('span.vistas').html(contador);
+
+    //evaluamos el precio para definir campo a actualziar
+    if (tipo == 0) {
+        item = "vistasGratis";
+    } else {
+        item = "vistas";
+    }
+
+    //evalamos la ruta para definir el producto a actualzizar
+    var urlActual = location.pathname;
+    //console.log(urlActual);
+    var ruta = urlActual.split('/'); // separamos la url capturada, separada por /
+
+
+    var datos = new FormData();
+    datos.append('valor', contador);
+    datos.append('item', item);
+    datos.append('ruta', ruta.pop()); // array.pop() // devuelve la ultima posicion del un array
+
+    //peticion ajax
+    $.ajax({
+        url: rutaOculta + "ajax/producto.ajax.php",
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (respuesta) {
+            //console.log("respuesta ", respuesta);
+        }
     });
 
 });

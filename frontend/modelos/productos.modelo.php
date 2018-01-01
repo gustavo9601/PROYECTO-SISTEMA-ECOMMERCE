@@ -174,7 +174,6 @@ class ModeloProductos
     }
 
 
-
     /*=============================================
   BUSCADOR
    =============================================*/
@@ -198,11 +197,11 @@ class ModeloProductos
     }
 
 
-
     /*=============================================
   LISTAR PRODUCTOS BUSCADOR
    =============================================*/
-    static public function mdlListarProductosBusqueda($tabla, $busqueda){
+    static public function mdlListarProductosBusqueda($tabla, $busqueda)
+    {
         $stmt = @Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE ruta like '%$busqueda%' 
                                                                     OR titulo like '%$busqueda%'
                                                                     OR titular like '%$busqueda%'
@@ -216,5 +215,28 @@ class ModeloProductos
 
         $stmt = null;
     }
+
+
+    /*=============================================
+ACTUALIZAR VISTAS DEL PRODUCTO
+=============================================*/
+    static public function mdlActualizarVistaProducto($tabla, $datos, $item)
+    {
+        $stmt = @Conexion::conectar()->prepare("UPDATE $tabla SET $item = :$item WHERE ruta = :ruta");
+
+        //item -> columna
+        //valor -> contador a actualziar
+        $stmt->bindParam(':ruta', $datos['ruta'], PDO::PARAM_STR);
+        $stmt->bindParam(':' . $item, $datos['valor'], PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+
 
 }

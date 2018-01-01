@@ -110,4 +110,17 @@ class ControladorProductos
 
     }
 
+
+    /*=============================================
+       ACTUALIZAR VISTA PRODUCTO
+        =============================================*/
+
+    static public function ctrActualizarVistaProducto($datos, $item)
+    {
+        $tabla = "productos";
+        $respuesta = ModeloProductos::mdlActualizarVistaProducto($tabla, $datos, $item);
+
+        return $respuesta;
+    }
+
 }
