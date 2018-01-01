@@ -1,0 +1,33 @@
+[
+  {
+    "red": "fa-facebook",
+    "estilo": "facebookBlanco",
+    "url": "http://facebook.com/"
+  },
+  {
+    "red": "fa-youtube",
+    "estilo": "youtubeBlanco",
+    "url": "http://youtube.com/"
+  },
+  {
+    "red": "fa-twitterk",
+    "estilo": "twitterBlanco",
+    "url": "http://twitter.com/"
+  },
+  {
+    "red": "fa-google-plus",
+    "estilo": "googleBlanco",
+    "url": "http://google.com/"
+  },
+  {
+    "red": "fa-instagram",
+    "estilo": "instagramBlanco",
+    "url": "http://instagram.com/"
+  },
+  {
+    "texto": "OFERTAS ESPECIALES",
+    "color": "#0ff"
+  }
+]
+
+

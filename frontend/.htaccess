@@ -1,0 +1,9 @@
+# Impedir que se pueda ver el listado de contenidos de un directorio
+
+Options All -Indexes
+
+# Url Amigables
+# Modulo que permite hacer rescritura lo que se envie desde los vinculos o link
+RewriteEngine On
+# permitires Guino, letras minulas y maysuculas, numeros del 0 al 9 y slash
+RewriteRule ^([-a-zA-Z0-9/]+)$ index.php?ruta=$1

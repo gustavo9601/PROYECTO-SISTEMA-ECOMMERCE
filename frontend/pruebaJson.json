@@ -1,0 +1,35 @@
+[
+  {
+    "top": "15%",
+    "right": "15%",
+    "width": "50%",
+    "left": ""
+  },
+  {
+    "top": "20%",
+    "right": "",
+    "width": "40%",
+    "left": "10%"
+  },
+  {
+    "texto": "Lorem Ipsum",
+    "color": "#333"
+  },
+  [
+    {
+      "foto": "vistas/img/multimedia/tennis-verde/img-01.jpg"
+    },
+    {
+      "foto": "vistas/img/multimedia/tennis-verde/img-02.jpg"
+    },
+    {
+      "foto": "vistas/img/multimedia/tennis-verde/img-03.jpg"
+    },
+    {
+      "foto": "vistas/img/multimedia/tennis-verde/img-04.jpg"
+    },
+    {
+      "foto": "vistas/img/multimedia/tennis-verde/img-05.jpg"
+    }
+  ]
+]

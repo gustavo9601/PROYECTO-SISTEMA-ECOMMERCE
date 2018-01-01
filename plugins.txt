@@ -1,0 +1,32 @@
+Servidor Local: XAMPP v.7.1.9
+https://www.apachefriends.org
+
+Editor de Código: Sublime Text v.3
+https://www.sublimetext.com/
+
+Instalado de Plugins: Package Control
+https://packagecontrol.io/
+
+- Advance New File | ctrl-alt-n
+- Emmet
+- Auto File Name
+- Alignment | ctrl-alt-a
+- Bracket Higlighter
+- Console Wrap | ctrl-shift-q
+- jsFormat | ctrl-alt-f
+- Minify Current HTML5 | ctrl-shift-m
+
+==================================================================
+
+Setting User:
+Guardado automático
+
+"save_on_focus_lost": true
+
+==================================================================
+Key Bindings User:
+Esconder o mostrar el panel de archivos y carpetas
+[
+	{ "keys": ["ctrl+."], "command": "toggle_side_bar" }
+]
+
