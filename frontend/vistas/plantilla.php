@@ -64,6 +64,8 @@ $servidor = @Ruta::ctrRutaServidor();
 
     <link rel="stylesheet" href="<?php echo $url; ?>vistas/css/infoproducto.css">
 
+    <link rel="stylesheet" href="<?php echo $url; ?>vistas/css/plugins/sweetalert.css">
+
     <!--==================================
  PLUGINS DE JAVASCRIPT
  ======================================-->
@@ -77,6 +79,8 @@ $servidor = @Ruta::ctrRutaServidor();
 
 
     <script src="<?php echo $url; ?>vistas/js/plugins/jquery.flexslider.js"></script>
+
+    <script src="<?php echo $url; ?>vistas/js/plugins/sweetalert.min.js"></script>
 
 </head>
 
@@ -179,6 +183,7 @@ JAVASCRIPT PERSONALIZADOS
 <script src="<?php echo $url; ?>vistas/js/buscador.js"></script>
 <script src="<?php echo $url; ?>vistas/js/infoproducto.js"></script>
 <script src="<?php echo $url; ?>vistas/js/usuarios.js"></script>
+
 
 </body>
 </html>

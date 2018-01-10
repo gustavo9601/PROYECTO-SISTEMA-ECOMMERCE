@@ -217,7 +217,7 @@ HEADER
             <!--=====================================
        REGISTRO DIRECTO
        ======================================-->
-            <form action="post" onsubmit="return resgistroUsuario();">
+            <form method="post" onsubmit="return registroUsuario()">
                 <hr>
                 <div class="form-group">
                     <div class="input-group">
@@ -277,6 +277,17 @@ HEADER
                         </small>
                     </label>
                 </div>
+
+
+
+
+
+                <?php
+
+                $registro = new ControladorUsuarios();
+                $registro->ctrRegistroUsuario();
+
+                ?>
 
 
                 <input type="submit" class="btn btn-default backColor btn-block" value="ENVIAR">
