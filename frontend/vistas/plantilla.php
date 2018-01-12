@@ -157,8 +157,8 @@ if (isset($_GET['ruta'])) {
         //la varaible info producto se llena siempre y cando la url traiga un valor valido de ruta al comparalo con la ruta de lBD
     } else if ($infoProducto != null) {
         include "modulos/infoproducto.php";
-    } else if ($rutas[0] ==  "buscador") {
-        include_once 'modulos/buscador.php';
+    } else if ($rutas[0] == "buscador" || $rutas[0] == 'verificar') {
+        include_once 'modulos/' . $rutas[0] . '.php';
     } else {
         include_once 'modulos/error404.php';
     }
