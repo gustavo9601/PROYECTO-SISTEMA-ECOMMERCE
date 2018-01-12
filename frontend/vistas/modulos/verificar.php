@@ -14,14 +14,18 @@ $respuesta = ControladorUsuarios::ctrMostrarUsuario($item, $valor);
 $id = $respuesta["id"];
 $item2 = "verificacion";
 $valor2 = 0;
-
-$respuesta2 = ControladorUsuarios::ctrActualizarUsuario($id, $item2, $valor2);
-
 $usuarioVerificado = false;
-if ($respuesta2 == 'ok') {
 
-    $usuarioVerificado = true;
+//validacion si es valido el tocken
+if ($respuesta['emailEncriptado'] == $valor) {
+    $respuesta2 = ControladorUsuarios::ctrActualizarUsuario($id, $item2, $valor2);
+
+    if ($respuesta2 == 'ok') {
+
+        $usuarioVerificado = true;
+    }
 }
+
 
 ?>
 
@@ -38,7 +42,7 @@ if ($respuesta2 == 'ok') {
                         <button class="btn btn-default backColor btn-lg">INGRESAR</button>
                     </a>
                 ';
-            }else{
+            } else {
                 echo '<h3>Error</h3>
                     <h2><small>!No se ha podido verificar el correo electronico, vuelva a registrase¡</small></h2>
                     <br>

@@ -195,10 +195,125 @@ class ControladorUsuarios
 
         $respuesta = ModeloUsuarios::mdlActualizarUsuario($tabla, $id, $item2, $valor2);
 
-
         return $respuesta;
 
     }
+
+
+    /*=========================================*/
+    /*INGRESO DE USUARIO*/
+    /*=========================================*/
+
+
+    static public function ctrIngresoUsuario()
+    {
+
+        if (isset($_POST['ingEmail'])) {
+            if (
+                preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["ingEmail"]) &&
+                preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingPassword"])
+            ) {
+
+
+                $encriptar = crypt($_POST["ingPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+                $tabla = "usuarios";
+                $item = "email";
+                $valor = $_POST["ingEmail"];
+
+                $respuesta = ModeloUsuarios::mdlMostrarUsuario($tabla, $item, $valor);
+
+                /*Validacion junto con la BD*/
+                if ($respuesta["email"] == $_POST["ingEmail"] && $respuesta["password"] == $encriptar) {
+                    //validacion con la BD si ya esta verficado el email
+                    if ($respuesta['verificacion'] == 1) {
+                        echo '<script> 
+
+							swal({
+								  title: "¡NO HA VERIFICADO SU CORREO ELECTRONICO!",
+								  text: "¡Por favor revise la bandeja de entrada o la carpeta de SPAM, para verifcar la direccion de correo electronico  ' . $_POST["ingEmail"] . '" ,
+								  type:"error",
+								  confirmButtonText: "Cerrar",
+								  closeOnConfirm: false
+								},
+								function (isConfirm){
+							    if(isConfirm){
+							        history.back();
+							    }
+
+								
+							});
+
+						</script>';
+                    } else {
+
+                        /*Variables de sesion*/
+
+                        @session_start();
+                        $_SESSION['validarSesion'] = 'ok';
+                        $_SESSION['id'] = $respuesta['id'];
+                        $_SESSION['nombre'] = $respuesta['nombre'];
+                        $_SESSION['foto'] = $respuesta['foto'];
+                        $_SESSION['email'] = $respuesta['email'];
+                        $_SESSION['password'] = $respuesta['password'];
+                        $_SESSION['modo'] = $respuesta['modo'];
+
+                        //Utilizando del local storgae, alcenamos la ruta, para cuando inicie sesion, sea redireccionado hacia la ruta
+                        echo '
+                    <script> 
+                        window.location = localStorage.getItem("rutaActual");
+                    </script>
+                    ';
+
+
+                    }
+                } else {
+                    echo '<script> 
+
+							swal({
+								  title: "¡ERROR AL INGRESAR!",
+								  text: "¡Por favor revise el correo electronico, o la contraseña" ,
+								  type:"error",
+								  confirmButtonText: "Cerrar",
+								  closeOnConfirm: false
+								},
+								function (isConfirm){
+							    if(isConfirm){
+							           window.location = localStorage.getItem("rutaActual");
+							    }
+
+								
+							});
+
+						</script>';
+                }
+
+
+            } else {
+                echo '<script> 
+
+							swal({
+								  title: "¡ERROR!",
+								  text: "¡Error al ingresar al sistema, no se permiten caracteres especiales",
+								  type:"error",
+								  confirmButtonText: "Cerrar",
+								  closeOnConfirm: false
+								},
+								function (isConfirm){
+							    if(isConfirm){
+							        history.back();
+							    }
+
+								
+							});
+
+						</script>';
+            }
+        }
+
+
+
+    }
+
 
 }
 

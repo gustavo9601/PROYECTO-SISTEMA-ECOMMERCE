@@ -51,10 +51,54 @@ TOP
             <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 registro">
 
                 <ul>
+
                     <!--llamaran modales-->
-                    <li><a href="#modalIngreso" data-toggle="modal">Ingresar</a></li>
-                    <li>|</li>
-                    <li><a href="#modalRegistro" data-toggle="modal">Crear una cuenta</a></li>
+
+                    <?php
+
+                    if (isset($_SESSION['validarSesion'])) {
+
+                        //validacion de seguridad
+                        if ($_SESSION['validarSesion'] == 'ok') {
+
+
+                            //validacion de que dorma ingreso al sistema
+                            if ($_SESSION['modo'] == 'directo') {
+
+                                //validacion si no tiene foto le colocamos una sino la que el usuario cargo
+                                if ($_SESSION['foto'] != "") {
+
+                                    echo '
+                                    <li>
+                                    <img class="img-circle" src="' . $url . $_SESSION['foto'] . '">
+                                    </li>
+                                    ';
+                                } else {
+                                    echo '
+                                    <li>
+                                    <img class="img-circle" src="' . $servidor . 'vistas/img/usuarios/default/anonymous.png">
+                                    </li>
+                                    ';
+                                }
+
+
+                                //completando el html
+                                echo '<li> | </li>
+                                      <li><a href="' . $url . 'perfil">Ver perfil</a></li>
+                                      <li> | </li>
+                                      <li><a href="' . $url . 'salir">Salir</a></li>
+                                      ';
+                            }
+                        }
+
+                    } else {
+                        echo '   <li><a href="#modalIngreso" data-toggle="modal">Ingresar</a></li>
+                                <li>|</li>
+                                <li><a href="#modalRegistro" data-toggle="modal">Crear una cuenta</a></li>';
+                    }
+
+                    ?>
+
 
                 </ul>
 
@@ -217,7 +261,7 @@ HEADER
             <!--=====================================
        REGISTRO DIRECTO
        ======================================-->
-            <form method="post" onsubmit="return registroUsuario()">
+            <form method="post" onsubmit="return registroUsuario();">
                 <hr>
                 <div class="form-group">
                     <div class="input-group">
@@ -279,9 +323,6 @@ HEADER
                 </div>
 
 
-
-
-
                 <?php
 
                 $registro = new ControladorUsuarios();
@@ -302,4 +343,85 @@ HEADER
         </div>
     </div>
 </div>
+
+
+<!--=====================================
+       MODAL DE INICIAR SESION
+       ======================================-->
+
+<div class="modal fade modalFormulario" id="modalIngreso" role="dialog">
+    <div class="modal-dialog modal-content">
+        <div class="modal-body modalTitulo">
+            <h3 class="backColor">INGRESAR</h3>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            <!--=====================================
+       REGISTRO CON FACEBOOK
+       ======================================-->
+            <div class="col-sm-6 col-xs-12 facebook" id="btnFacebookRegistro">
+                <p>
+                    <i class="fa fa-facebook"></i>
+                    Ingreso con Facebook
+                </p>
+            </div>
+
+            <!--=====================================
+       REGISTRO CON GOOGLE
+       ======================================-->
+
+            <div class="col-sm-6 col-xs-12 google" id="btnGoogleRegistro">
+                <p>
+                    <i class="fa fa-google"></i>
+                    Ingreso con Google
+                </p>
+            </div>
+
+
+            <!--=====================================
+       INGRESO DIRECTO
+       ======================================-->
+            <form method="post">
+                <hr>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-envelope"></i>
+                        </span>
+                        <input type="email" class="form-control" id="ingEmail" name="ingEmail"
+                               placeholder="Correo electronico" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-lock"></i>
+                        </span>
+                        <input type="password" class="form-control text-uppercase" id="ingPassword" name="ingPassword"
+                               placeholder="Contraseña" required>
+                    </div>
+                </div>
+
+                <!--=====================================
+              INGRESO DIRECTO
+              ======================================-->
+                <?php
+
+                $ingreso = new ControladorUsuarios();
+                $ingreso->ctrIngresoUsuario();
+
+                ?>
+
+
+                <input type="submit" class="btn btn-default backColor btn-block btnIngreso" value="ENVIAR">
+
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            ¿ No tienes una cuenta registrada ? | <strong><a href="#modalRegistro" data-dismiss="modal"
+                                                             data-toggle="modal">Registrase</a></strong>
+        </div>
+    </div>
+</div>
+
 </div>
