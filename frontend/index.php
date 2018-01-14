@@ -15,6 +15,9 @@ require_once "modelos/rutas.php";
 
 //Extensiones de PHP MAILER
 require_once "extensiones/PHPMailer/PHPMailerAutoload.php";
+
+//Extencion para conexion con el API de google, descargada con composer
 require_once "extensiones/vendor/autoload.php";
+
 $plantilla = new ControladorPlantilla();
 $plantilla->plantilla();

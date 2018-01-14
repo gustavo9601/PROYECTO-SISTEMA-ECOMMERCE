@@ -94,6 +94,51 @@ function testApi() {
                 success: function (respuesta) {
 
                     console.log(respuesta);
+
+
+                    if (respuesta == 'ok') {
+                        window.location = localStorage.getItem('rutaActual');
+                    } else {
+                        /*Si no es ok, debe venir vacio,y se debe a que el correo ya esta registrado pero no con facebook*/
+                        swal({
+                                title: "¡ERROR!",
+                                text: "¡El correo electronico " + email + ", ya esta en uso pero no se creo con facebook   !",
+                                type: "error",
+                                confirmButtonText: "Cerrar",
+                                closeOnConfirm: false
+                            },
+                            function (isConfirm) {
+                                if (isConfirm) {
+
+                                    /*Cerramos sesion del API en facebook*/
+                                    FB.getLoginStatus(function (response) {
+                                        if (response.status == 'connected') {
+                                            FB.logout(function (response) {
+
+                                                //eleiminamos la cookie que creo en la sesion
+                                                deleteCookie('fblo_171275970307432');
+                                                setTimeout(function(){
+                                                    window.location = localStorage.getItem('rutaActual');
+
+                                                },500);
+                                            });
+
+                                            //funcion que eliminara la cookie pasadoa por parametro
+                                            function deleteCookie(name) {
+                                                //EXPIRAMOS LA COOKI
+                                                document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                                            }
+
+
+                                        }
+
+                                    });
+
+
+                               }
+                            });
+                    }
+
                 }
             })
             ;
@@ -102,3 +147,36 @@ function testApi() {
         }
     });
 }
+
+
+/*SALIR DE FACEBOOK AL DAR CLICK*/
+$('.salir').click(function () {
+
+    e.preventDefault();
+
+    /*Cerramos sesion del API en facebook*/
+    FB.getLoginStatus(function (response) {
+        if (response.status == 'connected') {
+            FB.logout(function (response) {
+
+                //eleiminamos la cookie que creo en la sesion
+                deleteCookie('fblo_171275970307432');
+                setTimeout(function(){
+                    window.location = localStorage.getItem('rutaActual');
+
+                },500);
+            });
+
+            //funcion que eliminara la cookie pasadoa por parametro
+            function deleteCookie(name) {
+                //EXPIRAMOS LA COOKI
+                document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            }
+
+
+        }
+
+    });
+
+
+});

@@ -525,9 +525,50 @@ class ControladorUsuarios
     static public function ctrRegistroRedesSociales($datos)
     {
         $tabla = "usuarios";
-        $respuesta = @ModeloUsuarios::mdlRegistroUsuario($tabla, $datos);
+        $item = "email";
+        $valor = $datos['email'];
+        $emailRepetido = false;
+        $respuesta = '';
 
-        echo $respuesta;
+        //validacion si al realizar la consulta por el correo, este ya se encuetntra repetido
+        $respuesta0 = @ModeloUsuarios::mdlMostrarUsuario($tabla, $item, $valor);
+        if ($respuesta0) {
+            $emailRepetido = true;
+        } else {
+
+            /*Si no viene con informacion filtrado por email, registramos el usuario*/
+            $respuesta = @ModeloUsuarios::mdlRegistroUsuario($tabla, $datos);
+        }
+
+
+        /*Validacion si ya esta creado el email, o si se recibe un ok en el registro cremos las sesiones*/
+        if ($emailRepetido || $respuesta == 'ok') {
+
+
+            //seleccionamos la informacion del usuario insertado, filtrado por el email
+            $respuesta2 = @ModeloUsuarios::mdlMostrarUsuario($tabla, $item, $valor);
+
+            //si se inserto por facebook
+            if ($respuesta2["modo"] == "facebook") {
+                @session_start();
+                $_SESSION['validarSesion'] = 'ok';
+                $_SESSION['id'] = $respuesta2['id'];
+                $_SESSION['nombre'] = $respuesta2['nombre'];
+                $_SESSION['foto'] = $respuesta2['foto'];
+                $_SESSION['email'] = $respuesta2['email'];
+                $_SESSION['password'] = $respuesta2['password'];
+                $_SESSION['modo'] = $respuesta2['modo'];
+
+                echo 'ok';
+
+            } else {
+
+                echo "";
+
+            }
+
+        }
+
 
     }
 

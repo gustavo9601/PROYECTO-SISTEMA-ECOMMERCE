@@ -82,13 +82,29 @@ TOP
                                 }
 
 
-                                //completando el html
-                                echo '<li> | </li>
+                            } else if ($_SESSION['modo'] == 'facebook') {
+                                echo '
+                                    <li>
+                                    <img class="img-circle" src="' . $_SESSION['foto'] . '" style="width:40px">
+                                    </li>
+                                    ';
+                            } else {
+                                echo '
+                                    <li>
+                                    <img class="img-circle" src="' . $servidor . 'vistas/img/usuarios/default/anonymous.png">
+                                    </li>
+                                    ';
+                            }
+
+
+                            //completando el html
+                            echo '<li> | </li>
                                       <li><a href="' . $url . 'perfil">Ver perfil</a></li>
                                       <li> | </li>
-                                      <li><a href="' . $url . 'salir">Salir</a></li>
+                                      <li><a href="' . $url . 'salir" class="salir">Salir</a></li>
                                       ';
-                            }
+
+
                         }
 
                     } else {
@@ -449,7 +465,8 @@ HEADER
 
             <form method="post">
 
-                <label for="passEmail" class="text-muted">Escribe el correo electronico con el que estas registrado y alli te
+                <label for="passEmail" class="text-muted">Escribe el correo electronico con el que estas registrado y
+                    alli te
                     enviaremos una nueva contraseña :</label>
                 <div class="form-group">
                     <div class="input-group">
@@ -471,7 +488,7 @@ HEADER
                 $password = new ControladorUsuarios();
                 $password->ctrOlvidoPassword();
 
-                                 ?>
+                ?>
 
 
                 <input type="submit" class="btn btn-default backColor btn-block" value="ENVIAR">

@@ -11,6 +11,6 @@ echo '
 
 window.location = "' . $url . '"
 
-<script>
+</script>
 
 ';
