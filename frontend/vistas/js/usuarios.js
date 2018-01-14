@@ -6,6 +6,7 @@
 var rutaActual = location.href;
 console.log(rutaActual);
 
+// cuando se le de click a cualquier boton de inicio sde sesion se almacene la ruta actual
 $(".btnIngreso, .facebook, .google").click(function(){
 
     localStorage.setItem("rutaActual", rutaActual);

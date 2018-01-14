@@ -356,9 +356,9 @@ HEADER
             <button type="button" class="close" data-dismiss="modal">&times;</button>
 
             <!--=====================================
-       REGISTRO CON FACEBOOK
+       INGRESO  CON FACEBOOK
        ======================================-->
-            <div class="col-sm-6 col-xs-12 facebook" id="btnFacebookRegistro">
+            <div class="col-sm-6 col-xs-12 facebook" id="btnFacebookIngreso">
                 <p>
                     <i class="fa fa-facebook"></i>
                     Ingreso con Facebook
@@ -366,7 +366,7 @@ HEADER
             </div>
 
             <!--=====================================
-       REGISTRO CON GOOGLE
+       INGRESO  CON GOOGLE
        ======================================-->
 
             <div class="col-sm-6 col-xs-12 google" id="btnGoogleRegistro">

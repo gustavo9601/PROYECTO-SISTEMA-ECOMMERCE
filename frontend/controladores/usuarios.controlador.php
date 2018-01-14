@@ -517,5 +517,20 @@ class ControladorUsuarios
     }
 
 
+
+
+    /*=========================================*/
+    /*REGISTRO CON REDES SOCIALES FACEBOOK - GOOGLE*/
+    /*=========================================*/
+    static public function ctrRegistroRedesSociales($datos)
+    {
+        $tabla = "usuarios";
+        $respuesta = @ModeloUsuarios::mdlRegistroUsuario($tabla, $datos);
+
+        echo $respuesta;
+
+    }
+
+
 }
 
