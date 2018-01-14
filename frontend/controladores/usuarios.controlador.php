@@ -311,7 +311,209 @@ class ControladorUsuarios
         }
 
 
+    }
 
+
+
+    /*=========================================*/
+    /*OLVIDO DE CONTRASEÑA*/
+    /*=========================================*/
+    static public function ctrOlvidoPassword()
+    {
+        if (isset($_POST['passEmail'])) {
+
+            if (preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["passEmail"])) {
+
+                /*Generando contraseña aleatorioa*/
+                function generarPassword($longitud)
+                {
+
+                    $key = "";
+                    $pattern = "123456789abcdefghijklmnopqrstuvwxyz";
+                    $max = strlen($pattern) - 1; // menos ya que emepzara desde 0
+
+                    for ($i = 0; $i < $longitud; $i++) {
+                        $key .= $pattern{mt_rand(0, $max)};  // escogera aleatoriamente una letra del string de arriba
+                    }
+
+                    return $key;
+
+                }
+
+                //genero el nuevo password
+                $nuevaPassword = generarPassword(11);
+                //encript el password para actualizarlo a la BD
+                $encriptar = crypt($nuevaPassword, '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+
+                // consultamos en la BD el id del usuario que de acuerdo al mail ingresado en el input
+                $tabla = "usuarios";
+
+                $item1 = 'email';
+                $valor1 = $_POST['passEmail'];
+                $respuesta1 = ModeloUsuarios::mdlMostrarUsuario($tabla, $item1, $valor1);
+
+                //si retorna informacion es por que si existe, entonces actualizamos en la BD el usuario
+                if ($respuesta1) {
+                    $id = $respuesta1['id'];
+                    $item2 = 'password';
+                    $valor2 = $encriptar;
+
+                    $respuesta2 = ModeloUsuarios::mdlActualizarUsuario($tabla, $id, $item2, $valor2);
+
+                    //si se acutualizo correctamente, enviaremos la contraseña al usuario al email , con la contraseña normal sin exriptacion
+                    if ($respuesta2 == 'ok') {
+
+
+                        /*=============================================
+            CAMBIO DE CONTRASEÑA
+             =============================================*/
+                        //definimos sona horaria para enviar el correo
+                        date_default_timezone_set("America/Bogota");
+
+                        $url = @Ruta::ctrRuta();
+                        //instancioamos la libreria
+                        $mail = new PHPMailer;
+
+                        $mail->CharSet = 'UTF-8';
+
+                        $mail->isMail();
+                        //de donde se va a enviar el correo
+                        $mail->setFrom('ing.gustavo.marquez@gmail.com', 'Ingeniero Gustavo');
+                        // responder el correo a
+                        $mail->addReplyTo('ing.gustavo.marquez@gmail.com', 'Ingeniero Gustavo');
+                        // asunto
+                        $mail->Subject = "SOLICITUD DE NUEVA CONTRASEÑA";
+                        //email de destinatario
+                        $mail->addAddress($_POST["passEmail"]);
+                        // Mensaje que se enviara, com omaqueta HTML
+                        $mail->msgHTML('
+                    
+
+<div style="width:100%; background:#eee; position:relative; font-family:sans-serif; padding-bottom:40px">
+	
+	<center>
+		
+		<img style="padding:20px; width:10%" src="http://tutorialesatualcance.com/tienda/logo.png">
+
+	</center>
+
+	<div style="position:relative; margin:auto; width:600px; background:white; padding:20px">
+	
+		<center>
+		
+		<img style="padding:20px; width:15%" src="http://tutorialesatualcance.com/tienda/icon-pass.png">
+
+		<h3 style="font-weight:100; color:#999">SOLICITUD DE NUEVA CONTRASEÑA</h3>
+
+		<hr style="border:1px solid #ccc; width:80%">
+
+		<h4 style="font-weight:100; color:#999; padding:0 20px"><strong>Su nueva contraseña: </strong>' . $nuevaPassword . '</h4>
+
+		<a href="' . $url . '" target="_blank" style="text-decoration:none">
+
+		<div style="line-height:60px; background:#0aa; width:60%; color:white">Ingrese nuevamente al sitio</div>
+
+		</a>
+
+		<br>
+
+		<hr style="border:1px solid #ccc; width:80%">
+
+		<h5 style="font-weight:100; color:#999">Si no se inscribió en esta cuenta, puede ignorar este correo electrónico y la cuenta se eliminará.</h5>
+
+		</center>
+
+	</div>
+
+</div>
+               ');
+
+                        $envio = $mail->Send();
+
+                        if (!$envio) {
+                            echo '<script> 
+
+							swal({
+								  title: "¡ERROR!",
+								  text: "¡Ha Ocurrido un problema, enviando cambio de contraseña a ' . $_POST["passEmail"] . $mail->ErrorInfo . '!",
+								  type:"error",
+								  confirmButtonText: "Cerrar",
+								  closeOnConfirm: false
+								},
+								function (isConfirm){
+							    if(isConfirm){
+							        history.back();
+							    }
+
+								
+							});
+
+						</script>';
+                        } else {
+                            /*Si se envio el correo al usuario muestra la alerta de revisar el mail*/
+                            //Debe realizar la verificacion de correo electronico
+                            echo '<script> 
+
+							swal({
+								  title: "¡OK!",
+								  text: "¡Por favor revise la bandeja de entrada de su correo electronico,' . $_POST["regEmail"] . ' para verificar su cambio de contraseña!",
+								  type:"success",
+								  confirmButtonText: "Cerrar",
+								  closeOnConfirm: false
+								},
+								function (isConfirm){
+							    if(isConfirm){
+							        history.back();
+							    }
+
+								
+							});
+
+						</script>';
+                        }
+
+
+                    }
+
+                } else {
+                    echo '<script> 
+
+							swal({
+								  title: "¡ERROR!",
+								  text: "¡El correo electronico, no esta registrado en el sistema !",
+								  type:"error",
+								  confirmButtonText: "Cerrar",
+								  closeOnConfirm: false
+								},
+								function (isConfirm){
+							    if(isConfirm){
+							        history.back();
+							    }
+							});
+						</script>';
+                }
+
+
+            } else {
+                echo '<script> 
+
+							swal({
+								  title: "¡ERROR!",
+								  text: "¡Error al enviar el correo electronico, no se permiten caracteres especiales o esta mal escrito el correo",
+								  type:"error",
+								  confirmButtonText: "Cerrar",
+								  closeOnConfirm: false
+								},
+								function (isConfirm){
+							    if(isConfirm){
+							        history.back();
+							    }
+							});
+						</script>';
+            }
+
+
+        }
     }
 
 

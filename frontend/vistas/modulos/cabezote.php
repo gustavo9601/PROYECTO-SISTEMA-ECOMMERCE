@@ -414,6 +414,13 @@ HEADER
 
                 <input type="submit" class="btn btn-default backColor btn-block btnIngreso" value="ENVIAR">
 
+                <br>
+                <center>
+                    <a href="#modalPassword" data-dismiss="modal" data-toggle="modal">
+                        Olvidaste tu contraseña ?
+                    </a>
+                </center>
+
             </form>
 
         </div>
@@ -424,4 +431,59 @@ HEADER
     </div>
 </div>
 
+
+<!--=====================================
+          MODAL PARA RESETEAR LA CONTRASEÑA
+          ======================================-->
+
+
+<div class="modal fade modalFormulario" id="modalPassword" role="dialog">
+    <div class="modal-dialog modal-content">
+        <div class="modal-body modalTitulo">
+            <h3 class="backColor">SOLICITUD DE NUEVA CONTRASEÑA</h3>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            <!--=====================================
+    OLVIDO CONTRASEÑA
+       ======================================-->
+
+            <form method="post">
+
+                <label for="passEmail" class="text-muted">Escribe el correo electronico con el que estas registrado y alli te
+                    enviaremos una nueva contraseña :</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-envelope"></i>
+                        </span>
+
+                        <input type="email" class="form-control" id="passEmail" name="passEmail"
+                               placeholder="Correo electronico" required>
+                    </div>
+                </div>
+
+
+                <!--=====================================
+              INGRESO DIRECTO
+              ======================================-->
+                <!--     --><?php
+
+                $password = new ControladorUsuarios();
+                $password->ctrOlvidoPassword();
+
+                                 ?>
+
+
+                <input type="submit" class="btn btn-default backColor btn-block" value="ENVIAR">
+
+                <br>
+
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            ¿ No tienes una cuenta registrada ? | <strong><a href="#modalRegistro" data-dismiss="modal"
+                                                             data-toggle="modal">Registrase</a></strong>
+        </div>
+    </div>
 </div>
