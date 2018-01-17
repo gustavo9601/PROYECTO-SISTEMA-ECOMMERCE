@@ -11,6 +11,59 @@ $categorias = ControladorProductos::ctrMostrarCategorias($item, $valor);
 
 $servidor = @Ruta::ctrRutaServidor();
 $url = @Ruta::ctrRuta();
+
+
+/*================================================*/
+/*API DE GOOGLE*/
+/*================================================*/
+
+
+/*=======================================*/
+/*CREAN EL OBJETO DE LA API DE GOOGLE*/
+/*=======================================*/
+$cliente = new Google_Client();
+//Configuracion de autorizacion, recibe por parametro la ruta del archivo que exportamos de Google console
+$cliente->setAuthConfig('modelos/client_secret.json');
+//Tipo de acceso
+/*
+ * offline  -> servidor de pruebas localhost
+ * online  -> servidor web
+ * */
+$cliente->setAccessType('offline');
+//Definimos la informacion que requiermos de google
+$cliente->setScopes(['profile', 'email']);
+
+
+/*=======================================*/
+/*RUTA PARA LOGIN DE GOOGLE - redirrecionar al formulario de couentas de google*/
+/*=======================================*/
+//crear una url de autorizacion, hacia la cual se debe dar click e iniciar sesion
+$rutaGoogle = $cliente->createAuthUrl();
+
+
+/*=======================================*/
+/*RECIBIENDO DEL INICIO DE SEISON LA VARIABLE CODE*/
+/*=======================================*/
+if (isset($_GET['code'])) {
+    //tolken de seguridad, y le pasamos lo que google nos devuelve en la variable get
+    $token = $cliente->authenticate($_GET['code']);
+    //Incluimos el token al acceso
+    $cliente->setAccessToken($token);
+
+}
+
+
+/*=======================================*/
+/*RECIBIMOS LOS DATOS CIFRADOS DE GOOGLE EN UN ARRYA*/
+/*=======================================*/
+//validando que si el token creado es valido
+if ($cliente->getAccessToken()) {
+    $item = $cliente->verifyIdToken();
+
+    var_dump($item);
+}
+
+
 ?>
 
 <!--=====================================
@@ -265,13 +318,15 @@ HEADER
             <!--=====================================
        REGISTRO CON GOOGLE
        ======================================-->
-
-            <div class="col-sm-6 col-xs-12 google" id="btnGoogleRegistro">
-                <p>
-                    <i class="fa fa-google"></i>
-                    Registro con Google
-                </p>
-            </div>
+            <!--Contiene la ruta de google , para-->
+            <a href="<?php echo $rutaGoogle; ?>">
+                <div class="col-sm-6 col-xs-12 google" id="btnGoogleRegistro">
+                    <p>
+                        <i class="fa fa-google"></i>
+                        Registro con Google
+                    </p>
+                </div>
+            </a>
 
 
             <!--=====================================
@@ -384,14 +439,14 @@ HEADER
             <!--=====================================
        INGRESO  CON GOOGLE
        ======================================-->
-
-            <div class="col-sm-6 col-xs-12 google" id="btnGoogleRegistro">
-                <p>
-                    <i class="fa fa-google"></i>
-                    Ingreso con Google
-                </p>
-            </div>
-
+            <a href="<?php echo $rutaGoogle; ?>">
+                <div class="col-sm-6 col-xs-12 google" id="btnGoogleRegistro">
+                    <p>
+                        <i class="fa fa-google"></i>
+                        Ingreso con Google
+                    </p>
+                </div>
+            </a>
 
             <!--=====================================
        INGRESO DIRECTO

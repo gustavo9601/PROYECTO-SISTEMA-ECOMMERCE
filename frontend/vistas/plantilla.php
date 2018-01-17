@@ -160,6 +160,7 @@ if (isset($_GET['ruta'])) {
     } else if ($rutas[0] == "buscador"
         || $rutas[0] == 'verificar'
         || $rutas[0] == 'salir'
+        || $rutas[0] == 'perfil'
     ) {
         include_once 'modulos/' . $rutas[0] . '.php';
     } else {
