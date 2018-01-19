@@ -7,7 +7,7 @@ var rutaActual = location.href;
 console.log(rutaActual);
 
 // cuando se le de click a cualquier boton de inicio sde sesion se almacene la ruta actual
-$(".btnIngreso, .facebook, .google").click(function(){
+$(".btnIngreso, .facebook, .google").click(function () {
 
     localStorage.setItem("rutaActual", rutaActual);
 
@@ -168,5 +168,93 @@ function registroUsuario() {
     return true;
 }
 
+
+/*=============================================
+ CAMBIAR FOTO
+ =============================================*/
+
+$('#btnCambiarFoto').click(function () {
+    $('#imgPerfil').toggle();
+    $('#subirImagen').toggle();
+});
+
+
+$('#datosImagen').change(function () {
+
+    //accediendo a la imagen en la pisicion 0l
+    var imagen = this.files[0];
+    //console.log(imagen);
+
+    //validacion de tipo
+    console.log(imagen['type']);
+
+    if (imagen['type'] != "image/jpeg" && imagen['type'] != 'image/png') {
+        $('#datosImagen').val("");
+
+
+        swal({
+                title: "¡Error al subir la imagen!",
+                text: "¡La imagen debe estar en formato JPG",
+                type: "success",
+                confirmButtonText: "Cerrar",
+                closeOnConfirm: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    window.location = rutaActual;
+                }
+            });
+
+        //validacion de tamaño
+    } else if (imagen['size'] > 2000000) {
+        $('#datosImagen').val("");
+
+        swal({
+                title: "¡Error al subir la imagen!",
+                text: "¡La imagen no debe ser mayor a 2 MB",
+                type: "error",
+                confirmButtonText: "Cerrar",
+                closeOnConfirm: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    window.location = rutaActual;
+                }
+            });
+
+    } else {
+
+
+
+        //leemos el archivo y lo transformamos a una cadena de codigo
+        var datosImagen = new FileReader;
+        datosImagen.readAsDataURL(imagen); //convertimos a URL la imagen
+
+        //en cuando cargue la lectura y conversion
+        $(datosImagen).on("load", function (event) {
+            var rutaImagen = event.target.result;
+            //lo que nos devuelva la carga del filereader, en url lo pasamos para que aparesca
+            $('.previsualizar').attr('src', rutaImagen);
+
+        });
+
+        /*
+         swal({
+         title: "¡Correcto!",
+         text: "¡La imagen se subio correctamente",
+         type: "success",
+         confirmButtonText: "Cerrar",
+         closeOnConfirm: false
+         },
+         function (isConfirm) {
+         if (isConfirm) {
+         window.location = rutaActual;
+         }
+         });*/
+
+    }
+
+
+})
 
 

@@ -123,7 +123,7 @@ TOP
 
                                     echo '
                                     <li>
-                                    <img class="img-circle" src="' . $url . $_SESSION['foto'] . '">
+                                    <img class="img-circle" style="width:40px" src="' . $url . $_SESSION['foto'] . ' ">
                                     </li>
                                     ';
                                 } else {

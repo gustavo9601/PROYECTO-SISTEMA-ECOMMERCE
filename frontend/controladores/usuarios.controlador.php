@@ -567,11 +567,117 @@ class ControladorUsuarios
 
             }
 
+
         }
-
-
     }
+    /*====================================*/
+    /*actualizar perfil*/
+    /*====================================*/
+    static public function ctrActualizarPerfil()
+    {
+        //validando que se halla enviado por post con el btn
+        if (isset($_POST['editarNombre'])) {
 
 
+            /*====================================*/
+            /*VALIDAR IMAGEN QUE SUBE COMO FOTO*/
+            /*====================================*/
+            $ruta = "";
+            $directorio = "vistas/img/usuarios/{$_POST['idUsuario']}";
+            if (isset($_FILES['datosImagen']['tmp_name'])) {
+
+                //primero preuntamos si existe otra imagen en la base de datos
+                if (!empty($_POST['foto'])) {  // valido el post oculto de foto
+                    unlink($_POST['foto']);  //eliminamos el archivo en el hosting
+                    unlink($directorio);
+                } else {
+                    // si no existe ninguna imagen, creamos el directorio
+                    @mkdir($directorio, 0755); // pasamos el directorio, y los permisos
+                }
+
+
+                $aleatorio = mt_rand(100, 999);
+                $ruta = "vistas/img/usuarios/{$_POST['idUsuario']}/" . $aleatorio . ".jpg";  // ruta de la foto a almcenar
+
+                //Modificamos tamaño de la foto
+                //capturao en un array las medidas ancho y alto
+                // list (0 , 1) // indices
+                list($ancho, $alto) = getimagesize($_FILES['datosImagen']['tmp_name']);
+
+                $nuevoAncho = 500;
+                $nuevoAlto = 500;
+
+
+                /*=====================================*/
+                /*SOLO SIRVE PARA IAMGEN JPG JPEG*/
+                /*=====================================*/
+
+                //creamos una nueva imagen
+                $origen = imagecreatefromjpeg($_FILES['datosImagen']['tmp_name']);
+
+                $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+                //cortamos la imagen pasando los parametros
+                //(destino, origen, posicionx, posiciony, )
+                imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+
+                imagejpeg($destino, $ruta);
+
+
+            }
+
+
+            //validacion si se escibio algo en el input de contraseña
+            if ($_POST['editarPassword'] != "") {
+                $password = $_POST['passUsuario'];
+            } else {
+
+                $password = crypt($_POST['editarPassword'], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+
+            }
+
+
+            $datos = [
+                'nombre' => $_POST['editarNombre'],
+                'email' => $_POST['editarEmail'],
+                'password' => $password,
+                'foto' => $ruta,
+                'id' => $_POST['idUsuario']
+            ];
+
+            $tabla = 'usuarios';
+            $respuesta = @ModeloUsuarios::mdlActualizarPerfil($tabla, $datos);
+
+            if ($respuesta == 'ok') {
+                //si se ejcuto el update, actualizacmos las variables de sesion del usuario
+
+                @session_start();
+                $_SESSION['validarSesion'] = 'ok';
+                $_SESSION['id'] = $datos['id'];
+                $_SESSION['nombre'] = $datos['nombre'];
+                $_SESSION['foto'] = $datos['foto'];
+                $_SESSION['email'] = $datos['email'];
+                $_SESSION['password'] = $datos['password'];
+                $_SESSION['modo'] = $_POST['modoUsuario'];
+
+                echo '<script> 
+
+							swal({
+								  title: "¡OK!",
+								  text: "¡Su cuenta ha sido actualizada correctamente",
+								  type:"success",
+								  confirmButtonText: "Cerrar",
+								  closeOnConfirm: false
+								},
+								function (isConfirm){
+							    if(isConfirm){
+							        history.back();
+							    }
+							});
+						</script>';
+
+            }
+
+        }
+    }
 }
 

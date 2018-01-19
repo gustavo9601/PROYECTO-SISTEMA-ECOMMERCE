@@ -64,6 +64,8 @@ $servidor = @Ruta::ctrRutaServidor();
 
     <link rel="stylesheet" href="<?php echo $url; ?>vistas/css/infoproducto.css">
 
+    <link rel="stylesheet" href="<?php echo $url; ?>vistas/css/perfil.css">
+
     <link rel="stylesheet" href="<?php echo $url; ?>vistas/css/plugins/sweetalert.css">
 
     <!--==================================
