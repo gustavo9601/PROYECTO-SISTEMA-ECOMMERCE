@@ -679,5 +679,33 @@ class ControladorUsuarios
 
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*====================================*/
+    /*Bloque de mostrar compras po usuario*/
+    /*====================================*/
+    static public function ctrMostrarCompras($item, $valor)
+    {
+        $tabla = "compras";
+
+        $respuesta = ModeloUsuarios::mdlMostrarCompras($tabla, $item, $valor);
+
+        return $respuesta;
+
+    }
+
+
 }
 

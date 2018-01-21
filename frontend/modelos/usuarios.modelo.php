@@ -74,9 +74,10 @@ class ModeloUsuarios
     static public function mdlActualizarPerfil($tabla, $datos)
     {
 
-       /* $sql = "UPDATE $tabla SET nombre = {$datos['nombre']}, email = {$datos['email']}, password = {$datos['password']}, foto = {$datos['foto']} WHERE id = {$datos['id']}";
-        echo $sql;
-       */ $stmt = @Conexion::conectar()->prepare("UPDATE $tabla SET nombre = :nombre, email = :email, password = :password, foto = :foto WHERE id = :id");
+        /* $sql = "UPDATE $tabla SET nombre = {$datos['nombre']}, email = {$datos['email']}, password = {$datos['password']}, foto = {$datos['foto']} WHERE id = {$datos['id']}";
+         echo $sql;
+        */
+        $stmt = @Conexion::conectar()->prepare("UPDATE $tabla SET nombre = :nombre, email = :email, password = :password, foto = :foto WHERE id = :id");
 
         $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
         $stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
@@ -98,4 +99,21 @@ class ModeloUsuarios
         $stmt->close();
         $stmt = null;
     }
+
+
+    /*=============================================
+MOSTRAR USUARIO
+=============================================*/
+    static public function mdlMostrarCompras($tabla, $item, $valor)
+    {
+
+        $stmt = @Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+        $stmt->bindParam(':' . $item, $valor, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+
+
 }

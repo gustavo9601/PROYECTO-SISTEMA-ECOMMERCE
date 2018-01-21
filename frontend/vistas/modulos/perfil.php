@@ -76,6 +76,163 @@ BREADCRUMB PERFIL
             <div id="compras" class="tab-pane fade in active">
                 <div class="panel-group">
 
+                    <?php
+
+
+                    $item = "id_usuario";
+                    $valor = $_SESSION['id'];
+
+                    $compras = ControladorUsuarios::ctrMostrarCompras($item, $valor);
+
+                    //si compras vine vacio
+                    if (!$compras) {
+                        echo '
+                        
+                        <div class="col-xs-12 text-center error404">
+                        
+                        <h1><small>!Opss¡ </small></h1>
+                        <h2>Aun no tienes compras realizadas en esta tienda</h2>
+</div>
+                        
+                        ';
+                    } else {
+
+
+                        foreach ($compras as $key => $value1) {
+
+                            $ordenar = "id";
+                            $item = "id";
+                            $valor = $value1["id_producto"];
+
+
+                            $productos = ControladorProductos::ctrListarProductos($ordenar, $item, $valor);
+
+                            //trallendo el listado de articulos , y lo recorremos con un foreach
+                            foreach ($productos as $key2 => $value2) {
+                                echo '  <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-md-2 col-sm-6 col-xs-12">
+                                
+                                
+                                <figure>
+                                <img src="' . $servidor . $value2['portada'] . '" class="img-thumbnail">
+</figure>
+</div>
+
+ 
+                        <div class="col-sm-6 col-xs-12">
+                            <h1><small>' . $value2['titulo'] . '</small></h1>
+                            <p>' . $value2['titular'] . '</p>';
+
+                                if ($value2["tipo"] == 'virtual') {
+
+                                    echo '<a href="' . $url . '/curso">
+                    <button class="btn btn-default pull-left"> Ir al curso</button>
+ </a>';
+                                } else {
+
+
+                                    /*Barras de progreso para arituclos fisicos*/
+                                    echo '
+                                    <h6>Proceso de entrega: ' . $value2['entrega'] . ' dias habiles</h6>
+                                    ';
+
+                                    //evaluacion de en que estado se encuentra el envio en la BD
+                                    if ($value1["envio"] == 0) {
+                                        echo '<div class="progress">
+                                                <div class="progress-bar progress-bar-info" role="progressbar" style="width: 33.33%">
+                                                    <i class="fa fa-check"></i> Despachado</div>
+                                                
+                                                <div class="progress-bar progress-bar-default" role="progressbar" style="width: 33.33%">
+                                                <i class="fa fa-clock-o"></i> Enviando
+                                                </div>
+                                                <div class="progress-bar progress-bar-success" role="progressbar" style="width: 33.33%">
+                                                <i class="fa fa-clock-o"></i> Entregado
+                                                </div>
+                                                
+</div>
+        ';
+                                    } else if ($value1["envio"] == 1) {
+                                        echo '<div class="progress">
+                                                <div class="progress-bar progress-bar-info" role="progressbar" style="width: 33.33%">
+                                                    <i class="fa fa-check"></i> Despachado</div>
+                                                
+                                                <div class="progress-bar progress-bar-default" role="progressbar" style="width: 33.33%">
+                                                <i class="fa fa-check"></i> Enviando
+                                                </div>
+                                                <div class="progress-bar progress-bar-success" role="progressbar" style="width: 33.33%">
+                                                <i class="fa fa-clock-o"></i> Entregado
+                                                </div>
+                                                
+</div>
+        ';
+                                    } else if ($value1["envio"] == 2) {
+                                        echo '<div class="progress">
+                                                <div class="progress-bar progress-bar-info" role="progressbar" style="width: 33.33%">
+                                                    <i class="fa fa-check"></i> Despachado</div>
+                                                
+                                                <div class="progress-bar progress-bar-default" role="progressbar" style="width: 33.33%">
+                                                <i class="fa fa-check"></i> Enviando
+                                                </div>
+                                                <div class="progress-bar progress-bar-success" role="progressbar" style="width: 33.33%">
+                                                <i class="fa fa-check"></i> Entregado
+                                                </div>
+                                                
+</div>
+        ';
+                                    }
+
+                                }
+
+
+                                //usamos substr ()  para quitar los segundos de la fecha
+                                echo '
+
+<h4 class="pull-right"><small>Comprado el: ' . substr($value1['fecha'], 0, -8) . '</small></h4>
+</div>
+<div class="col-md-4 col-xs-12">
+    <div class="pull-right">
+        <a  href="#modalComentarios" data-toggle="modal"  idComentario="">
+            <button class="btn btn-default backColor">Calificar producto</button>
+        </a>
+    </div>
+       <br><br>
+       <div class="pull-right">
+       <h3 class="text-right">
+       <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																<i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																<i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																<i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																<i class="fa fa-star-o text-success" aria-hidden="true"></i>
+       </h3>
+       <p class="panel panel-default" style="padding:5px">
+       <small>
+        lLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet
+       </small>
+      
+       </p>
+       </div>
+
+
+
+</div>
+
+                            </div>
+                        </div>
+                        
+                       
+                        ';
+                            }
+
+
+                        }
+                    }
+
+                    ?>
+
+                    <div class="panel-group">
+
+                    </div>
                 </div>
             </div>
             <!--=====================================
@@ -150,7 +307,7 @@ BREADCRUMB PERFIL
 
 
                                 <div id="subirImagen">
-                                    <input type="file" class="form-control"  id="datosImagen" name="datosImagen">
+                                    <input type="file" class="form-control" id="datosImagen" name="datosImagen">
                                     <img class="previsualizar" src="" alt="">
                                 </div>
 
@@ -258,4 +415,74 @@ BREADCRUMB PERFIL
         </div>
 
     </div>
+
+</div>
+<!--==========================================-->
+<!--VENTA MODAL PARA COMENTARIOS-->
+<!--==========================================-->
+
+<div class="modal fade modalFormulario" id="modalComentarios" role="dialog">
+
+    <div class="modal-content modal-dialog">
+
+        <div class="modal-body modalTitulo">
+
+            <h3 class="backColor">CALIFICA ESTE PRODUCTO</h3>
+
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            <form method="post" onsubmit="return validarComentario()">
+
+                <input type="hidden" value="" id="idComentario" name="idComentario">
+
+                <h1 class="text-center" id="estrellas">
+
+                    <i class="fa fa-star text-success" aria-hidden="true"></i>
+                    <i class="fa fa-star text-success" aria-hidden="true"></i>
+                    <i class="fa fa-star text-success" aria-hidden="true"></i>
+                    <i class="fa fa-star text-success" aria-hidden="true"></i>
+                    <i class="fa fa-star text-success" aria-hidden="true"></i>
+
+                </h1>
+
+                <!--Calificaciones en radio -->
+                <div class="form-group text-center">
+
+                    <label class="radio-inline"><input type="radio" name="puntaje" value="0.5">0.5</label>
+                    <label class="radio-inline"><input type="radio" name="puntaje" value="1.0">1.0</label>
+                    <label class="radio-inline"><input type="radio" name="puntaje" value="1.5">1.5</label>
+                    <label class="radio-inline"><input type="radio" name="puntaje" value="2.0">2.0</label>
+                    <label class="radio-inline"><input type="radio" name="puntaje" value="2.5">2.5</label>
+                    <label class="radio-inline"><input type="radio" name="puntaje" value="3.0">3.0</label>
+                    <label class="radio-inline"><input type="radio" name="puntaje" value="3.5">3.5</label>
+                    <label class="radio-inline"><input type="radio" name="puntaje" value="4.0">4.0</label>
+                    <label class="radio-inline"><input type="radio" name="puntaje" value="4.5">4.5</label>
+                    <label class="radio-inline"><input type="radio" name="puntaje" value="5.0" checked>5.0</label>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="comment" class="text-muted">Tu opinión acerca de este producto: <span><small>(máximo 300 caracteres)</small></span></label>
+
+                    <textarea class="form-control" rows="5" id="comentario" name="comentario" maxlength="300"
+                              required></textarea>
+
+                    <br>
+
+                    <input type="submit" class="btn btn-default backColor btn-block" value="ENVIAR">
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+        <div class="modal-footer">
+
+        </div>
+
+    </div>
+
 </div>
