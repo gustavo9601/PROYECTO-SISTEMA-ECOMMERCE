@@ -190,38 +190,151 @@ BREADCRUMB PERFIL
 
 <h4 class="pull-right"><small>Comprado el: ' . substr($value1['fecha'], 0, -8) . '</small></h4>
 </div>
-<div class="col-md-4 col-xs-12">
+<div class="col-md-4 col-xs-12">';
+
+
+                                //devolviendo el comentario
+
+
+                                $datos = [
+                                    "idUsuario" => $_SESSION['id'],
+                                    "idProducto" => $value2['id']
+                                ];
+
+                                $comentarios = ControladorUsuarios::ctrMostrarComentariosPerfil($datos);
+
+
+                                //var_dump($comentarios);
+
+
+                                echo '
     <div class="pull-right">
-        <a  href="#modalComentarios" data-toggle="modal"  idComentario="">
+        <a  href="#modalComentarios" data-toggle="modal"  id="' . $comentarios['id'] . '" class="calificarProducto">
             <button class="btn btn-default backColor">Calificar producto</button>
         </a>
     </div>
        <br><br>
        <div class="pull-right">
-       <h3 class="text-right">
-       <i class="fa fa-star-o text-success" aria-hidden="true"></i>
-																<i class="fa fa-star-o text-success" aria-hidden="true"></i>
-																<i class="fa fa-star-o text-success" aria-hidden="true"></i>
-																<i class="fa fa-star-o text-success" aria-hidden="true"></i>
-																<i class="fa fa-star-o text-success" aria-hidden="true"></i>
-       </h3>
-       <p class="panel panel-default" style="padding:5px">
-       <small>
-        lLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet
-       </small>
-      
-       </p>
-       </div>
+       <h3 class="text-right">';
 
 
+                                if ($comentarios['calificacion'] == "0" && $comentarios['comentario'] == "") {
+                                    echo '
+                       <i class="fa fa-star-o text-success" aria-hidden = "true" ></i >
+																<i class="fa fa-star-o text-success" aria-hidden = "true" ></i >
+																<i class="fa fa-star-o text-success" aria-hidden = "true" ></i >
+																<i class="fa fa-star-o text-success" aria-hidden = "true" ></i >
+																<i class="fa fa-star-o text-success" aria-hidden = "true" ></i >
+   
+                ';
 
-</div>
+                                } else {
 
-                            </div>
-                        </div>
-                        
-                       
-                        ';
+                                    //Si si existen comentarios, de acuerdo a la calificacion pintamos las estrellas acorde a la puntuacion
+                                    switch ($comentarios["calificacion"]) {
+
+                                        case 0.5:
+                                            echo '<i class="fa fa-star-half-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>';
+                                            break;
+
+                                        case 1.0:
+                                            echo '<i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>';
+                                            break;
+
+                                        case 1.5:
+                                            echo '<i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-half-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>';
+                                            break;
+
+                                        case 2.0:
+                                            echo '<i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>';
+                                            break;
+
+                                        case 2.5:
+                                            echo '<i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-half-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>';
+                                            break;
+
+                                        case 3.0:
+                                            echo '<i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>';
+                                            break;
+
+                                        case 3.5:
+                                            echo '<i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-half-o text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>';
+                                            break;
+
+                                        case 4.0:
+                                            echo '<i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-o text-success" aria-hidden="true"></i>';
+                                            break;
+
+                                        case 4.5:
+                                            echo '<i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star-half-o text-success" aria-hidden="true"></i>';
+                                            break;
+
+                                        case 5.0:
+                                            echo '<i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>
+																  <i class="fa fa-star text-success" aria-hidden="true"></i>';
+                                            break;
+
+                                    }
+
+
+                                    /*Trayendo el comentario o lo que tenga en el registro*/
+                                    echo ' </h3 >
+                                            <p class="panel panel-default" style = "padding:5px" >
+                                               <small >
+                                                    ' . $comentarios['comentario'] . '
+                                                    </small >
+                                              
+                                             </p >
+                                       </div >
+                                </div >
+                                                            </div >
+                                                        </div >
+
+
+            ';
+
+                                }
+
+
                             }
 
 
@@ -257,34 +370,34 @@ BREADCRUMB PERFIL
 
                                     <?php
                                     //alcanemara dentro del formualario el di del susario
-                                    echo '<input type="hidden" name="idUsuario" value="' . $_SESSION['id'] . '">';
+                                    echo '<input type = "hidden" name = "idUsuario" value = "' . $_SESSION['id'] . '" > ';
                                     //almacenarael password por si el suuario n cambia nada1
-                                    echo '<input type="hidden" name="passUsuario" value="' . $_SESSION['password'] . '">';
+                                    echo '<input type = "hidden" name = "passUsuario" value = "' . $_SESSION['password'] . '" > ';
                                     //alcanamos la foto por si no se cambia
-                                    echo '<input type="hidden" name="fotoUsuario" value="' . $_SESSION['foto'] . '">';
+                                    echo '<input type = "hidden" name = "fotoUsuario" value = "' . $_SESSION['foto'] . '" > ';
                                     //modo oculto
-                                    echo '<input type="hidden" name="modoUsuario" value="' . $_SESSION['modo'] . '">';
+                                    echo '<input type = "hidden" name = "modoUsuario" value = "' . $_SESSION['modo'] . '" > ';
 
 
                                     //validacion si viene directo o por redes sociales
                                     if ($_SESSION['modo'] == 'directo') {
                                         if ($_SESSION['foto'] != "") {
-                                            echo '  
-            <img src="' . $url . $_SESSION['foto'] . '" alt="" class="img-thumbnail">
-                                        ';
+                                            echo '
+            < img src = "' . $url . $_SESSION['foto'] . '" alt = "" class="img-thumbnail" >
+            ';
                                         } else {
                                             //colocamos la foto por defecto
                                             echo '  
-            <img src="' . $servidor . 'vistas/img/usuarios/default/anonymous.png" alt="" class="img-thumbnail">
-                                        ';
+            <img src = "' . $servidor . 'vistas/img/usuarios/default/anonymous.png" alt = "" class="img-thumbnail" >
+            ';
 
                                         }
 
 
                                     } else {
                                         echo '  
-            <img src="' . $_SESSION['foto'] . '" alt="" class="img-thumbnail">
-                                        ';
+            <img src = "' . $_SESSION['foto'] . '" alt = "" class="img-thumbnail" >
+            ';
                                     }
                                     ?>
                                 </figure>
@@ -297,10 +410,10 @@ BREADCRUMB PERFIL
 
                                 if ($_SESSION['modo'] == 'directo') {
                                     echo '
-                                    <button type="button" class="btn btn-default" id="btnCambiarFoto">
-                                    Cambiar foto de perfil                            
-                                    </button>
-                                    ';
+            <button type = "button" class="btn btn-default" id = "btnCambiarFoto" >
+                Cambiar foto de perfil
+            </button >
+            ';
                                 }
 
                                 ?>
@@ -316,77 +429,77 @@ BREADCRUMB PERFIL
                                 <?php
 
                                 if ($_SESSION['modo'] != 'directo') {
-                                    echo '<label class="control-label text-muted text-uppercase">Nombre:</label>
-                                            <div class="input-group">
-                                             <span class="input-group-addon">
-                                             <i class="glyphicon glyphicon-user"></i>
-</span>
+                                    echo ' < label class="control-label text-muted text-uppercase" > Nombre:</label >
+                                            <div class="input-group" >
+                                             <span class="input-group-addon" >
+                                             <i class="glyphicon glyphicon-user" ></i >
+</span >
                         
-                                            <input type="text" class="form-control" id="editarNombre" readonly value="' . $_SESSION['nombre'] . '">
-</div>
+                                            <input type = "text" class="form-control" id = "editarNombre" readonly value = "' . $_SESSION['nombre'] . '" >
+</div >
 
-<br>
+<br >
 
-									<label class="control-label text-muted text-uppercase">Correo electrónico:</label>
+									<label class="control-label text-muted text-uppercase" > Correo electrónico:</label >
 									
-									<div class="input-group">
+									<div class="input-group" >
 								
-										<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-										<input type="text" class="form-control"  value="' . $_SESSION["email"] . '" readonly>
+										<span class="input-group-addon" ><i class="glyphicon glyphicon-user" ></i ></span >
+										<input type = "text" class="form-control"  value = "' . $_SESSION["email"] . '" readonly >
 
-									</div>
+									</div >
 
-									<br>
+									<br >
 
 
-<label class="control-label text-muted text-uppercase">Modo de registro en el sistema:</label>
+<label class="control-label text-muted text-uppercase" > Modo de registro en el sistema:</label >
 									
-									<div class="input-group">
+									<div class="input-group" >
 								
-										<span class="input-group-addon"><i class="fa fa-' . $_SESSION["modo"] . '"></i></span>
-										<input type="text" class="form-control text-uppercase"  value="' . $_SESSION["modo"] . '" readonly>
+										<span class="input-group-addon" ><i class="fa fa-' . $_SESSION["modo"] . '" ></i ></span >
+										<input type = "text" class="form-control text-uppercase"  value = "' . $_SESSION["modo"] . '" readonly >
 
-									</div>
+									</div >
 
-									<br>
+									<br >
 
-';
+            ';
                                     //readonly -> deja inhabilitado la edicion del input
                                 } else {
-                                    echo '<label class="control-label text-muted text-uppercase" for="editarNombre">Cambiar Nombre:</label>
+                                    echo '<label class="control-label text-muted text-uppercase" for="editarNombre" > Cambiar Nombre:</label >
 									
-									<div class="input-group">
+									<div class="input-group" >
 								
-										<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-										<input type="text" class="form-control" id="editarNombre" name="editarNombre" value="' . $_SESSION["nombre"] . '">
+										<span class="input-group-addon" ><i class="glyphicon glyphicon-user" ></i ></span >
+										<input type = "text" class="form-control" id = "editarNombre" name = "editarNombre" value = "' . $_SESSION["nombre"] . '" >
 
-									</div>
+									</div >
 
-								<br>
+								<br >
 
-								<label class="control-label text-muted text-uppercase" for="editarEmail">Cambiar Correo Electrónico:</label>
+								<label class="control-label text-muted text-uppercase" for="editarEmail" > Cambiar Correo Electrónico:</label >
 
-								<div class="input-group">
+								<div class="input-group" >
 								
-										<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-										<input type="text" class="form-control" id="editarEmail" name="editarEmail" value="' . $_SESSION["email"] . '">
+										<span class="input-group-addon" ><i class="glyphicon glyphicon-envelope" ></i ></span >
+										<input type = "text" class="form-control" id = "editarEmail" name = "editarEmail" value = "' . $_SESSION["email"] . '" >
 
-									</div>
+									</div >
 
-								<br>
+								<br >
 
-								<label class="control-label text-muted text-uppercase" for="editarPassword">Cambiar Contraseña:</label>
+								<label class="control-label text-muted text-uppercase" for="editarPassword" > Cambiar Contraseña:</label >
 
-								<div class="input-group">
+								<div class="input-group" >
 								
-										<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-										<input type="text" class="form-control" id="editarPassword" name="editarPassword" placeholder="Escribe la nueva contraseña">
+										<span class="input-group-addon" ><i class="glyphicon glyphicon-lock" ></i ></span >
+										<input type = "text" class="form-control" id = "editarPassword" name = "editarPassword" placeholder = "Escribe la nueva contraseña" >
 
-									</div>
+									</div >
 
-								<br>
+								<br >
 
-								<button type="submit" class="btn btn-default backColor btn-md pull-left">Actualizar Datos</button>';
+								<button type = "submit" class="btn btn-default backColor btn-md pull-left" > Actualizar Datos </button > ';
 
 
                                 }
@@ -433,6 +546,7 @@ BREADCRUMB PERFIL
 
             <form method="post" onsubmit="return validarComentario()">
 
+                <!--Desde javascript le pasamos el id del comentario al abir el modal-->
                 <input type="hidden" value="" id="idComentario" name="idComentario">
 
                 <h1 class="text-center" id="estrellas">
@@ -473,6 +587,14 @@ BREADCRUMB PERFIL
                     <input type="submit" class="btn btn-default backColor btn-block" value="ENVIAR">
 
                 </div>
+
+
+                <?php
+
+                $actualizarComentario = NEW ControladorUsuarios;
+                $actualizarComentario->ctrActualizarComentario();
+
+                ?>
 
 
             </form>

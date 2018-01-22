@@ -258,3 +258,138 @@ $('#datosImagen').change(function () {
 })
 
 
+/*=============================================
+ COMENTARIOS
+ =============================================*/
+$('.calificarProducto').click(function () {
+    var idComentario = $(this).attr('id');  // capturamos el id
+
+    //modficamos el input oculto del modal con el id capturado
+    $('#idComentario').val(idComentario);
+
+});
+
+//cambiando las estrellas de acuerdo al puntaje seleccionado en el modal
+$('input[name="puntaje"]').change(function () {  // capturando el envento de click/cambio sobre alguno de los chek de name puntaje
+    var puntaje = $(this).val();
+    //console.log(puntaje);
+
+    switch (puntaje) {
+
+        case "0.5":
+            $("#estrellas").html('<i class="fa fa-star-half-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i>');
+            break;
+
+        case "1.0":
+            $("#estrellas").html('<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i>');
+            break;
+
+        case "1.5":
+            $("#estrellas").html('<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-half-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i>');
+            break;
+
+        case "2.0":
+            $("#estrellas").html('<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i>');
+            break;
+
+        case "2.5":
+            $("#estrellas").html('<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-half-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i>');
+            break;
+
+        case "3.0":
+            $("#estrellas").html('<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i>');
+            break;
+
+        case "3.5":
+            $("#estrellas").html('<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-half-o text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i>');
+            break;
+
+        case "4.0":
+            $("#estrellas").html('<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-o text-success" aria-hidden="true"></i>');
+            break;
+
+        case "4.5":
+            $("#estrellas").html('<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star-half-o text-success" aria-hidden="true"></i>');
+            break;
+
+        case "5.0":
+            $("#estrellas").html('<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i> ' +
+                '<i class="fa fa-star text-success" aria-hidden="true"></i>');
+            break;
+
+    }
+
+});
+
+
+/*Validacion del formulario de comentario de producto desde el perfil*/
+function validarComentario() {
+
+
+    var comentarios = $('#comentarios').val();
+
+    //si es diferente de vacio
+    if (comentarios != "") {
+
+        //validamos con expresion regular
+        var expresion = /^[,\\.\\a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]*$/;
+
+        if (!expresion.test(comentarios)) {
+
+            $("#comentario").parent().before('<div class="alert alert-danger"><strong>ERROR:</strong> No se permiten caracteres especiales como por ejemplo !$%&/?¡¿[]*</div>');
+
+            return false;
+
+        }
+
+    } else {
+
+        //si no hay nada en comentario, se lo exigimos
+        $("#comentario").parent().before('<div class="alert alert-warning"><strong>ERROR:</strong> Campo obligatorio</div>');
+
+        return false;
+
+    }
+
+    return true;
+}
+

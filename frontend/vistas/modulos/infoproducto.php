@@ -487,25 +487,177 @@ $url = @Ruta::ctrRuta();
         <!--=============================================-->
         <br>
         <div class="row">
+
+
+            <?php
+
+            //Instanciando la clase que contiene el contrllado de los comentarios
+            $datos = [   // le pasamos el idUsuario vacio, ya q en el modelo lo requiere, pero aun asi nos devolvera todos los ocment por idPorducto
+                "idUsuario" => "",
+                "idProducto" => $infoproducto['id']
+            ];
+
+            $cantidad = 0;
+
+            $comentarios = ControladorUsuarios::ctrMostrarComentariosPerfil($datos);
+
+
+            // var_dump($comentarios);
+
+
+            foreach ($comentarios as $key => $value) {
+                //validamos que el comentario sea diferente de null o vacio, de ser asi es por que ya se escribio algun comentario
+                //ya que al comprar el producto se genera un comentario, como registro pero vacio este campo
+
+                if ($value['comentario'] != "") {
+                    // alacenamos la cantidad de los comentario
+                    $cantidad += count($value['id']);
+
+                }
+
+            }
+
+            ?>
+
+
             <ul class="nav nav-tabs">
-                <li class="active">
-                    <a>COMENTARIOS 4</a>
+
+                <?php
+
+                // si no hay comentarios
+                if ($cantidad == 0) {
+                    echo '
+                    <li class="active">
+                    <a>
+                    ESTE PRODUCTO NO TIENE COMENTARIOS
+</a>
+                    
+</li><li></li>
+                    ';
+                } else {
+                    // si hay comentarios
+                    echo '
+                     <li class="active">
+                    <a>COMENTARIOS ' . $cantidad . '</a>
                 </li>
-                <li><a href="#">VER MAS</a></li>
-                <li class="pull-right">
+                 <li><a href="#">VER MAS</a></li>
+                    ';
+
+                    //recorreremos de nuevo el reusltado para calcular el promedio de calificacion
+                    $sumaCalificacion = 0;
+                    for ($i = 0; $i < $cantidad; $i++) {
+                        $sumaCalificacion += $comentarios[$i]['calificacion'];
+                    }
+
+                    //var_dump($sumaCalificacion);
+                    $promedio = round($sumaCalificacion / $cantidad);
+                    //var_dump($promedio);
+
+
+                    //imprimidmos el promedio con las estrellitas
+                    echo '
+                      <li class="pull-right">
                     <a href="" class="text-muted">
-                        PROMEDIO DE CALIFICACION: 3.5 |
-                        <i class="fa fa-star text-success"></i>
-                        <i class="fa fa-star text-success"></i>
-                        <i class="fa fa-star text-success"></i>
-                        <i class="fa fa-star-half-o text-success"></i>
-                        <i class="fa fa-star-o text-success"></i>
-                    </a>
+                        PROMEDIO DE CALIFICACION: ' . $promedio . ' | ';
+
+                    //valodacion del promedio para colocarlas estrellas
+                    if ($promedio >= 0 && $promedio < 0.5) {
+
+                        echo '<i class="fa fa-star-half-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>';
+
+                    } else if ($promedio >= 0.5 && $promedio < 1) {
+
+                        echo '<i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>';
+
+                    } else if ($promedio >= 1 && $promedio < 1.5) {
+
+                        echo '<i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star-half-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>';
+
+                    } else if ($promedio >= 1.5 && $promedio < 2) {
+
+                        echo '<i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>';
+
+                    } else if ($promedio >= 2 && $promedio < 2.5) {
+
+                        echo '<i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star-half-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>';
+
+                    } else if ($promedio >= 2.5 && $promedio < 3) {
+
+                        echo '<i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>';
+
+                    } else if ($promedio >= 3 && $promedio < 3.5) {
+
+                        echo '<i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star-half-o text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>';
+
+                    } else if ($promedio >= 3.5 && $promedio < 4) {
+
+                        echo '<i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star-o text-success"></i>';
+
+                    } else if ($promedio >= 4 && $promedio < 4.5) {
+
+                        echo '<i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star-half-o text-success"></i>';
+
+                    } else {
+
+                        echo '<i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>
+							  <i class="fa fa-star text-success"></i>';
+
+                    }
+
+
+                    echo '</a>
                 </li>
+                    ';
+
+                }
+                ?>
+
+
             </ul>
             <br>
         </div>
         <div class="row comentarios">
+
+
             <div class="panel-group col-md-3 col-sm-6 col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-heading text-uppercase">

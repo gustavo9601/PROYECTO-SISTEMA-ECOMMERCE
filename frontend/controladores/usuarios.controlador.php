@@ -707,5 +707,131 @@ class ControladorUsuarios
     }
 
 
+    /*====================================*/
+    /*Devovlera el comentario por Persona y por Id del prodycto*/
+    /*====================================*/
+    static public function ctrMostrarComentariosPerfil($datos)
+    {
+        $tabla = "comentarios";
+
+        $respuesta = ModeloUsuarios::mdlMostrarComentariosPerfil($tabla, $datos);
+
+        return $respuesta;
+
+    }
+
+
+
+    /*====================================*/
+    /*Actualizar comentarios*/
+    /*====================================*/
+
+
+    public function ctrActualizarComentario()
+    {
+        //validacion del idCOmentario que es un input hidden
+        if (isset($_POST["idComentario"])) {
+
+            if (preg_match('/^[,\\.\\a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["comentario"])) {
+                //si se envio el POST  decomentario
+                if ($_POST["comentario"] != "") {
+
+                    $tabla = "comentarios";
+
+                    //pasamos los datos para actualizar el registro
+                    $datos = array("id" => $_POST["idComentario"],
+                        "calificacion" => $_POST["puntaje"],
+                        "comentario" => $_POST["comentario"]);
+
+
+                    //actualizacion en la BD
+                    $respuesta = ModeloUsuarios::mdlActualizarComentario($tabla, $datos);
+
+                    if ($respuesta == "ok") {
+                        //var_dump($datos);
+                        echo '<script>
+								swal({
+									  title: "¡GRACIAS POR COMPARTIR SU OPINIÓN!",
+									  text: "¡Su calificación y comentario ha sido guardado!",
+									  type: "success",
+									  confirmButtonText: "Cerrar",
+									  closeOnConfirm: false
+								},
+
+								function(isConfirm){
+										 if (isConfirm) {	   
+										   history.back();
+										  } 
+								});
+
+							  </script>';
+
+                    } else {
+                        echo '<script>
+
+								swal({
+									  title: "¡ERROR!",
+									  text: "¡Error de bases de datos!",
+									  type: "error",
+									  confirmButtonText: "Cerrar",
+									  closeOnConfirm: false
+								},
+
+								function(isConfirm){
+										 if (isConfirm) {	   
+										   history.back();
+										  } 
+								});
+
+							  </script>';
+                    }
+
+                } else {
+
+                    echo '<script>
+
+						swal({
+							  title: "¡ERROR AL ENVIAR SU CALIFICACIÓN!",
+							  text: "¡El comentario no puede estar vacío!",
+							  type: "error",
+							  confirmButtonText: "Cerrar",
+							  closeOnConfirm: false
+						},
+
+						function(isConfirm){
+								 if (isConfirm) {	   
+								   history.back();
+								  } 
+						});
+
+					  </script>';
+
+                }
+
+            } else {
+
+                echo '<script>
+
+					swal({
+						  title: "¡ERROR AL ENVIAR SU CALIFICACIÓN!",
+						  text: "¡El comentario no puede llevar caracteres especiales!",
+						  type: "error",
+						  confirmButtonText: "Cerrar",
+						  closeOnConfirm: false
+					},
+
+					function(isConfirm){
+							 if (isConfirm) {	   
+							   history.back();
+							  } 
+					});
+
+				  </script>';
+
+            }
+
+        }
+
+    }
 }
 

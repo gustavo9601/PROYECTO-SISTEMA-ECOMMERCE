@@ -115,5 +115,57 @@ MOSTRAR USUARIO
         $stmt = null;
     }
 
+    /*=============================================
+MOSTRAR EL COMENTRIO POR ID USUARIO Y ID PRODUCTO
+=============================================*/
+
+    static public function mdlMostrarComentariosPerfil($tabla, $datos)
+    {
+
+        if ($datos['idUsuario'] != "") {
+            $stmt = @Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE id_usuario = :id_usuario AND id_producto = :id_producto");
+            $stmt->bindParam(':id_usuario', $datos['idUsuario'], PDO::PARAM_INT);
+            $stmt->bindParam(':id_producto', $datos['idProducto'], PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch();
+            $stmt->close();
+            $stmt = null;
+        } else {
+            $stmt = @Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE  id_producto = :id_producto");
+            $stmt->bindParam(':id_producto', $datos['idProducto'], PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll();
+            $stmt->close();
+            $stmt = null;
+        }
+
+    }
+
+    /*=============================================
+    ACTUALIZAR COMENTARIO
+    =============================================*/
+
+    static public function mdlActualizarComentario($tabla, $datos)
+    {
+
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET calificacion = :calificacion, comentario = :comentario WHERE id = :id");
+
+        $stmt->bindParam(":calificacion", $datos["calificacion"], PDO::PARAM_STR);
+        $stmt->bindParam(":comentario", $datos["comentario"], PDO::PARAM_STR);
+        $stmt->bindParam(":id", $datos["id"], PDO::PARAM_STR);
+
+
+        if ($stmt->execute()) {
+            return 'ok';
+        } else {
+            return "error";
+        }
+
+        $stmt->close();
+
+        $stmt = null;
+
+    }
+
 
 }
