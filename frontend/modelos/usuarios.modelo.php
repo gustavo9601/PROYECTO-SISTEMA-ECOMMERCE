@@ -131,7 +131,8 @@ MOSTRAR EL COMENTRIO POR ID USUARIO Y ID PRODUCTO
             $stmt->close();
             $stmt = null;
         } else {
-            $stmt = @Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE  id_producto = :id_producto");
+            //generamos aleatorio los comentarios
+            $stmt = @Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE  id_producto = :id_producto ORDER BY Rand()");
             $stmt->bindParam(':id_producto', $datos['idProducto'], PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll();
@@ -148,7 +149,7 @@ MOSTRAR EL COMENTRIO POR ID USUARIO Y ID PRODUCTO
     static public function mdlActualizarComentario($tabla, $datos)
     {
 
-        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET calificacion = :calificacion, comentario = :comentario WHERE id = :id");
+        $stmt = @Conexion::conectar()->prepare("UPDATE $tabla SET calificacion = :calificacion, comentario = :comentario WHERE id = :id");
 
         $stmt->bindParam(":calificacion", $datos["calificacion"], PDO::PARAM_STR);
         $stmt->bindParam(":comentario", $datos["comentario"], PDO::PARAM_STR);
@@ -167,5 +168,154 @@ MOSTRAR EL COMENTRIO POR ID USUARIO Y ID PRODUCTO
 
     }
 
+    /*=============================================
+   AGREGAR LISTA DE DESEOS
+    =============================================*/
+
+    static public function mdlAgregarDeseo($tabla, $datos)
+    {
+        $stmt = @Conexion::conectar()->prepare("INSERT INTO $tabla (id_usuario, id_producto, fecha) VALUES (:id_usuario, :id_producto , now())");
+
+        $stmt->bindParam(":id_usuario", $datos["idUsuario"], PDO::PARAM_STR);
+        $stmt->bindParam(":id_producto", $datos["idProducto"], PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return 'ok';
+        } else {
+            return "error";
+        }
+
+        $stmt->close();
+
+        $stmt = null;
+
+    }
+
+    /*=============================================
+MOSTRAR LISTA DE DESEOS
+=============================================*/
+    static public function mdlMostrarDeseos($tabla, $item)
+    {
+        $stmt = @Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE id_usuario = :id_usuario ORDER BY id DESC");
+
+        $stmt->bindParam(":id_usuario", $item, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+
+        $stmt->close();
+
+        $stmt = null;
+
+    }
+
+
+    /*=============================================
+QUITAR DE LA LISTA DE DE DESEOS
+=============================================*/
+    static public function mdlQuitarDeseos($tabla, $item)
+    {
+        $stmt = @Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_producto = :id");
+
+        $stmt->bindParam(":id", $item, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return 'ok';
+        } else {
+            return 'error';
+        }
+
+        $stmt->close();
+
+        $stmt = null;
+
+    }
+
+
+    /*=============================================
+ ELIMINAR USUARIO
+ =============================================*/
+    static public function mdlEliminarUsuario($tabla, $id)
+    {
+        $stmt = @Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
+
+        $stmt->bindParam(":id", $id, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return 'ok';
+        } else {
+            return 'error';
+        }
+
+        $stmt->close();
+
+        $stmt = null;
+
+    }
+
+    /*=============================================
+     ELIMINAR COMENTARIOS DE USUARIO
+     =============================================*/
+    static public function mdlEliminarComentarios($tabla, $id)
+    {
+        $stmt = @Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_usuario= :id_usuario");
+
+        $stmt->bindParam(":id_usuario", $id, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return 'ok';
+        } else {
+            return 'error';
+        }
+
+        $stmt->close();
+
+        $stmt = null;
+
+    }
+
+
+    /*=============================================
+     ELIMINAR COMPRAS DE USUARIO
+     =============================================*/
+    static public function mdlEliminarCompras($tabla, $id)
+    {
+        $stmt = @Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_usuario= :id_usuario");
+
+        $stmt->bindParam(":id_usuario", $id, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return 'ok';
+        } else {
+            return 'error';
+        }
+
+        $stmt->close();
+
+        $stmt = null;
+
+    }
+
+    /*=============================================
+     ELIMINAR DESEOS DE USUAIO
+     =============================================*/
+    static public function mdlEliminarListaDeseos($tabla, $id)
+    {
+        $stmt = @Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_usuario= :id_usuario");
+
+        $stmt->bindParam(":id_usuario", $id, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return 'ok';
+        } else {
+            return 'error';
+        }
+
+        $stmt->close();
+
+        $stmt = null;
+
+    }
 
 }

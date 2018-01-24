@@ -117,3 +117,47 @@ $(window).on("load", function () {
     });
 
 });
+
+
+/*=============================================
+ ALTURA COMENTARIOS
+ =============================================*/
+
+
+//definimos una altura fija, para msotrar solo 4 columas y 1 fila, para que al precionar ver as se desplieuge el resto
+$('.comentarios').css({
+    "hegiht": $('.comentarios .alturaComentarios').height() + 'px',
+    "overflow": 'hidden',
+    "margin-bottom": '20px'
+});
+
+//click en btn ver mas
+$('#verMas').click(function (e) {
+
+    e.preventDefault();
+
+    if ($('#verMas').html() == 'VER MAS') {
+        //mostramos el resto
+        $('.comentarios').css({
+            "overflow": 'inherit'
+        })
+
+        //cambiamos el texto
+        $('#verMas').html('VER MENOS');
+    } else {
+
+        //reseteamos los cambios
+        $('.comentarios').css({
+            "hegiht": $('.comentarios .alturaComentarios').height() + 'px',
+            "overflow": 'hidden',
+            "margin-bottom": '20px'
+        });
+
+
+        //cambiamos el texto
+        $('#verMas').html('VER MAS');
+
+
+    }
+
+});

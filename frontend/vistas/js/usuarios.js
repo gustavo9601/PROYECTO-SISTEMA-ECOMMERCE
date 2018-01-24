@@ -393,3 +393,118 @@ function validarComentario() {
     return true;
 }
 
+
+/*=============================================
+ LISTA DE DESEOS
+ =============================================*/
+//click en la clase deseos que son todo los btn de corzacon
+$('.deseos').click(function () {
+
+    var idProducto = $(this).attr('idProducto');
+    var idUsuario = localStorage.getItem('usuario');
+
+
+    if (idUsuario == null) {
+        swal({
+                title: "¡Debe ingresar al sistema!",
+                text: "¡Para agregar un producto a la lista de deseos, debe iniciar sesion",
+                type: "warning",
+                confirmButtonText: "Cerrar",
+                closeOnConfirm: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    window.location = rutaOculta;
+                }
+            });
+    } else {
+
+        $(this).addClass('btn-danger');
+
+//almacenando l ainformacion del corazon a lista de deseos
+        var datos = new FormData();
+        datos.append('idUsuario', idUsuario);
+        datos.append('idProducto', idProducto);
+
+        $.ajax({
+            url: rutaOculta + "ajax/usuarios.ajax.php", // ya existe en un archivo anterior
+            method: "POST",
+            data: datos,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (respuesta) {
+                //console.log(respuesta);
+            }
+        })
+
+
+    }
+
+});
+
+
+/*=============================================
+ BORRAR DE PRODUCTO DE LISTA DESEOS
+ =============================================*/
+$('.quitarDeseo').click(function () {
+    var idDeseo = $(this).attr('idDeseo');
+    //alert(idDeseo);
+    //eliminamos toda la caja completa
+    $(this).parent().parent().parent().remove();
+
+
+    //eliminamos de la BD
+    var datos = new FormData();
+    datos.append('idDeseo', idDeseo);
+    $.ajax({
+        url: rutaOculta + "ajax/usuarios.ajax.php", // ya existe en un archivo anterior
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (respuesta) {
+            //console.log(respuesta);
+        }
+    })
+
+});
+
+
+/*=============================================
+ ELIMINAR USUARIO
+ =============================================*/
+//console.log("aaaa" + $('#idUsuario').val());
+//console.log("aaaa" + $('#fotoUsuario').val());
+$('#eliminarUsuario').click(function () {
+    var id = $('#idUsuario').val(); // input escondido
+
+
+    console.log(id);
+    console.log($('#fotoUsuario').val());
+    //validacion de tipo
+    if ($('#modoUsuario').val() == "directo") {
+
+        //validacion si viene informacion o no de foto, a que se eliminara la foto y directorio de habe rinformacion
+        if ($('#fotoUsuario').val() != "") {
+            var foto = $('#fotoUsuario').val();
+        }
+    }
+    swal({
+            title: "¿Estas seguro(a) de eliminar tu cuenta?",
+            text: "¡Si borras esta cuenta ya no se podra recuperar",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "!Si borrar cuenta¡",
+            closeOnConfirm: false
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                window.location = "index.php?ruta=perfil&id=" + id + "&foto=" + foto;
+            }
+        });
+
+
+});

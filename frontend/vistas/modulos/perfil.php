@@ -351,16 +351,144 @@ BREADCRUMB PERFIL
             <!--=====================================
             PESTAÑA DESEOS
             ======================================-->
-            <div id="deseos" class="tab-pane fade in active">
-                <div class="panel-group">
+            <div id="deseos" class="tab-pane fade">
 
+                <?php
+                $item = $_SESSION['id'];
+                $deseos = ControladorUsuarios::ctrMostrarDeseos($item);
+                //si no viene informacion
+                //var_dump($deseos);
+                if (!$deseos) {
+                    echo '
+                                             <div class="col-xs-12 text-center error404">
+                        
+                        <h1><small>!Opss¡ </small></h1>
+                        <h2>Aun no tienes productos en su lista de deseos</h2>
+</div>
+                        ';
+                } else {
+                    foreach ($deseos as $key => $value1) {
+
+                        $ordenar = 'id';
+                        $valor = $value1['id_producto'];
+                        $item = 'id';
+                        $productos = ControladorProductos::ctrListarProductos($ordenar, $item, $valor);
+
+                        //var_dump($productos);
+
+
+                        //mostrando los porudcto en cuadricula
+                        echo '<ul class="grid0">';
+                        foreach ($productos as $key => $value) {
+                            echo ' <li class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <figure>
+                    <a href="' . $url . $value['ruta'] . '" class="pixelProducto">
+                        <img src="' . $servidor . $value['portada'] . '"
+                             alt="" class="img-responsive">
+                    </a>
+                </figure>
+                <h4>
+                    <small>
+                        <a href="' . $url . $value['ruta'] . '" class="pixelProducto">
+                            ' . $value['titulo'] . ' <br>
+
+                            <span style="color:rgba(0,0,0,0)">-</span>';
+
+
+                            //0 -> en la BD siginidica que no es nuevo
+                            if ($value['nuevo'] != 0) {
+                                echo '<span class="label label-warning fonstSize">Nuevo </span> <span style="color:rgba(0,0,0,0)">-</span>';
+                            }
+
+                            // 0 -> en la bd siginifica que no tiene oferta
+                            if ($value['oferta'] != 0) {
+                                echo '<span class="label label-warning fonstSize"> ' . $value['descuentoOferta'] . '% off </span> ';
+                            }
+
+                            echo '</a>
+                    </small>
+                </h4>
+                <div class="col-xs-6 precio">';
+
+                            if ($value['precio'] == 0) {
+                                echo ' <h2   style="margin-top: -10px">
+                        <small>GRATIS</small>
+                    </h2>';
+                            } else {
+                                if ($value['oferta'] != 0) {
+                                    echo ' <h2 style="margin-top: -10px">
+                        <strong class="oferta" style="font-size: 12px">USD $' . $value['precio'] . '</strong>
+                        <small>$' . $value['precioOferta'] . '</small>
+                    </h2>
+                    ';
+                                } else {
+                                    echo ' <h2  style="margin-top: -10px">
+                        <small>USD $' . $value['precio'] . '</small>
+                    </h2>';
+                                }
+
+
+                            }
+
+
+                            echo '</div>
+                <div class="col-xs-6 enlaces">
+                    <div class="btn btn-group pull-right">
+                        <button class="btn btn-danger btn-xs quitarDeseo" idDeseo="' . $value['id'] . '"  data-toggle="tooltip"
+                                title="Quitar de mi lista de deseos">
+                            <i class="fa fa-heart"></i>
+                        </button>';
+
+                            if ($value['tipo'] == "virtual") {
+
+                                if ($value['oferta'] != 0) {
+                                    echo ' <button class="btn btn-default btn-xs agregarCarrito" idProducto="' . $value['id'] . '"
+                                       imagen="' . $servidor . $value['portada'] . '"
+                                       titulo="' . $value['titulo'] . '"
+                                       precio="' . $value['precioOferta'] . '" tipo="' . $value['tipo'] . '" peso="' . $value['peso'] . '" data-toggle="tooltip"
+                                       title="Agregar al carrito de compras"
+                        >
+                            <i class="fa fa-shopping-cart"></i>
+                        </button>';
+                                } else {
+                                    echo ' <button class="btn btn-default btn-xs agregarCarrito" idProducto="' . $value['id'] . '"
+                                       imagen="' . $servidor . $value['portada'] . '"
+                                       titulo="' . $value['titulo'] . '"
+                                       precio="' . $value['precio'] . '" tipo="' . $value['tipo'] . '" peso="' . $value['peso'] . '" data-toggle="tooltip"
+                                       title="Agregar al carrito de compras"
+                        >
+                            <i class="fa fa-shopping-cart"></i>
+                        </button>';
+                                }
+
+
+                            }
+                            echo '<a href="' . $value['ruta'] . '" class="pixelProducto">
+                            <button class="btn btn-default btn-xs deseos" idProducto="' . $value['id'] . '" data-toggle="tooltip"
+                                    title="Ver producto">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </a>
+                    </div>
                 </div>
+
+            </li>';
+                        }
+                        echo '</ul>';
+
+
+                    }
+                }
+
+
+                ?>
+
             </div>
 
             <!--=====================================
             PESTAÑA PERFIL EDICION PERFIL
             ======================================-->
-            <div id="perfil" class="tab-pane fade in active">
+            <div id="perfil" class="tab-pane fade">
                 <div class="panel-group">
                     <div class="row">
                         <form method="post" action="" enctype="multipart/form-data">
@@ -370,20 +498,20 @@ BREADCRUMB PERFIL
 
                                     <?php
                                     //alcanemara dentro del formualario el di del susario
-                                    echo '<input type = "hidden" name = "idUsuario" value = "' . $_SESSION['id'] . '" > ';
+                                    echo '<input type = "hidden" name="idUsuario" id="idUsuario" value= "' . $_SESSION['id'] . '" > ';
                                     //almacenarael password por si el suuario n cambia nada1
-                                    echo '<input type = "hidden" name = "passUsuario" value = "' . $_SESSION['password'] . '" > ';
+                                    echo '<input type = "hidden" name="passUsuario" value= "' . $_SESSION['password'] . '" > ';
                                     //alcanamos la foto por si no se cambia
-                                    echo '<input type = "hidden" name = "fotoUsuario" value = "' . $_SESSION['foto'] . '" > ';
+                                    echo '<input type = "hidden" name="fotoUsuario" id="fotoUsuario" value= "' . $_SESSION['foto'] . '" > ';
                                     //modo oculto
-                                    echo '<input type = "hidden" name = "modoUsuario" value = "' . $_SESSION['modo'] . '" > ';
+                                    echo '<input type = "hidden" name="modoUsuario" id="modoUsuario"  value= "' . $_SESSION['modo'] . '" > ';
 
 
                                     //validacion si viene directo o por redes sociales
                                     if ($_SESSION['modo'] == 'directo') {
                                         if ($_SESSION['foto'] != "") {
                                             echo '
-            < img src = "' . $url . $_SESSION['foto'] . '" alt = "" class="img-thumbnail" >
+            <img src = "' . $url . $_SESSION['foto'] . '" alt = "" class="img-thumbnail" >
             ';
                                         } else {
                                             //colocamos la foto por defecto
@@ -429,7 +557,7 @@ BREADCRUMB PERFIL
                                 <?php
 
                                 if ($_SESSION['modo'] != 'directo') {
-                                    echo ' < label class="control-label text-muted text-uppercase" > Nombre:</label >
+                                    echo ' <label class="control-label text-muted text-uppercase" > Nombre:</label >
                                             <div class="input-group" >
                                              <span class="input-group-addon" >
                                              <i class="glyphicon glyphicon-user" ></i >
@@ -517,7 +645,10 @@ BREADCRUMB PERFIL
 
 
                         </form>
-
+                        <?php
+                        $borrarUsuario = new ControladorUsuarios();
+                        $borrarUsuario->ctrEliminarUsuario();
+                        ?>
 
                         <button class="btn btn-danger btn-md pull-right" id="eliminarUsuario">Eliminar cuenta</button>
 

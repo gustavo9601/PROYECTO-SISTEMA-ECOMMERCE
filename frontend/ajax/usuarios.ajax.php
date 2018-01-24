@@ -48,7 +48,43 @@ class AjaxUsuario
 
     }
 
+
+    /*=============================================
+AGREAGAR A LISTA DE DESEOS
+=============================================*/
+    public $idUsuario;
+    public $idProducto;
+
+    public function ajaxAgregarDeseo()
+    {
+        $datos = [
+            'idUsuario' => $this->idUsuario,
+            'idProducto' => $this->idProducto
+        ];
+
+        $respuesta = ControladorUsuarios::ctrAgregarDeseo($datos);
+
+        echo $respuesta;
+
+    }
+
+
+    /*=============================================
+QUITAR PORDUCTO DE LISTA DE DESEOS
+=============================================*/
+    public $idDeseo;
+
+    public function ajaxQuitarDeseo()
+    {
+        $datos = $this->idDeseo;
+
+        $respuesta = ControladorUsuarios::ctrQuitarDeseo($datos);
+
+        echo $respuesta;
+
+    }
 }
+
 
 /*=============================================
 VALIDAR EMAIL EXISTENTE
@@ -68,4 +104,27 @@ if (@$_POST['email']) {
     $regFacebook->nombre = $_POST['nombre'];
     $regFacebook->foto = $_POST['foto'];
     $regFacebook->ajaxRegistroFacebook();
+}
+
+
+/*=============================================
+AGREAGAR A LISTA DE DESEOS
+=============================================*/
+
+if (isset($_POST['idUsuario'])) {
+    $deseo = NEW AjaxUsuario();
+    $deseo->idUsuario = $_POST['idUsuario'];
+    $deseo->idProducto = $_POST['idProducto'];
+    $deseo->ajaxAgregarDeseo();
+}
+
+
+/*=============================================
+QUITAR PORDUCTO DE LISTA DE DESEOS
+=============================================*/
+
+if (isset($_POST['idDeseo'])) {
+    $quitarDeseo = NEW AjaxUsuario();
+    $quitarDeseo->idDeseo = $_POST['idDeseo'];
+    $quitarDeseo->ajaxQuitarDeseo();
 }
