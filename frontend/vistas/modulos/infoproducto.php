@@ -452,12 +452,18 @@ $url = @Ruta::ctrRuta();
                         </div>
  
                        <div class="col-md-6 col-xs-12">
-                                <button class="btn btn-default btn-block btn-lg backColor"><small>ADICIONAR AL CARRITO</small> <i
+                                <button class="btn btn-default btn-block btn-lg backColor agregarCarrito" idProducto="' . $infoproducto['id'] . '"
+                                imagen="' . $servidor . $infoproducto['portada'] . '"
+                                titulo="' . $infoproducto['titulo'] . '"
+                                precio="' . $infoproducto['precio'] . '" tipo="' . $infoproducto['tipo'] . '" peso="' . $infoproducto['peso'] . '"><small>ADICIONAR AL CARRITO</small> <i
                                             class="fa fa-shopping-cart col-xs-0 col-md-0"></i></button>
                             </div>';
                         } else {
                             echo ' <div class="col-md-6 col-xs-12">
-                                <button class="btn btn-default btn-block btn-lg backColor">ADICIONAR AL CARRITO <i
+                                <button class="btn btn-default btn-block btn-lg backColor agregarCarrito" idProducto="' . $infoproducto['id'] . '"
+                                imagen="' . $servidor . $infoproducto['portada'] . '"
+                                titulo="' . $infoproducto['titulo'] . '"
+                                precio="' . $infoproducto['precio'] . '" tipo="' . $infoproducto['tipo'] . '" peso="' . $infoproducto['peso'] . '">ADICIONAR AL CARRITO <i
                                             class="fa fa-shopping-cart col-xs-0"></i></button>
                             </div>';
                         }
