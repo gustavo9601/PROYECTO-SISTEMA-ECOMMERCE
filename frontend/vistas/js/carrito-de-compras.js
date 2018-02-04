@@ -201,8 +201,6 @@ $('.agregarCarrito').click(function () {
     //si es true agregar el carrito
     if (agregarAlCarrito) {
 
-
-
         /*=============================================
          RECUPERAR ALMACENAMIENTO DEL LOCALSTORAGE
          =============================================*/
@@ -230,7 +228,7 @@ $('.agregarCarrito').click(function () {
         });
 
 
-        console.log(listaCarrito);
+        //console.log(listaCarrito);
         //alcenando la info en el localstorage, en formato string
         localStorage.setItem("listaProductos", JSON.stringify(listaCarrito));
 
@@ -274,64 +272,6 @@ $('.agregarCarrito').click(function () {
 
     }
 });
-
-
-/*=============================================
- /*=============================================
- /*=============================================
- /*=============================================
- /*=============================================
- GENERAR SUBTOTAL DESPUES DE CAMBIAR CANTIDAD
- =============================================*/
-$(".cantidadItem").change(function () {
-
-    var cantidad = $(this).val();
-    var precio = $(this).attr("precio");
-    var idProducto = $(this).attr("idProducto");
-
-    $(".subTotal" + idProducto).html('<strong>USD $<span>' + (cantidad * precio) + '</span></strong>');
-
-    /*=============================================
-     ACTUALIZAR LA CANTIDAD EN EL LOCALSTORAGE
-     =============================================*/
-
-    var idProducto = $(".cuerpoCarrito button");
-    var imagen = $(".cuerpoCarrito img");
-    var titulo = $(".cuerpoCarrito .tituloCarritoCompra");
-    var precio = $(".cuerpoCarrito .precioCarritoCompra span");
-    var cantidad = $(".cuerpoCarrito .cantidadItem");
-
-    listaCarrito = [];
-
-
-    //actualimamos el arreglo que esta en json en localstorage, para ello recorremos todo el dom de artiruclos
-    for (var i = 0; i < idProducto.length; i++) {
-
-        var idProductoArray = $(idProducto[i]).attr("idProducto");
-        var imagenArray = $(imagen[i]).attr("src");
-        var tituloArray = $(titulo[i]).html();
-        var precioArray = $(precio[i]).html();
-        var pesoArray = $(idProducto[i]).attr("peso");
-        var tipoArray = $(cantidad[i]).attr("tipo");
-        var cantidadArray = $(cantidad[i]).val();
-
-        listaCarrito.push({
-            "idProducto": idProductoArray,
-            "imagen": imagenArray,
-            "titulo": tituloArray,
-            "precio": precioArray,
-            "tipo": tipoArray,
-            "peso": pesoArray,
-            "cantidad": cantidadArray
-        });
-
-    }
-
-    localStorage.setItem("listaProductos", JSON.stringify(listaCarrito));
-
-    sumaSubtotales();
-    cestaCarrito(listaCarrito.length);
-})
 
 
 /*=============================================
@@ -393,19 +333,19 @@ $(".quitarItemCarrito").click(function () {
         //sobrescribiendo l ainformacion el localstorage con el nuevo array
         localStorage.setItem("listaProductos", JSON.stringify(listaCarrito));
 
-        //actualizamos la informacion de totales y de cesta
-        //sumaSubtotales();
-        cestaCarrito(listaCarrito.length);  // le pasamos la nueva cantidad
 
-        //actualizando los valores del input subutotal
+        //sumaSubtotales();
+
+
+        //actualizamos la informacion de los subtotales al eliminar algun item
         sumaSubtotales();
+        //actualizamos la informacion de totales y de cesta
+        cestaCarrito(listaCarrito.length);  // le pasamos la nueva cantidad
     } else {
 
         /*=============================================
          SI YA NO QUEDAN PRODUCTOS HAY QUE REMOVER TODO
          =============================================*/
-
-
         //si no quedan pordocutos vaciamos todos lo que pueda haber en el localstorage
 
         localStorage.removeItem("listaProductos");
@@ -433,6 +373,90 @@ $(".quitarItemCarrito").click(function () {
  /*=============================================
  /*=============================================
  /*=============================================
+ GENERAR SUBTOTAL DESPUES DE CAMBIAR CANTIDAD
+ =============================================*/
+$(".cantidadItem").change(function () {
+
+    var cantidad = $(this).val();
+    var precio = $(this).attr("precio");
+    var idProducto = $(this).attr("idProducto");
+
+    $(".subTotal" + idProducto).html('<strong>USD $<span>' + (cantidad * precio) + '</span></strong>');
+
+    /*=============================================
+     ACTUALIZAR LA CANTIDAD EN EL LOCALSTORAGE
+     =============================================*/
+
+    var idProducto = $(".cuerpoCarrito button");
+    var imagen = $(".cuerpoCarrito img");
+    var titulo = $(".cuerpoCarrito .tituloCarritoCompra");
+    var precio = $(".cuerpoCarrito .precioCarritoCompra span");
+    var cantidad = $(".cuerpoCarrito .cantidadItem");
+
+    listaCarrito = [];
+
+
+    //actualimamos el arreglo que esta en json en localstorage, para ello recorremos todo el dom de artiruclos
+    for (var i = 0; i < idProducto.length; i++) {
+
+        var idProductoArray = $(idProducto[i]).attr("idProducto");
+        var imagenArray = $(imagen[i]).attr("src");
+        var tituloArray = $(titulo[i]).html();
+        var precioArray = $(precio[i]).html();
+        var pesoArray = $(idProducto[i]).attr("peso");
+        var tipoArray = $(cantidad[i]).attr("tipo");
+        var cantidadArray = $(cantidad[i]).val();
+
+        listaCarrito.push({
+            "idProducto": idProductoArray,
+            "imagen": imagenArray,
+            "titulo": tituloArray,
+            "precio": precioArray,
+            "tipo": tipoArray,
+            "peso": pesoArray,
+            "cantidad": cantidadArray
+        });
+
+    }
+
+    localStorage.setItem("listaProductos", JSON.stringify(listaCarrito));
+
+    //actualizamos los valores de suma de todos los item, invocando la siguiente funcion
+    sumaSubtotales();
+    cestaCarrito(listaCarrito.length);
+})
+
+
+/*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ ACTUALIZAR SUBTOTAL
+ =============================================*/
+var precioCarritoCompra = $(".cuerpoCarrito .precioCarritoCompra span");
+var cantidadItem = $(".cuerpoCarrito .cantidadItem");
+
+//El for , recorre los item y toma la cantidad para multiplicarlo con precio
+for (var i = 0; i < precioCarritoCompra.length; i++) {
+
+    var precioCarritoCompraArray = $(precioCarritoCompra[i]).html();
+    var cantidadItemArray = $(cantidadItem[i]).val();
+    var idProductoArray = $(cantidadItem[i]).attr("idProducto");
+
+    $(".subTotal" + idProductoArray).html('<strong>USD $<span>' + (precioCarritoCompraArray * cantidadItemArray) + '</span></strong>')
+
+    sumaSubtotales();
+    cestaCarrito(precioCarritoCompra.length);
+
+}
+
+
+/*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
  SUMA DE TODOS LOS SUBTOTALES
  =============================================*/
 function sumaSubtotales() {
@@ -445,29 +469,31 @@ function sumaSubtotales() {
     for (var i = 0; i < subtotales.length; i++) {
 
         var subtotalesArray = $(subtotales[i]).html();
-        //voy insertando los valores del html
+        //voy insertando los valores de cada item al array
         arraySumaSubtotales.push(Number(subtotalesArray));
-
     }
 
 
+    //funcion recursiva
     function sumaArraySubtotales(total, numero) {
 
         return total + numero;
 
     }
 
-    /// Metodo reduce -> devuelve los 2 parametros que le pasemos los suma y devuelve un valor
+    /// Metodo reduce -> devuelve la sumatoria de izquierda a derecha de un array
     var sumaTotal = arraySumaSubtotales.reduce(sumaArraySubtotales);
 
+    //modificma'os el html de Suma total
     $(".sumaSubTotal").html('<strong>USD $<span>' + sumaTotal + '</span></strong>');
-
+//modficiamos la informacion de cesta
     $(".sumaCesta").html(sumaTotal);
 
+    //almacenamos la informacion de la Cesta en el localstorage
     localStorage.setItem("sumaCesta", sumaTotal);
 
-
 }
+
 
 /*=============================================
  /*=============================================
@@ -477,7 +503,7 @@ function sumaSubtotales() {
  ACTUALIZAR CESTA AL CAMBIAR CANTIDAD
  =============================================*/
 function cestaCarrito(cantidadProductos) {
-
+//recibo como parametro, la longitud de cantidad de productos existentes
     /*=============================================
      SI HAY PRODUCTOS EN EL CARRITO
      =============================================*/
@@ -512,8 +538,8 @@ function cestaCarrito(cantidadProductos) {
         localStorage.setItem("cantidadCesta", sumaTotalCantidades);
 
     }
-
 }
 
 
+//Actualizando los subtotales indemditamten se cargue la pagina
 sumaSubtotales();
