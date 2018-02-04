@@ -650,6 +650,13 @@ $("#btnCheckout").click(function () {
             //ejecutamos una busqueda ejecutando la atentiror funcion, que retornara los productos , que tengan tipo fisico
             if (tipoArray.find(checkTipo) == "fisico") {
 
+                //agrego en el html del select de Pais
+                $('.seleccionePais').html(
+                    ' <select required name="" id="seleccionarPais" class="form-control">' +
+                    '<option value="">Seleccione el Pais</option>' +
+                    '</select>'
+                );
+
                 //Como es fisico, mostramos el formulario de envio
                 $(".formEnvio").show();
 
@@ -687,6 +694,7 @@ $("#btnCheckout").click(function () {
                 //cuando cambie el select de pais
                 $("#seleccionarPais").change(function () {
                     $(".alert").remove();
+
 
                     //capturamos valor
                     var pais = $(this).val();
@@ -728,15 +736,42 @@ $("#btnCheckout").click(function () {
                     }
 
 
+                    /*=============================================
+                     RETORNAR CAMBIO DE DIVISA A DOLAR USD
+                     =============================================*/
+
+                    //reseteamos el valor a USD, al cambiar de pais
+                    $('#cambiarDivisa').val('USD');
+
+                    //cambiamos el HTML del span de la tabla de subtotoal y total, reseteanso a Dolares
+                    $(".cambioDivisa").html('USD');
+                    //captura de los valores numericos que estan en el HTML, para realizar la por 1, ya que al cambiar el pasi la modena por defecto es el Dolar
+                    $(".valorSubtotal").html((1 * Number($(".valorSubtotal").attr("valor"))).toFixed(2))
+                    $(".valorTotalEnvio").html((1 * Number($(".valorTotalEnvio").attr("valor"))).toFixed(2))
+                    $(".valorTotalImpuesto").html((1 * Number($(".valorTotalImpuesto").attr("valor"))).toFixed(2))
+                    $(".valorTotalCompra").html((1 * Number($(".valorTotalCompra").attr("valor"))).toFixed(2))
+
+                    //captra del valor inicial, de cada uno de los elememto con esta clase
+                    var valorItem = $(".valorItem");
+
+                    //recorremos todos los item
+                    for (var i = 0; i < valorItem.length; i++) {
+                        //cambio de datos en cada nos de lo sitem, multiplicando la a Dolar
+                        $(valorItem[i]).html((1 * Number($(valorItem[i]).attr("valor"))).toFixed(2))
+
+                    }
+
+
+                    //ejecuto la funcions
                     sumaTotalCompra();
 
 
                 });
 
 
-            }else{
+            } else {
                 //es por que viene solo virtual le cambiamos el tipo al btn de pago
-                $(".btnPagar").attr("tipo","virtual");
+                $(".btnPagar").attr("tipo", "virtual");
             }
 
 
@@ -764,6 +799,155 @@ function sumaTotalCompra() {
     $(".valorTotalCompra").attr("valor", sumaTotalTasas.toFixed(2));
 }
 
+/*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ MÉTODO DE PAGO PARA CAMBIO DE DIVISA
+ =============================================*/
+//ejecutando la funcion por default para que aparesca los valores de divisa de Paypal
+var metodoPago = "paypal";
+divisas(metodoPago);
+
+//cuando cambie el estado del input circular
+$("input[name='pago']").change(function () {
+
+    //alaceno el metodo de pago que esta en el valor del check
+    var metodoPago = $(this).val();
+
+    //ejecutando la funcion
+    divisas(metodoPago);
+
+    if (metodoPago == "payu") {
+
+        $(".btnPagar").hide();
+        $(".formPayu").show();
+
+        pagarConPayu();
+
+    } else {
+
+        $(".btnPagar").show();
+        $(".formPayu").hide();
+
+    }
+
+});
+
+
+/*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ FUNCIÓN PARA EL CAMBIO DE DIVISA
+ =============================================*/
+
+function divisas(metodoPago) {
+
+    //vaciamos el select para que no haga feos con el append
+    $("#cambiarDivisa").html("");
+
+    //Modificaccion del HTMK del select que contiene las divisas de
+    //acuerdo al metodo de pago pasado por parametro
+    if (metodoPago == "paypal") {
+
+        //Opciones tomadas de la documentacion de Paypal
+        $("#cambiarDivisa").append('<option value="USD">USD</option>' +
+            '<option value="EUR">EUR</option>' +
+            '<option value="GBP">GBP</option>' +
+            '<option value="MXN">MXN</option>' +
+            '<option value="JPY">JPY</option>' +
+            '<option value="CAD">CAD</option>' +
+            '<option value="BRL">BRL</option>')
+
+    } else {
+
+        //Opciones tomadas de la documentacion de Payu
+        $("#cambiarDivisa").append('<option value="USD">USD</option>' +
+            '<option value="PEN">PEN</option>' +
+            '<option value="COP">COP</option>' +
+            '<option value="MXN">MXN</option>' +
+            '<option value="CLP">CLP</option>' +
+            '<option value="ARS">ARS</option>' +
+            '<option value="BRL">BRL</option>')
+
+    }
+
+}
+
+
+/*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ CAMBIO DE DIVISA
+ =============================================*/
+
+var divisaBase = "USD";
+//detectamos el cambio de divisa, y ejecutamos la funcion que realizara la peticion ajax, para traer los datos dinamicos del api
+$("#cambiarDivisa").change(function () {
+
+    $(".alert").remove();
+
+    //Vlidacion si ha seleccionado el pais, para que muestre la alerta
+    if ($("#seleccionarPais").val() == "") {
+
+        $("#cambiarDivisa").after('<div class="alert alert-warning">No ha seleccionado el país de envío</div>');
+
+        return;
+
+    }
+
+    var divisa = $(this).val();
+
+    $.ajax({
+
+        url: "http://free.currencyconverterapi.com/api/v3/convert?q=" + divisaBase + "_" + divisa + "&compact=y",
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "jsonp", // es de tipo jsonp, para realizar el cruce de origen para traer informacion de otro servidor
+        success: function (respuesta) {
+
+            //Parseamos el string recibido a cadena de Texto
+            var divisaString = JSON.stringify(respuesta);
+            // sustraemos la informacion del string ya que solo enecsiamos un valor
+            var conversion = divisaString.substr(18, 4);
+
+            //validacion si la divisa de cambio es Dollar, se multipicara solo por 1
+            if (divisa == "USD") {
+                conversion = 1;
+            }
+
+            //cambiamos el HTML del span de la tabla de subtotoal y total,,,
+            $(".cambioDivisa").html(divisa);
+
+            //captura de los valores numericos que estan en el HTML, para realizar la multiplicacion por la nueva modena escogida
+            $(".valorSubtotal").html((Number(conversion) * Number($(".valorSubtotal").attr("valor"))).toFixed(2))
+            $(".valorTotalEnvio").html((Number(conversion) * Number($(".valorTotalEnvio").attr("valor"))).toFixed(2))
+            $(".valorTotalImpuesto").html((Number(conversion) * Number($(".valorTotalImpuesto").attr("valor"))).toFixed(2))
+            $(".valorTotalCompra").html((Number(conversion) * Number($(".valorTotalCompra").attr("valor"))).toFixed(2))
+
+            //captra del valor inicial, de cada uno de los elememto con esta clase
+            var valorItem = $(".valorItem");
+
+            //recorremos todos los item
+            for (var i = 0; i < valorItem.length; i++) {
+                //cambio de datos en cada nos de lo sitem, multiplicando la nueva modena
+                $(valorItem[i]).html((Number(conversion) * Number($(valorItem[i]).attr("valor"))).toFixed(2))
+
+            }
+
+            pagarConPayu();
+
+        }
+
+    })
+
+
+})
+
 
 /*=============================================
  /*=============================================
@@ -774,12 +958,12 @@ function sumaTotalCompra() {
  =============================================*/
 
 //btn del modal para ejecutar el pago
-$(".btnPagar").click(function(){
+$(".btnPagar").click(function () {
     //capturamos el tipo que es un atributo que tiene este boton
     var tipo = $(this).attr("tipo");
 
     //console.log($("#seleccionarPais").val());
-    if(tipo == "fisico" && $("#seleccionarPais").val() == ""){
+    if (tipo == "fisico" && $("#seleccionarPais").val() == "") {
         $('.alert').remove();  //para que remueva si habia etiquetas de error antiguas
         $(".btnPagar").after('<div class="alert alert-warning">No ha seleccionado el país de envío</div>');
 

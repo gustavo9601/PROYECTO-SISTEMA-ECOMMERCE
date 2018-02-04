@@ -167,7 +167,7 @@ VENTANA MODAL PARA CHECKOUT
                     <div class="col-xs-12 seleccionePais">
 
                         <!-- Aparecera el listbox con los paises-->
-                        <select required name="" id="seleccionarPais" class="form-control"></select>
+
 
                     </div>
 
