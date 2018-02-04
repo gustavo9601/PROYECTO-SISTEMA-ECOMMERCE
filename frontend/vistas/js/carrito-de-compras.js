@@ -543,3 +543,248 @@ function cestaCarrito(cantidadProductos) {
 
 //Actualizando los subtotales indemditamten se cargue la pagina
 sumaSubtotales();
+
+
+/*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ CHECKOUT
+ =============================================*/
+
+//Click sobre el boton que llama al modal de chekout
+$("#btnCheckout").click(function () {
+        //Resteamo el htm de la tabla de proudctos en el modal
+        $(".listaProductos table.tablaProductos tbody").html("");
+
+        //Resteamos para que aparesca checado la opcion por default payu
+        $("#checkPaypal").prop("checked", true);
+        $("#checkPayu").prop("checked", false);
+
+        //Captura de valores, por clases es decir solo se crean arrays
+        var idUsuario = $(this).attr("idUsuario");
+        var peso = $(".cuerpoCarrito button, .comprarAhora button");
+        var titulo = $(".cuerpoCarrito .tituloCarritoCompra, .comprarAhora .tituloCarritoCompra");
+        var cantidad = $(".cuerpoCarrito .cantidadItem, .comprarAhora .cantidadItem");
+        var subtotal = $(".cuerpoCarrito .subtotales span, .comprarAhora .subtotales span");
+        var tipoArray = [];
+        var cantidadPeso = [];
+
+
+        /*=============================================
+         SUMA SUBTOTAL
+         =============================================*/
+        //capturamos el valor de subtotal de la tabla inicial del carrito de compras y lo capturamos para
+        //modificar el valor en el modal
+        var sumaSubTotal = $(".sumaSubTotal span")
+
+        $(".valorSubtotal").html($(sumaSubTotal).html());
+        $(".valorSubtotal").attr("valor", $(sumaSubTotal).html());
+
+
+        /*=============================================
+         TASAS DE IMPUESTO
+         =============================================*/
+
+        //costo de impesto, multipmicando el porcentaje de IVA por el subtotal / 100
+        var impuestoTotal = ($(".valorSubtotal").html() * $("#tasaImpuesto").val()) / 100;
+        //con toFixed parseamos a solo 2 decimales
+        $(".valorTotalImpuesto").html(impuestoTotal.toFixed(2));
+        $(".valorTotalImpuesto").attr("valor", impuestoTotal.toFixed(2));
+
+
+        sumaTotalCompra();
+        /*=============================================
+         VARIABLES ARRAY
+         =============================================*/
+        //recorriendo todos arreglos
+        for (var i = 0; i < titulo.length; i++) {
+            var pesoArray = $(peso[i]).attr("peso");
+            var tituloArray = $(titulo[i]).html();
+            var cantidadArray = $(cantidad[i]).val();
+            var subtotalArray = $(subtotal[i]).html();
+
+
+            /*=============================================
+             EVALUAR EL PESO DE ACUERDO A LA CANTIDAD DE PRODUCTOS
+             =============================================*/
+            //multiplicamos el peso de cada articulo por su cantidad
+            cantidadPeso[i] = pesoArray * cantidadArray;
+
+            function sumaArrayPeso(total, numero) {
+
+                return total + numero;
+
+            }
+
+            var sumaTotalPeso = cantidadPeso.reduce(sumaArrayPeso);
+
+
+            /*=============================================
+             MOSTRAR PRODUCTOS DEFINITIVOS A COMPRAR
+             =============================================*/
+            //en cada iteracion mostrara al detalle cada articulo en la tabla del modal
+            $(".listaProductos table.tablaProductos tbody").append('<tr>' +
+                '<td class="valorTitulo">' + tituloArray + '</td>' +
+                '<td class="valorCantidad">' + cantidadArray + '</td>' +
+                '<td>$<span class="valorItem" valor="' + subtotalArray + '">' + subtotalArray + '</span></td>' +
+                '<tr>');
+
+
+            /*=============================================
+             SELECCIONAR PAÍS DE ENVÍO SI HAY PRODUCTOS FÍSICOS
+             =============================================*/
+            //creamos un arreglo e inserto informacion de tipo
+            tipoArray.push($(cantidad[i]).attr("tipo"));
+            //validamos cada uno de los item, el tipo, para sabe si se coloca o no
+            function checkTipo(tipo) {
+
+                return tipo == "fisico";
+
+            }
+
+            /*=============================================
+             EXISTEN PRODUCTOS FÍSICOS
+             =============================================*/
+            //ejecutamos una busqueda ejecutando la atentiror funcion, que retornara los productos , que tengan tipo fisico
+            if (tipoArray.find(checkTipo) == "fisico") {
+
+                //Como es fisico, mostramos el formulario de envio
+                $(".formEnvio").show();
+
+                $(".btnPagar").attr("tipo", "fisico");
+
+                //Hago la peticion ajax, hacia el archivo json, que contoene el listado de paises en json
+                $.ajax({
+                    url: rutaOculta + "vistas/js/plugins/countries.json",
+                    type: "GET",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    success: function (respuesta) {
+
+                        //recorremos el resultado conel foreach y ejecutamos la funcion
+                        respuesta.forEach(seleccionarPais);
+
+                        function seleccionarPais(item, index) {
+
+                            var pais = item.name;
+                            var codPais = item.code;
+
+                            $("#seleccionarPais").append('<option value="' + codPais + '">' + pais + '</option>');
+
+                        }
+
+                    }
+                })
+
+
+                /*=============================================
+                 EVALUAR TASAS DE ENVÍO SI EL PRODUCTO ES FÍSICO
+                 =============================================*/
+                //cuando cambie el select de pais
+                $("#seleccionarPais").change(function () {
+                    $(".alert").remove();
+
+                    //capturamos valor
+                    var pais = $(this).val();
+                    var tasaPais = $("#tasaPais").val();
+
+                    //validacion si el pais seleccionado es el mismo al de la bd, el envio es nacional
+                    if (pais == tasaPais) {
+
+                        var resultadoPeso = sumaTotalPeso * $("#envioNacional").val();
+
+                        //condicional que valida que el total de kilo por cantidad
+                        // si es menor con la tasa minima de envio, colocamos las tasas minimas
+                        // de lo contrario colocamos los resultado de la operacion
+                        if (resultadoPeso < $("#tasaMinimaNal").val()) {
+
+                            $(".valorTotalEnvio").html($("#tasaMinimaNal").val());
+                            $(".valorTotalEnvio").attr("valor", $("#tasaMinimaNal").val());
+
+                        } else {
+
+                            $(".valorTotalEnvio").html(resultadoPeso);
+                            $(".valorTotalEnvio").attr("valor", resultadoPeso);
+                        }
+                    } else {
+
+                        var resultadoPeso = sumaTotalPeso * $("#envioInternacional").val();
+
+                        if (resultadoPeso < $("#tasaMinimaInt").val()) {
+
+                            $(".valorTotalEnvio").html($("#tasaMinimaInt").val());
+                            $(".valorTotalEnvio").attr("valor", $("#tasaMinimaInt").val());
+
+                        } else {
+
+                            $(".valorTotalEnvio").html(resultadoPeso);
+                            $(".valorTotalEnvio").attr("valor", resultadoPeso);
+                        }
+
+                    }
+
+
+                    sumaTotalCompra();
+
+
+                });
+
+
+            }else{
+                //es por que viene solo virtual le cambiamos el tipo al btn de pago
+                $(".btnPagar").attr("tipo","virtual");
+            }
+
+
+        }
+
+    }
+)
+
+
+/*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ SUMA TOTAL DE LA COMPRA
+ =============================================*/
+function sumaTotalCompra() {
+//sumam los totales, de cada uno de lo que contenga el HTML de la tabla
+    var sumaTotalTasas = Number($(".valorSubtotal").html()) +
+        Number($(".valorTotalEnvio").html()) +
+        Number($(".valorTotalImpuesto").html());
+
+    //reemplza en el modal la informacion de los totales y parsea a float de 2 decimales con toFixed
+    $(".valorTotalCompra").html(sumaTotalTasas.toFixed(2));
+    $(".valorTotalCompra").attr("valor", sumaTotalTasas.toFixed(2));
+}
+
+
+/*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ BOTÓN PAGAR
+ =============================================*/
+
+//btn del modal para ejecutar el pago
+$(".btnPagar").click(function(){
+    //capturamos el tipo que es un atributo que tiene este boton
+    var tipo = $(this).attr("tipo");
+
+    //console.log($("#seleccionarPais").val());
+    if(tipo == "fisico" && $("#seleccionarPais").val() == ""){
+        $('.alert').remove();  //para que remueva si habia etiquetas de error antiguas
+        $(".btnPagar").after('<div class="alert alert-warning">No ha seleccionado el país de envío</div>');
+
+        return;
+
+    }
+
+})

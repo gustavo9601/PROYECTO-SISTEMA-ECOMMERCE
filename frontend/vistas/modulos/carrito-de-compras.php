@@ -144,8 +144,10 @@ VENTANA MODAL PARA CHECKOUT
             <div class="contenidoCheckout">
 
                 <?php
+                    //Trera la informacion desde la BD, de las tarigfas del Ecommerce
+                    $respuesta = ControladorCarrito::ctrMostrarTarifas();
 
-                /*    $respuesta = ControladorCarrito::ctrMostrarTarifas();
+                    //Imprimimos los input ocultos
 
                     echo '<input type="hidden" id="tasaImpuesto" value="'.$respuesta["impuesto"].'">
                           <input type="hidden" id="envioNacional" value="'.$respuesta["envioNacional"].'">
@@ -154,7 +156,7 @@ VENTANA MODAL PARA CHECKOUT
                           <input type="hidden" id="tasaMinimaInt" value="'.$respuesta["tasaMinimaInt"].'">
                           <input type="hidden" id="tasaPais" value="'.$respuesta["pais"].'">
 
-                    ';*/
+                    ';
 
                 ?>
 
@@ -165,6 +167,7 @@ VENTANA MODAL PARA CHECKOUT
                     <div class="col-xs-12 seleccionePais">
 
                         <!-- Aparecera el listbox con los paises-->
+                        <select required name="" id="seleccionarPais" class="form-control"></select>
 
                     </div>
 
