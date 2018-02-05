@@ -971,4 +971,68 @@ $(".btnPagar").click(function () {
 
     }
 
+
+    //CAPTURA DE DATOS QUE SE ENVIARAN A LA FORMA DE PAGO
+    var divisa = $("#cambiarDivisa").val();
+    var total = $(".valorTotalCompra").html();
+    var impuesto = $(".valorTotalImpuesto").html();
+    var envio = $(".valorTotalEnvio").html();
+    var subtotal = $(".valorSubtotal").html();
+    var titulo = $(".valorTitulo");
+    var cantidad = $(".valorCantidad");
+    var valorItem = $(".valorItem");
+    var idProducto = $('.cuerpoCarrito button, .comprarAhora button');
+
+    //variables que se llenaran en el for, recorriendo cada uno de los articulos
+    var tituloArray = [];
+    var cantidadArray = [];
+    var idProductoArray = [];
+    var valorItemArray = [];
+
+    //recorremos todos los productos, de acuerdo a la cantidad de productos que hallan
+    for (var i = 0; i < titulo.length; i++) {
+
+        tituloArray[i] = $(titulo[i]).html();
+        cantidadArray[i] = $(cantidad[i]).html();
+        idProductoArray[i] = $(idProducto[i]).attr("idProducto");
+        valorItemArray[i] = $(valorItem[i]).html();
+    }
+
+    /*  console.log(tituloArray);
+     console.log(cantidadArray);
+     console.log(idProductoArray);
+     console.log(valorItemArray);
+     */
+
+    //peticion ajax para enviar toda la informacion al controlador
+    var datos = new FormData();
+
+    datos.append("divisa", divisa);
+    datos.append("total", total);
+    datos.append("impuesto", impuesto);
+    datos.append("envio", envio);
+    datos.append("subtotal", subtotal);
+    datos.append("tituloArray", tituloArray);
+    datos.append("cantidadArray", cantidadArray);
+    datos.append("valorItemArray", valorItemArray);
+    datos.append("idProductoArray", idProductoArray);
+
+    $.ajax({
+        url: rutaOculta + "ajax/carrito.ajax.php",
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (respuesta) {
+
+            console.log(respuesta);
+            //redireccionamos hacia la URL respectiva
+            window.location = respuesta;
+
+        }
+
+    })
+
+
 })
