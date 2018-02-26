@@ -280,6 +280,7 @@ VENTANA MODAL PARA CHECKOUT
 
                     <div class="clearfix"></div>
 
+                    <!--Formulario de Payu-->
                     <form class="formPayu" style="display:none">
 
                         <input name="merchantId" type="hidden" value=""/>
@@ -299,8 +300,8 @@ VENTANA MODAL PARA CHECKOUT
                         <input name="test" type="hidden" value=""/>
                         <input name="signature" type="hidden" value=""/>
 
-                      <!--  <input name="Submit" class="btn btn-block btn-lg btn-default backColor" type="submit"
-                               value="PAGAR">-->
+                        <input name="Submit" class="btn btn-block btn-lg btn-default backColor" type="submit"
+                               value="PAGAR">
                     </form>
 
                     <button class="btn btn-block btn-lg btn-default backColor btnPagar">PAGAR</button>

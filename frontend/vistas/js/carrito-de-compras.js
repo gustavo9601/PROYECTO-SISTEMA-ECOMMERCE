@@ -558,7 +558,7 @@ $("#btnCheckout").click(function () {
         //Resteamo el htm de la tabla de proudctos en el modal
         $(".listaProductos table.tablaProductos tbody").html("");
 
-        //Resteamos para que aparesca checado la opcion por default payu
+        //Resteamos para que aparesca checado la opcion por default paypal
         $("#checkPaypal").prop("checked", true);
         $("#checkPayu").prop("checked", false);
 
@@ -821,7 +821,7 @@ $("input[name='pago']").change(function () {
     if (metodoPago == "payu") {
 
         $(".btnPagar").hide();
-        $(".formPayu").show();
+        $(".formPayu").show(); // mostramos el formulario de payu, pero solo se vera el btn ya que lo demas esta en hidden
 
         pagarConPayu();
 
@@ -954,7 +954,7 @@ $("#cambiarDivisa").change(function () {
  /*=============================================
  /*=============================================
  /*=============================================
- BOTÓN PAGAR
+ BOTÓN PAGAR PAYPAL
  =============================================*/
 
 //btn del modal para ejecutar el pago
@@ -1036,3 +1036,18 @@ $(".btnPagar").click(function () {
 
 
 })
+
+
+
+
+/*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ BOTÓN PAGAR PAYU
+ =============================================*/
+
+function  pagarConPayu(){
+
+}
