@@ -126,7 +126,7 @@ BREADCRUMB PERFIL
 
                                 if ($value2["tipo"] == 'virtual') {
 
-                                    echo '<a href="' . $url . '/curso">
+                                    echo '<a href="' . $url . 'curso/' . $value1['id'] . '/' . $value1['id_usuario'] . '/' . $value1['id_producto'] . '/' . $value2['ruta'] . '">
                     <button class="btn btn-default pull-left"> Ir al curso</button>
  </a>';
                                 } else {

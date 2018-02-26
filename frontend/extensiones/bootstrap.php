@@ -3,8 +3,6 @@
 //importamos el autoload
 require __DIR__ . '/vendor/autoload.php';
 
-//importamos el archivo de datos con la BD
-require_once '../modelos/carrito.modelo.php';
 
 
 //usando las dependencias propias del api

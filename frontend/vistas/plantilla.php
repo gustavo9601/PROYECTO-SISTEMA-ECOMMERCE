@@ -166,6 +166,9 @@ if (isset($_GET['ruta'])) {
         || $rutas[0] == 'salir'
         || $rutas[0] == 'perfil'
         || $rutas[0] == 'carrito-de-compras'
+        || $rutas[0] == 'error'
+        || $rutas[0] == 'finalizar-compra'
+        || $rutas[0] == 'curso'
     ) {
         include_once 'modulos/' . $rutas[0] . '.php';
     } else {

@@ -12,14 +12,14 @@ class AjaxProductos
 
     public function ajaxVistaProducto()
     {
-        $datos = [
-            'valor' => $this->valor,
-            'item' => $this->item,
-            'ruta' => $this->ruta
-        ];
-        //le pasamos el array de esta forma par aqu eno genere inconvenietes con el sql
-        $respuesta = @ControladorProductos::ctrActualizarVistaProducto($datos, $datos['item']);
-        //devolvemos un Json que entienda javascript, de array -> string
+        $item1 = $this->item;
+        $valor1 = $this->valor;
+
+        $item2 = "ruta";
+        $valor2 = $this->ruta;
+
+        $respuesta = ControladorProductos::ctrActualizarProducto($item1, $valor1, $item2, $valor2);
+
         echo $respuesta;
     }
 }
