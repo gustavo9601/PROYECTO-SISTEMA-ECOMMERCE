@@ -144,17 +144,17 @@ VENTANA MODAL PARA CHECKOUT
             <div class="contenidoCheckout">
 
                 <?php
-                    //Trera la informacion desde la BD, de las tarigfas del Ecommerce
-                    $respuesta = ControladorCarrito::ctrMostrarTarifas();
+                //Trera la informacion desde la BD, de las tarigfas del Ecommerce
+                $respuesta = ControladorCarrito::ctrMostrarTarifas();
 
-                    //Imprimimos los input ocultos
+                //Imprimimos los input ocultos
 
-                    echo '<input type="hidden" id="tasaImpuesto" value="'.$respuesta["impuesto"].'">
-                          <input type="hidden" id="envioNacional" value="'.$respuesta["envioNacional"].'">
-                          <input type="hidden" id="envioInternacional" value="'.$respuesta["envioInternacional"].'">
-                          <input type="hidden" id="tasaMinimaNal" value="'.$respuesta["tasaMinimaNal"].'">
-                          <input type="hidden" id="tasaMinimaInt" value="'.$respuesta["tasaMinimaInt"].'">
-                          <input type="hidden" id="tasaPais" value="'.$respuesta["pais"].'">
+                echo '<input type="hidden" id="tasaImpuesto" value="' . $respuesta["impuesto"] . '">
+                          <input type="hidden" id="envioNacional" value="' . $respuesta["envioNacional"] . '">
+                          <input type="hidden" id="envioInternacional" value="' . $respuesta["envioInternacional"] . '">
+                          <input type="hidden" id="tasaMinimaNal" value="' . $respuesta["tasaMinimaNal"] . '">
+                          <input type="hidden" id="tasaMinimaInt" value="' . $respuesta["tasaMinimaInt"] . '">
+                          <input type="hidden" id="tasaPais" value="' . $respuesta["pais"] . '">
 
                     ';
 
@@ -283,22 +283,39 @@ VENTANA MODAL PARA CHECKOUT
                     <!--Formulario de Payu-->
                     <form class="formPayu" style="display:none">
 
+                        <!--Merchan ID-->
                         <input name="merchantId" type="hidden" value=""/>
+                        <!--Id de cuenta-->
                         <input name="accountId" type="hidden" value=""/>
+                        <!--Nombre de describpcion-->
                         <input name="description" type="hidden" value=""/>
+                        <!--R   eferencia de transferencia-->
                         <input name="referenceCode" type="hidden" value=""/>
+                        <!--Costo-->
                         <input name="amount" type="hidden" value=""/>
+                        <!--Tasas de impuesto-->
                         <input name="tax" type="hidden" value=""/>
+                        <!--retorno que se genera de acuerdo al impuesto-->
                         <input name="taxReturnBase" type="hidden" value=""/>
+                        <!--Valor del envio-->
                         <input name="shipmentValue" type="hidden" value=""/>
+                        <!--Divisa-->
                         <input name="currency" type="hidden" value=""/>
+                        <!--Legunaje-->
                         <input name="lng" type="hidden" value="es"/>
+                        <!--URL de confirmacion -->
                         <input name="confirmationUrl" type="hidden" value=""/>
+                        <!--URL de respuesta-->
                         <input name="responseUrl" type="hidden" value=""/>
+                        <!--URL de respuesta si se cancela la transaccion-->
                         <input name="declinedResponseUrl" type="hidden" value=""/>
+                        <!--Poder visualizar la informacion de envio del comprador (YES / NO ) si es producoto fisico-->
                         <input name="displayShippingInformation" type="hidden" value=""/>
+                        <!--Valor 1 es modo prueba, valor 0 es modo prueba-->
                         <input name="test" type="hidden" value=""/>
+                        <!--Token o clave secreta para que payu identifique la transaccion , mezcla de variables cifrados-->
                         <input name="signature" type="hidden" value=""/>
+
 
                         <input name="Submit" class="btn btn-block btn-lg btn-default backColor" type="submit"
                                value="PAGAR">

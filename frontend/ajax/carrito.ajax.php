@@ -3,6 +3,7 @@
 //requeriendo el controlador del carrito de compras
 
 require_once '../extensiones/paypal.controlador.php';
+require_once '../controladores/carrito.controlador.php';
 
 class AjaxCarrito
 {
@@ -42,6 +43,17 @@ class AjaxCarrito
     }
 
 
+    /*=============================================
+ MÉTODO PAYU
+ =============================================*/
+    public function ajaxTraerComercioPayu()
+    {
+
+        //devolvemos la informacion de conexion con payu y paypal
+        $respuesta = ControladorCarrito::ctrMostrarTarifas();
+        echo json_encode($respuesta);  // devolvemos un string en formato json
+
+    }
 }
 
 
@@ -66,5 +78,13 @@ if (isset($_POST["divisa"])) {
 
 }
 
+
+/*=============================================
+MÉTODO PAYU
+=============================================*/
+if (isset($_POST['metodoPago']) && $_POST['metodoPago'] == 'payu') {
+    $payu = new AjaxCarrito();
+    $payu->ajaxTraerComercioPayu();
+}
 
 ?>

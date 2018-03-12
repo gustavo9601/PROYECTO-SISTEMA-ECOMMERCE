@@ -940,7 +940,6 @@ $("#cambiarDivisa").change(function () {
             }
 
             pagarConPayu();
-
         }
 
     })
@@ -1038,8 +1037,6 @@ $(".btnPagar").click(function () {
 })
 
 
-
-
 /*=============================================
  /*=============================================
  /*=============================================
@@ -1048,6 +1045,133 @@ $(".btnPagar").click(function () {
  BOTÓN PAGAR PAYU
  =============================================*/
 
-function  pagarConPayu(){
+function pagarConPayu() {
+
+    //console.log($("#seleccionarPais").val());
+    if ($("#seleccionarPais").val() == "") { // validamos que el paise no este nulo
+        $('.alert').remove();  //para que remueva si habia etiquetas de error antiguas
+        $(".formPayu").after('<div class="alert alert-warning">No ha seleccionado el país de envío</div>');
+
+        //seleccionamos el boton de envio
+        $('.formPayu input[name="Submit"]').attr("type", "button");
+
+        return;
+
+    }
+
+
+    //CAPTURA DE DATOS QUE SE ENVIARAN A LA FORMA DE PAGO
+    var divisa = $("#cambiarDivisa").val();
+    var total = $(".valorTotalCompra").html();
+    var impuesto = $(".valorTotalImpuesto").html();
+    var envio = $(".valorTotalEnvio").html();
+    var subtotal = $(".valorSubtotal").html();
+    var titulo = $(".valorTitulo");
+    var cantidad = $(".valorCantidad");
+    var valorItem = $(".valorItem");
+    var idProducto = $('.cuerpoCarrito button, .comprarAhora button');
+
+
+    //variables que se llenaran en el for, recorriendo cada uno de los articulos
+    var tituloArray = [];
+    var cantidadArray = [];
+    var idProductoArray = [];
+    var valorItemArray = [];
+
+    /*=========================
+     * A payu no se le envia el discrimando de precio por articulo
+     * Le pasamos el total ya que aparecera solo un item concatenado con todos lo productos
+     * =========================*/
+
+    //recorremos todos los productos, de acuerdo a la cantidad de productos que hallan
+    for (var i = 0; i < titulo.length; i++) {
+
+        tituloArray[i] = $(titulo[i]).html();
+        cantidadArray[i] = $(cantidad[i]).html();
+        idProductoArray[i] = $(idProducto[i]).attr("idProducto");
+    }
+
+    var datos = new FormData();
+    datos.append("metodoPago", "payu");
+
+    //peticion que traera la informacion de conexion con payu
+    $.ajax({
+        url: rutaOculta + "ajax/carrito.ajax.php",
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (respuesta) {
+            console.log(respuesta);
+
+
+            /*Rellenaremos la informacion de lso campos al formulario Hidden de payu*/
+
+            //variables que contendran los datos parseados de acuerdo a lo que traiga la BD
+            var merchantId = JSON.parse(respuesta).merchantIdPayu;
+            var accountId = JSON.parse(respuesta).accountIdPayu;
+            var apiKey = JSON.parse(respuesta).apiKeyPayu;
+            var modo = JSON.parse(respuesta).modoPayu;
+            //validacion de acuerdo a lo que venga se ejecutara la informacion
+            if (modo == "sandbox") {
+                var url = "https://sandbox.gateway.payulatam.com/ppp-web-gateway/";
+                var test = 1;
+            } else {
+                var url = "https://gateway.payulatam.com/ppp-web-gateway/";
+                var test = 0;
+            }
+            var description = tituloArray.toString(); // Convertimos a string
+            var referenceCode = (Number(Math.ceil(Math.random() * 1000000)) + Number(total).toFixed()); // numero aleatorio
+            var productosToString = idProductoArray.toString();
+            var productos = productosToString.replace(/,/g, "-"); // remplazamos las comas a -, cada id de proudcto
+            var cantidadToString = cantidadArray.toString();
+            var cantidad = cantidadToString.replace(/,/g, "-"); // remplazamos las comas po -
+            //hex_md5 // funcion que proviene de un plugin
+            var signature = hex_md5(apiKey + "~" + merchantId + "~" + referenceCode + "~" + total + "~" + divisa);  // cigrando en MD5 las variables
+
+            console.log(signature);
+            /*Cambiando variables en el formulario*/
+            $(".formPayu").attr("method", "POST");
+            $(".formPayu").attr("action", url);
+            $(".formPayu input[name='merchantId']").attr("value", merchantId);
+            $(".formPayu input[name='accountId']").attr("value", accountId);
+            $(".formPayu input[name='description']").attr("value", description);
+            $(".formPayu input[name='referenceCode']").attr("value", referenceCode);
+            $(".formPayu input[name='amount']").attr("value", total);
+            $(".formPayu input[name='tax']").attr("value", impuesto);
+            if (divisa == "COP") {  // solo valido para colomba, si se tiene IVA, de lo contrari odebe ir en 0
+                var taxReturnBase = (total - impuesto).toFixed(2)
+                //resta del total menos el impuesto, con solo 2 decimales
+            } else {
+                var taxReturnBase = 0;
+            }
+            /*
+             * la pagina de confirmacion, es necsario que el proyecto este publico
+             * ya que no funcionara como localhost o intranet
+             * */
+            $(".formPayu input[name='taxReturnBase']").attr("value", taxReturnBase);
+            $(".formPayu input[name='shipmentValue']").attr("value", envio);
+            $(".formPayu input[name='currency']").attr("value", divisa);
+            $(".formPayu input[name='responseUrl']").attr("value", rutaOculta + "index.php?ruta=finalizar-compra&payu=true&productos=" + productos + "&cantidad=" + cantidad);
+            $(".formPayu input[name='declinedResponseUrl']").attr("value", rutaOculta + "carrito-de-compras");
+            if (envio != 0) {  // validacion si el envio es fisico, para que diligencie los campos de direccion
+                var tipoEnvio = "YES";
+            } else {
+                var tipoEnvio = "NO";
+            }
+            $(".formPayu input[name='displayShippingInformation']").attr("value", tipoEnvio);
+            $(".formPayu input[name='test']").attr("value", test);
+            $(".formPayu input[name='signature']").attr("value", signature);
+
+            /*=============================================
+             GENERADOR DE TARJETAS DE CRÉDITO
+             http://www.elfqrin.com/discard_credit_card_generator.php
+             =============================================*/
+
+        }
+
+    });
+
 
 }

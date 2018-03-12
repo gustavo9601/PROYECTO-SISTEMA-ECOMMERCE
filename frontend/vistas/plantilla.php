@@ -86,6 +86,7 @@ $servidor = @Ruta::ctrRutaServidor();
 
     <script src="<?php echo $url; ?>vistas/js/plugins/sweetalert.min.js"></script>
 
+    <script src="<?php echo $url; ?>vistas/js/plugins/md5-min.js"></script>
 </head>
 
 <body>
