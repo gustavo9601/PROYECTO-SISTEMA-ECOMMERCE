@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7270f3f-1ac9-427d-aeb8-89489d65666c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/backend/vistas/categorias.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/backend/vistas/footer.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/backend/vistas/header.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/backend/vistas/left-control.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/vistas/modulos/carrito-de-compras.php" afterPath="$PROJECT_DIR$/frontend/vistas/modulos/carrito-de-compras.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -59,8 +55,8 @@
       <file leaf-file-name="carrito-de-compras.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/frontend/vistas/modulos/carrito-de-compras.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="320" column="45" lean-forward="false" selection-start-line="320" selection-start-column="45" selection-end-line="320" selection-end-column="45" />
+            <state relative-caret-position="142">
+              <caret line="283" column="0" lean-forward="true" selection-start-line="283" selection-start-column="0" selection-end-line="283" selection-end-column="0" />
               <folding>
                 <element signature="e#2738#2916#0#PHP" expanded="true" />
               </folding>
@@ -194,13 +190,13 @@
         <option value="$PROJECT_DIR$/frontend/vistas/modulos/infoproducto.php" />
         <option value="$PROJECT_DIR$/frontend/ajax/carrito.ajax.php" />
         <option value="$PROJECT_DIR$/frontend/vistas/plantilla.php" />
-        <option value="$PROJECT_DIR$/frontend/vistas/modulos/carrito-de-compras.php" />
         <option value="$PROJECT_DIR$/frontend/vistas/js/carrito-de-compras.js" />
         <option value="$PROJECT_DIR$/frontend/vistas/modulos/finalizar-compra.php" />
         <option value="$PROJECT_DIR$/backend/vistas/categorias.php" />
         <option value="$PROJECT_DIR$/backend/vistas/header.php" />
         <option value="$PROJECT_DIR$/backend/vistas/footer.php" />
         <option value="$PROJECT_DIR$/backend/vistas/plantilla.php" />
+        <option value="$PROJECT_DIR$/frontend/vistas/modulos/carrito-de-compras.php" />
       </list>
     </option>
   </component>
@@ -437,12 +433,12 @@
       <workItem from="1521298926840" duration="77000" />
       <workItem from="1521474753727" duration="602000" />
       <workItem from="1523151214955" duration="2092000" />
-      <workItem from="1528062637137" duration="612000" />
+      <workItem from="1528062637137" duration="735000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="266492000" />
+    <option name="totallyTimeSpent" value="266615000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="432" y="0" width="934" height="728" extended-state="0" />
@@ -882,8 +878,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/vistas/modulos/carrito-de-compras.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="320" column="45" lean-forward="false" selection-start-line="320" selection-start-column="45" selection-end-line="320" selection-end-column="45" />
+        <state relative-caret-position="142">
+          <caret line="283" column="0" lean-forward="true" selection-start-line="283" selection-start-column="0" selection-end-line="283" selection-end-column="0" />
           <folding>
             <element signature="e#2738#2916#0#PHP" expanded="true" />
           </folding>

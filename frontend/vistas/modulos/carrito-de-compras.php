@@ -281,7 +281,6 @@ VENTANA MODAL PARA CHECKOUT
                     <div class="clearfix"></div>
 
                     <!--Formulario de Payu-->
-                    <form class="formPayu" style="display:none">
 
                         <!--Merchan ID-->
                         <input name="merchantId" type="hidden" value=""/>
