@@ -170,6 +170,8 @@ if (isset($_GET['ruta'])) {
         || $rutas[0] == 'error'
         || $rutas[0] == 'finalizar-compra'
         || $rutas[0] == 'curso'
+        || $rutas[0] == 'ofertas'
+        || $rutas[0] == 'cancelado'
     ) {
         include_once 'modulos/' . $rutas[0] . '.php';
     } else {

@@ -764,6 +764,7 @@ $("#btnCheckout").click(function () {
 
                     //ejecuto la funcions
                     sumaTotalCompra();
+                    pagarConPayu();
 
 
                 });
@@ -939,7 +940,11 @@ $("#cambiarDivisa").change(function () {
 
             }
 
+
+
             pagarConPayu();
+
+
         }
 
     })
@@ -1049,6 +1054,7 @@ function pagarConPayu() {
 
     //console.log($("#seleccionarPais").val());
     if ($("#seleccionarPais").val() == "") { // validamos que el paise no este nulo
+
         $('.alert').remove();  //para que remueva si habia etiquetas de error antiguas
         $(".formPayu").after('<div class="alert alert-warning">No ha seleccionado el país de envío</div>');
 
@@ -1094,7 +1100,7 @@ function pagarConPayu() {
     var datos = new FormData();
     datos.append("metodoPago", "payu");
 
-    //peticion que traera la informacion de conexion con payu
+    //peticion que traera la informacion de conexion/credenciales con payu
     $.ajax({
         url: rutaOculta + "ajax/carrito.ajax.php",
         method: "POST",
@@ -1130,7 +1136,7 @@ function pagarConPayu() {
             //hex_md5 // funcion que proviene de un plugin
             var signature = hex_md5(apiKey + "~" + merchantId + "~" + referenceCode + "~" + total + "~" + divisa);  // cigrando en MD5 las variables
 
-            console.log(signature);
+            //console.log(signature);
             /*Cambiando variables en el formulario*/
             $(".formPayu").attr("method", "POST");
             $(".formPayu").attr("action", url);
@@ -1167,6 +1173,11 @@ function pagarConPayu() {
             /*=============================================
              GENERADOR DE TARJETAS DE CRÉDITO
              http://www.elfqrin.com/discard_credit_card_generator.php
+
+
+             //Nombre de la tarjeta
+             APPROVED
+
              =============================================*/
 
         }
@@ -1175,3 +1186,108 @@ function pagarConPayu() {
 
 
 }
+
+
+
+
+
+
+/*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ /*=============================================
+ AGREGAR PRODUCTOS GRATIS
+ =============================================*/
+
+$('.agregarGratis').click(function(){
+
+    var idProducto = $(this).attr("idProducto");
+    var idUsuario = $(this).attr("idUsuario");
+    var tipo = $(this).attr("tipo");
+    var titulo = $(this).attr("titulo");
+    var agregarGratis = false;
+
+    /*=============================================
+     VERIFICAR QUE NO TENGA EL PRODUCTO ADQUIRIDO
+     =============================================*/
+    var datos = new FormData();
+
+    datos.append("idUsuario", idUsuario);
+    datos.append("idProducto", idProducto);
+
+    $.ajax({
+        url:rutaOculta+"ajax/carrito.ajax.php",
+        method:"POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success:function(respuesta){
+
+            console.log(respuesta);
+
+            //validacion debe ser != pero se deja asi para que pueda alcenar por ahora la compra gratuita
+        if(respuesta == "false"){
+
+                swal({
+                    title: "¡Usted ya adquirió este producto!",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Regresar",
+                    closeOnConfirm: false
+                })
+
+
+            }else{
+
+                if(tipo == "virtual"){
+
+                    agregarGratis = true;
+
+                }else{
+
+                    var seleccionarDetalle = $(".seleccionarDetalle");
+
+                    for(var i = 0; i < seleccionarDetalle.length; i++){
+
+                        if($(seleccionarDetalle[i]).val() == ""){
+
+                            swal({
+                                title: "Debe seleccionar Talla y Color",
+                                text: "",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "¡Seleccionar!",
+                                closeOnConfirm: false
+                            })
+
+                        }else{
+
+                            titulo = titulo + "-" + $(seleccionarDetalle[i]).val();
+
+                            agregarGratis = true;
+
+                        }
+
+                    }
+
+                }
+
+                if(agregarGratis){
+
+                    window.location = rutaOculta+"index.php?ruta=finalizar-compra&gratis=true&producto="+idProducto+"&titulo="+titulo;
+
+                }
+
+            }
+
+
+        }
+    });
+
+
+});

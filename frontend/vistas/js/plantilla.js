@@ -130,3 +130,15 @@ console.log(indice);
 $("#item" + indice.pop()).addClass('active');  //coloreamos el enlace activo
 console.log(indice.pop());
 
+
+
+/*=============================================
+ OFERTAS
+ =============================================*/
+
+//eliminado el jumbotron de ofertas
+$(".cerrarOfertas").click(function(){
+
+    $(this).parent().remove();
+
+})

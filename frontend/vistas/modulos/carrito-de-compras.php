@@ -281,7 +281,7 @@ VENTANA MODAL PARA CHECKOUT
                     <div class="clearfix"></div>
 
                     <!--Formulario de Payu-->
-
+                    <form class="formPayu" style="display:none">
                         <!--Merchan ID-->
                         <input name="merchantId" type="hidden" value=""/>
                         <!--Id de cuenta-->
@@ -306,11 +306,11 @@ VENTANA MODAL PARA CHECKOUT
                         <input name="confirmationUrl" type="hidden" value=""/>
                         <!--URL de respuesta-->
                         <input name="responseUrl" type="hidden" value=""/>
-                        <!--URL de respuesta si se cancela la transaccion-->
+                        <!--URL de respuesta si se  cancela la transaccion-->
                         <input name="declinedResponseUrl" type="hidden" value=""/>
                         <!--Poder visualizar la informacion de envio del comprador (YES / NO ) si es producoto fisico-->
                         <input name="displayShippingInformation" type="hidden" value=""/>
-                        <!--Valor 1 es modo prueba, valor 0 es modo prueba-->
+                        <!--Valor 1 es modo prueba, valor 0 es modo real-->
                         <input name="test" type="hidden" value=""/>
                         <!--Token o clave secreta para que payu identifique la transaccion , mezcla de variables cifrados-->
                         <input name="signature" type="hidden" value=""/>

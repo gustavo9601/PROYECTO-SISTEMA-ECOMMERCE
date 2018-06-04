@@ -11,7 +11,7 @@ class Ruta
     public function ctrRuta()
     {
         //Ruta fija, para encontrar los archivos vinculados
-        return "http://localhost:85/PROYECTO%20SISTEMA%20ECOMMERCE/frontend/";
+        return "http://localhost/PROYECTO%20SISTEMA%20ECOMMERCE/frontend/";
 
     }
 
@@ -23,7 +23,7 @@ class Ruta
     public function ctrRutaServidor()
     {
         //Ruta fija, para encontrar los archivos vinculados
-        return "http://localhost:85/PROYECTO%20SISTEMA%20ECOMMERCE/backend/";
+        return "http://localhost/PROYECTO%20SISTEMA%20ECOMMERCE/backend/";
 
     }
 

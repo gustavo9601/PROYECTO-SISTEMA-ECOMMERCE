@@ -55,7 +55,7 @@ $url = @Ruta::ctrRuta();
                 <figure class="visor">';
 
 
-                for ($i = 0; $i < count($multimedia); $i++) {
+                for ($i = 0; $i < @count($multimedia); $i++) {
                     echo '<img id="lupa' . ($i + 1) . '" class="img-thumbnail"
                          src="' . $servidor . $multimedia[$i]['foto'] . '"
                          alt="">';
@@ -65,7 +65,7 @@ $url = @Ruta::ctrRuta();
                 <div class="flexslider">
                     <ul class="slides">';
 
-                for ($i = 0; $i < count($multimedia); $i++) {
+                for ($i = 0; $i < @count($multimedia); $i++) {
                     echo '<li>
                             <img class="img-thumbnail"
                                  src="' . $servidor . $multimedia[$i]['foto'] . '"
@@ -478,11 +478,31 @@ $url = @Ruta::ctrRuta();
                 //validando si el producto es gratis
                 if ($infoproducto['precio'] == 0) {
                     echo '<div class="col-md-6 col-xs-12">';
+
+
+                    //Validacion si iniico sesion, para que se registre primero antes de acceder o solaicitar algo gratis
+                    if (isset($_SESSION['validarSesion']) && $_SESSION['validarSesion'] == 'ok') {
+
+
                     if ($infoproducto['tipo'] == "virtual") {
 
-                        echo '<button class="btn btn-default btn-block btn-lg backColor"><small>ACCEDER AHORA</small></button>';
+                        echo '<button class="btn btn-default btn-block btn-lg backColor agregarGratis" idProducto="'.$infoproducto['id'].'" idUsuario="'.$_SESSION['id'].'" tipo="'.$infoproducto['tipo'].'" titulo="'.$infoproducto['titulo'].'"><small>ACCEDER AHORA</small></button>';
                     } else {
-                        echo '<button class="btn btn-default btn-block btn-lg backColor"><small>SOLICITAR AHORA</small></button>';
+                        echo '<button class="btn btn-default btn-block btn-lg backColor agregarGratis" idProducto="'.$infoproducto['id'].'" idUsuario="'.$_SESSION['id'].'" tipo="'.$infoproducto['tipo'].'" titulo="'.$infoproducto['titulo'].'" ><small>SOLICITAR AHORA</small></button>
+                            <br> <div class="col-xs-12 alert alert-info text-left">
+                                    <strong>¡Atencion!</strong>
+                                        El producto a solicitar es totalmente gratuito y se enviara la direccion solicitada, solo se cobraran cargos de Envio.
+                                </div>';
+                    }
+
+                }else{
+                        if ($infoproducto['tipo'] == "virtual") {
+
+                            echo '<a class="btn btn-default btn-block btn-lg backColor" href="#modalIngreso" data-toggle="modal"><small>ACCEDER AHORA</small></a>';
+                        } else {
+                            echo '<a class="btn btn-default btn-block btn-lg backColor" href="#modalIngreso" data-toggle="modal"><small>SOLICITAR AHORA</small></a>';
+                        }
+
                     }
                     echo '</div>';
                 } else {
@@ -1193,27 +1213,44 @@ VENTANA MODAL PARA CHECKOUT
 
                     <div class="clearfix"></div>
 
+                    <!--Formulario de Payu-->
                     <form class="formPayu" style="display:none">
-
+                        <!--Merchan ID-->
                         <input name="merchantId" type="hidden" value=""/>
+                        <!--Id de cuenta-->
                         <input name="accountId" type="hidden" value=""/>
+                        <!--Nombre de describpcion-->
                         <input name="description" type="hidden" value=""/>
+                        <!--R   eferencia de transferencia-->
                         <input name="referenceCode" type="hidden" value=""/>
+                        <!--Costo-->
                         <input name="amount" type="hidden" value=""/>
+                        <!--Tasas de impuesto-->
                         <input name="tax" type="hidden" value=""/>
+                        <!--retorno que se genera de acuerdo al impuesto-->
                         <input name="taxReturnBase" type="hidden" value=""/>
+                        <!--Valor del envio-->
                         <input name="shipmentValue" type="hidden" value=""/>
+                        <!--Divisa-->
                         <input name="currency" type="hidden" value=""/>
+                        <!--Legunaje-->
                         <input name="lng" type="hidden" value="es"/>
+                        <!--URL de confirmacion -->
                         <input name="confirmationUrl" type="hidden" value=""/>
+                        <!--URL de respuesta-->
                         <input name="responseUrl" type="hidden" value=""/>
+                        <!--URL de respuesta si se  cancela la transaccion-->
                         <input name="declinedResponseUrl" type="hidden" value=""/>
+                        <!--Poder visualizar la informacion de envio del comprador (YES / NO ) si es producoto fisico-->
                         <input name="displayShippingInformation" type="hidden" value=""/>
+                        <!--Valor 1 es modo prueba, valor 0 es modo real-->
                         <input name="test" type="hidden" value=""/>
+                        <!--Token o clave secreta para que payu identifique la transaccion , mezcla de variables cifrados-->
                         <input name="signature" type="hidden" value=""/>
 
-                        <!--  <input name="Submit" class="btn btn-block btn-lg btn-default backColor" type="submit"
-                                 value="PAGAR">-->
+
+                        <input name="Submit" class="btn btn-block btn-lg btn-default backColor" type="submit"
+                               value="PAGAR">
                     </form>
 
                     <button class="btn btn-block btn-lg btn-default backColor btnPagar">PAGAR</button>
