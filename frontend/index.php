@@ -12,6 +12,7 @@ require_once "modelos/productos.modelo.php";
 require_once "modelos/slide.modelo.php";
 require_once "modelos/usuarios.modelo.php";
 require_once "modelos/carrito.modelo.php";
+
 require_once "modelos/rutas.php";
 
 

@@ -1,5 +1,6 @@
 <?php
 
+
 class ControladorPlantilla
 {
 
@@ -21,4 +22,20 @@ class ControladorPlantilla
         $respuesta = ModeloPantilla::mdlEstiloPlantilla($tabla);
         return $respuesta;
     }
+
+
+    /*=============================================
+    TRAEMOS LAS CABECERAS
+    =============================================*/
+
+     static public function ctrTraerCabeceras($ruta){
+
+        $tabla = "cabeceras";
+
+        $respuesta =  ModeloPantilla::mdlTraerCabeceras($tabla, $ruta);
+
+        return $respuesta;
+
+    }
+
 }

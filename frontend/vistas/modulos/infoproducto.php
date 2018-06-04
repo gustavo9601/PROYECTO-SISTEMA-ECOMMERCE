@@ -1268,3 +1268,64 @@ VENTANA MODAL PARA CHECKOUT
     </div>
 
 </div>
+
+
+<?php
+/*===========================================*/
+/*TARJETAS ENRIQUECIDADS - PARA ESTRUCTURACION DE DATOS EN EL NAVEGADOR*/
+
+/*
+ * Consultar enlace -> ejemplos de estructura
+ * https://developers.google.com/search/docs/guides/search-gallery
+ *
+ * */
+
+
+/*===========================================*/
+
+/*producto*/
+if($infoproducto["tipo"] == "fisico"){
+
+    echo '<script type="application/ld+json">
+
+			{
+			  "@context": "http://schema.org/",
+			  "@type": "Product",
+			  "name": "'.$infoproducto["titulo"].'",
+			  "image": [';
+
+    //recorremos el arreglo multimedia, que trae las url de las fotos
+    for($i = 0; $i < count($multimedia); $i ++){
+
+        echo $servidor.$multimedia[$i]["foto"].',';
+
+    }
+
+    echo '],
+			  "description": "'.$infoproducto["descripcion"].'"
+	  
+			}
+
+		</script>';
+
+}else{
+/*cursos*/
+    echo '<script type="application/ld+json">
+
+			{
+			  "@context": "http://schema.org",
+			  "@type": "Course",
+			  "name": "'.$infoproducto["titulo"].'",
+			  "description": "'.$infoproducto["descripcion"].'",
+			  "provider": {
+			    "@type": "Organization",
+			    "name": "Tu Logo",
+			    "sameAs": "'.$url.$infoproducto["ruta"].'"
+			  }
+			}
+
+		</script>';
+
+}
+
+?>
