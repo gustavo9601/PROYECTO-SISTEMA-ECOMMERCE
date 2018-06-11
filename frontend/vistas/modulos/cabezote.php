@@ -287,7 +287,7 @@ HEADER
             foreach ($categorias as $dato) {
                 echo '<div class="col-lg-2 col-md-3 col col-sm-4 col-xs-12">
                         <h4>
-                            <a href="' . $url . $dato['ruta'] . '" class="pixelCategorias">' . $dato['categoria'] . '</a>
+                            <a href="' . $url . $dato['ruta'] . '" class="pixelCategorias" titulo="' . $dato['categoria'] . '">' . $dato['categoria'] . '</a>
                         </h4>
                         <hr>
                         <ul>';
@@ -298,7 +298,7 @@ HEADER
                 $subCategorias = @ControladorProductos::ctrMostrarSubCategorias($item, $valor);
                 //lleganod dinamico de subcategorias
                 foreach ($subCategorias as $dato2) {
-                    echo '<li><a href="' . $url . $dato2['ruta'] . '" class="pixelSubCategorias">' . $dato2['subcategoria'] . '</a></li>';
+                    echo '<li><a href="' . $url . $dato2['ruta'] . '" class="pixelSubCategorias" titulo="' . $dato2['subcategoria'] . '">' . $dato2['subcategoria'] . '</a></li>';
                 }
                 echo '</ul>
                     </div>';

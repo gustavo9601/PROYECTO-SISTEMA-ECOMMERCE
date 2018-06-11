@@ -134,6 +134,8 @@ Marcado HTML5
 
     <link rel="stylesheet" href="<?php echo $url; ?>vistas/css/ofertas.css">
 
+    <link rel="stylesheet" href="<?php echo $url; ?>vistas/css/footer.css">
+
     <link rel="stylesheet" href="<?php echo $url; ?>vistas/css/plugins/sweetalert.css">
 
     <link rel="stylesheet" href="<?php echo $url; ?>vistas/css/plugins/dscountdown.css">
@@ -158,8 +160,22 @@ Marcado HTML5
 
     <script src="<?php echo $url; ?>vistas/js/plugins/dscountdown.min.js"></script>
 
+    <script src="<?php echo $url; ?>vistas/js/plugins/knob.jquery.js"></script>
+
     <!--Script necesario de libreria de GOOGLLE PARA COMPARTIR-->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+
+
+
+
+    <!--==================================
+PIXEL DE FACEBOOK
+ ======================================-->
+    <!-- Facebook Pixel Code DESDE LA BD-->
+
+    <?php echo $llamandoControlladorPlantilla["pixelFacebook"]; ?>
+
 </head>
 
 <body>
@@ -261,6 +277,11 @@ if (isset($_GET['ruta'])) {
     include "modulos/slide.php";
     //incluyendo el modulo de articulos destacados
     include "modulos/destacados.php";
+
+    include "modulos/visitas.php";
+
+    include "modulos/footer.php";
+
 }
 ?>
 
@@ -279,37 +300,19 @@ JAVASCRIPT PERSONALIZADOS
 <script src="<?php echo $url; ?>vistas/js/usuarios.js"></script>
 <script src="<?php echo $url; ?>vistas/js/registroFacebook.js"></script>
 <script src="<?php echo $url; ?>vistas/js/carrito-de-compras.js"></script>
+<script src="<?php echo $url; ?>vistas/js/visitas.js"></script>
 
 
 <!--=====================================
 https://developers.facebook.com/
+API DE FACEBOOK DESDE LA BD
 ======================================-->
-<script>
 
+<?php
+echo $llamandoControlladorPlantilla['apiFacebook'];
+?>
 
-    window.fbAsyncInit = function () {
-        FB.init({
-            appId: '171275970307432',
-            cookie: true,
-            xfbml: true,
-            version: 'v2.11'
-        });
-
-        FB.AppEvents.logPageView();
-
-    };
-
-    (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-            return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-
+    <script>
 
     /*=============================================
      COMPARTIR EN FACEBOOK
@@ -354,6 +357,14 @@ https://developers.facebook.com/
 
 
 
+<!--==================================
+google analytics
+Google analytics desde la BD
+======================================-->
+
+<?php
+echo $llamandoControlladorPlantilla['googleAnalytics'];
+?>
 
 
 </body>
