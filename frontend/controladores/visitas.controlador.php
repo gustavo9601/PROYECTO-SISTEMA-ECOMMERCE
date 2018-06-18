@@ -6,7 +6,7 @@ class ControladorVisitas{
     GUARDAR IP
     =============================================*/
 
-    static public function ctrEnviarIp($ip, $pais){
+    static public function ctrEnviarIp($ip, $pais, $codigo){
 
         $tabla = "visitaspersonas";
         $visita = 1;
@@ -75,7 +75,7 @@ class ControladorVisitas{
 
                 $cantidad = 1;
 
-                $insertarPais = ModeloVisitas::mdlInsertarPais($tablaPais, $pais, $cantidad);
+                $insertarPais = ModeloVisitas::mdlInsertarPais($tablaPais, $pais,$codigo,  $cantidad);
 
             }else{
 

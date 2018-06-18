@@ -1095,7 +1095,12 @@ function pagarConPayu() {
         tituloArray[i] = $(titulo[i]).html();
         cantidadArray[i] = $(cantidad[i]).html();
         idProductoArray[i] = $(idProducto[i]).attr("idProducto");
+        valorItemArray[i] = $(valorItem[i]).html();
     }
+
+    var valorItemString = valorItemArray.toString();  // convertimos los precios de cada item a un string separado por comas
+    var pago = valorItemString.replace(",","-");  // reemplazamos todas las comas a guines del string
+
 
     var datos = new FormData();
     datos.append("metodoPago", "payu");
@@ -1159,7 +1164,7 @@ function pagarConPayu() {
             $(".formPayu input[name='taxReturnBase']").attr("value", taxReturnBase);
             $(".formPayu input[name='shipmentValue']").attr("value", envio);
             $(".formPayu input[name='currency']").attr("value", divisa);
-            $(".formPayu input[name='responseUrl']").attr("value", rutaOculta + "index.php?ruta=finalizar-compra&payu=true&productos=" + productos + "&cantidad=" + cantidad);
+            $(".formPayu input[name='responseUrl']").attr("value", rutaOculta + "index.php?ruta=finalizar-compra&payu=true&productos=" + productos + "&cantidad=" + cantidad + "&pago=" +pago);
             $(".formPayu input[name='declinedResponseUrl']").attr("value", rutaOculta + "carrito-de-compras");
             if (envio != 0) {  // validacion si el envio es fisico, para que diligencie los campos de direccion
                 var tipoEnvio = "YES";

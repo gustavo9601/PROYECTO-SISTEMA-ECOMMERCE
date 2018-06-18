@@ -18,9 +18,10 @@ $informacionPais = file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip)
 $datosPais = json_decode($informacionPais);  // convertimos a Json
 
 $pais = $datosPais->geoplugin_countryName;
+$codigo = $datosPais->geoplugin_countryCode;
 
 //insertamos la visita . con la IP publica
-$enviarIp = ControladorVisitas::ctrEnviarIp($ip, $pais);
+$enviarIp = ControladorVisitas::ctrEnviarIp($ip, $pais, $codigo);
 
 //consultamos la cantidad de visitas
 $totalVisitas = ControladorVisitas::ctrMostrarTotalVisitas();

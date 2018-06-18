@@ -73,11 +73,12 @@ class ModeloVisitas{
     /*=============================================
     INSERTAR PAIS
     =============================================*/
-    static public function mdlInsertarPais($tabla, $pais, $cantidad){
+    static public function mdlInsertarPais($tabla, $pais,$codigo, $cantidad){
 
-        $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(pais, cantidad) VALUES (:pais, :cantidad)");
+        $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(pais,codigo, cantidad) VALUES (:pais, :codigo ,:cantidad)");
 
         $stmt->bindParam(":pais", $pais, PDO::PARAM_STR);
+        $stmt->bindParam(":codigo", $codigo, PDO::PARAM_STR);
         $stmt->bindParam(":cantidad", $cantidad, PDO::PARAM_INT);
 
         if($stmt->execute()){

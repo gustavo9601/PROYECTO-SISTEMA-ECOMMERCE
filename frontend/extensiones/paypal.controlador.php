@@ -34,6 +34,7 @@ class Paypal
         //reemplazamos las comas por un guion
         $idProductos = str_replace(",", "-", $datos["idProductoArray"]);
         $cantidadProductos = str_replace(",", "-", $datos["cantidadArray"]);
+        $pagoProductos = str_replace(",", "-", $datos["valorItemArray"]);
 
 
         #Seleccionamos el método de pago
@@ -87,8 +88,9 @@ class Paypal
         #Importante agregar la URL principal en la API developers de Paypal,
         $url = @Ruta::ctrRuta(); // ruta vase de nuestra amplicacion
 
+
         $redirectUrls = new RedirectUrls();
-        $redirectUrls->setReturnUrl("$url/index.php?ruta=finalizar-compra&paypal=true&productos=" . $idProductos . "&cantidad=" . $cantidadProductos)// url de retorno ok
+        $redirectUrls->setReturnUrl("$url/index.php?ruta=finalizar-compra&paypal=true&productos=" . $idProductos . "&cantidad=" . $cantidadProductos."&pago=".$pagoProductos)// url de retorno ok
         ->setCancelUrl("$url/carrito-de-compras");  // url de cancelacion
 
 

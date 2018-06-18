@@ -38,6 +38,7 @@ if (isset($_GET['paypal']) && $_GET['paypal'] === 'true') {
     //creamos los array de cada proudcto y cantidad que recibo
     $productos = explode("-", $_GET['productos']);
     $cantidad = explode("-", $_GET['cantidad']);
+    $pago =explode('-', $_GET['pago']) ;
 
     #capturamos el Id del pago que arroja Paypal
     $paymentId = $_GET['paymentId'];
@@ -77,7 +78,8 @@ if (isset($_GET['paypal']) && $_GET['paypal'] === 'true') {
             "metodo" => "paypal",
             "email" => $emailComprador,
             "direccion" => $direccion,
-            "pais" => $pais);
+            "pais" => $pais,
+            "pago" => $pago[$i]);
 
         $respuesta = ControladorCarrito::ctrNuevasCompras($datos);
 
@@ -161,6 +163,7 @@ if (isset($_GET['paypal']) && $_GET['paypal'] === 'true') {
         //separacion de los productos con guin a array
         $productos = explode("-", $_GET['productos']);
         $cantidad = explode("-", $_GET['cantidad']);
+        $pago = explode('-', $_GET['pago']);
 
         #Actualizamos la base de datos
         for ($i = 0; $i < count($productos); $i++) {
@@ -171,7 +174,8 @@ if (isset($_GET['paypal']) && $_GET['paypal'] === 'true') {
                 "metodo" => "payu",
                 "email" => $_REQUEST['buyerEmail'],
                 "direccion" => "",  // por ahora no tenemos la direccion, ya que se tendra cuando salga a produccion publico
-                "pais" => "");  // por ahora tampoco esta pais, pero cuando recibamos la informacion de confirmacion si contendra la informacion
+                "pais" => "",
+                "pago" => $pago[$i]);  // por ahora tampoco esta pais, pero cuando recibamos la informacion de confirmacion si contendra la informacion
 
             $respuesta = ControladorCarrito::ctrNuevasCompras($datos);
 
@@ -218,13 +222,15 @@ else if(isset($_GET['gratis']) && $_GET['gratis'] == 'true') {
 
     $producto = $_GET['producto'];
     $titulo = $_GET['titulo'];
+    $pago =  $_GET['pago'];
 
     $datos = array(  "idUsuario"=>$_SESSION["id"],
         "idProducto"=>$producto,
         "metodo"=>"gratis",
         "email"=>$_SESSION["email"],
         "direccion"=>"",
-        "pais"=>"");
+        "pais"=>"",
+        "pago" => $pago);
 
     $respuesta = ControladorCarrito::ctrNuevasCompras($datos);
 
