@@ -176,6 +176,7 @@ if(isset($_SESSION["validarSesionBackend"]) && $_SESSION["validarSesionBackend"]
 
 <script src="vistas/js/plantilla.js"></script>
 <script src="vistas/js/gestorComercio.js"></script>
+<script src="vistas/js/gestorSlide.js"></script>
 </body>
 
 </html>

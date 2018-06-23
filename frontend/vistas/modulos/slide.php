@@ -32,20 +32,37 @@ $servidor = @Ruta::ctrRutaServidor();
             <li>
                 <img src="' . $servidor . $dato['imgFondo'] . '"
                      alt="">
-                <div class="slideOpciones ' . $dato['tipoSlide'] . '">
-                    <img src="' . $servidor . $dato['imgProducto'] . '"
-                         alt="" class="imgProducto" style="top:' . $estiloImgProducto['top'] . '; right:' . $estiloImgProducto['right'] . '; width:' . $estiloImgProducto['width'] . ';
-                                                            left:' . $estiloImgProducto['left'] . '">
+                <div class="slideOpciones ' . $dato['tipoSlide'] . '">';
 
-                    <div class="textosSlide" style="top:' . $estiloTextoSlide['top'] . '; right:' . $estiloTextoSlide['right'] . '; width:' . $estiloTextoSlide['width'] . ';
+
+                if($dato["imgProducto"] != ""){
+
+                    echo '<img class="imgProducto" src="'.$servidor.$dato["imgProducto"].'" style="top:'.$estiloImgProducto["top"].'%; right:'.$estiloImgProducto["right"].'%; width:'.$estiloImgProducto["width"].'%; left:'.$estiloImgProducto["left"].'%">';
+
+                }
+
+
+                echo '<div class="textosSlide" style="top:' . $estiloTextoSlide['top'] . '; right:' . $estiloTextoSlide['right'] . '; width:' . $estiloTextoSlide['width'] . ';
                                                             left:' . $estiloTextoSlide['left'] . '">
                         <h1 style="color:' . $titulo1['color'] . '">' . $titulo1['texto'] . '</h1>
                         <h2 style="color:' . $titulo2['color'] . '">' . $titulo2['texto'] . '</h2>
-                        <h3 style="color:' . $titulo3['color'] . '">' . $titulo3['texto'] . '</h3>
-                        <a href="' . $dato['url'] . '">
-                         ' . $dato['boton'] . '
-                        </a>
-                    </div>
+                        <h3 style="color:' . $titulo3['color'] . '">' . $titulo3['texto'] . '</h3>';
+
+                if($dato["boton"] != ""){
+
+                    echo '<a href="'.$dato["url"].'">
+										
+										<button class="btn btn-default backColor text-uppercase">
+
+										'.$dato["boton"].' <span class="fa fa-chevron-right"></span>
+
+										</button>
+
+									</a>';
+
+                }
+
+                    echo '</div>
                 </div>
             </li>
             ';
