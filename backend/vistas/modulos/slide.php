@@ -1,56 +1,56 @@
 <?php
 
-$slide = ControladorSlide::ctrMostrarSlide();
+ $slide = ControladorSlide::ctrMostrarSlide();
 
 ?>
 
-    <div class="content-wrapper">
+<div class="content-wrapper">
+  
+  <section class="content-header">
+    
+    <h1>
+      Gestor Slide
+    </h1>
 
-        <section class="content-header">
+    <ol class="breadcrumb">
 
-            <h1>
-                Gestor Slide
-            </h1>
+      <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
 
-            <ol class="breadcrumb">
+      <li class="active">Gestor Slide</li>
+      
+    </ol>
 
-                <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
+  </section>
 
-                <li class="active">Gestor Slide</li>
+  <section class="content">
 
-            </ol>
+    <div class="box">
 
-        </section>
+      <div class="box-header with-border">
+  
+        <button class="btn btn-primary agregarSlide">
+          
+          Agregar slide
 
-        <section class="content">
+        </button>
 
-            <div class="box">
+      </div>
 
-                <div class="box-header with-border">
+      <div class="box-body">
 
-                    <button class="btn btn-primary agregarSlide">
+        <ul class="todo-list">
 
-                        Agregar slide
+<?php
 
-                    </button>
+foreach ($slide as $key => $value) {  
 
-                </div>
+  $estiloImgProducto = json_decode($value["estiloImgProducto"], true);
+  $estiloTextoSlide = json_decode($value["estiloTextoSlide"], true);
+  $titulo1 = json_decode($value["titulo1"], true);
+  $titulo2 = json_decode($value["titulo2"], true);
+  $titulo3 = json_decode($value["titulo3"], true);
 
-                <div class="box-body">
-
-                    <ul class="todo-list">
-
-                        <?php
-
-                        foreach ($slide as $key => $value) {
-
-                            $estiloImgProducto = json_decode($value["estiloImgProducto"], true);
-                            $estiloTextoSlide = json_decode($value["estiloTextoSlide"], true);
-                            $titulo1 = json_decode($value["titulo1"], true);
-                            $titulo2 = json_decode($value["titulo2"], true);
-                            $titulo3 = json_decode($value["titulo3"], true);
-
-                            echo '<li class="itemSlide" id="'.$value["id"].'">
+  echo '<li class="itemSlide" id="'.$value["id"].'">
 
           <div class="box-group" id="accordion">
 
@@ -74,18 +74,18 @@ $slide = ControladorSlide::ctrMostrarSlide();
                 <h4 class="box-title">
 
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse'.$value["id"].'">';
+              
+                if($value["nombre"] != ""){
 
-                            if($value["nombre"] != ""){
+                   echo '<p class="text-uppercase">'.$value["nombre"].'</p>';
+                
+                }else{
 
-                                echo '<p class="text-uppercase">'.$value["nombre"].'</p>';
+                  echo 'Slide '.$value["id"];
 
-                            }else{
+                }
 
-                                echo 'Slide '.$value["id"];
-
-                            }
-
-                            echo '</a>
+                echo '</a>
 
                 </h4>
 
@@ -284,9 +284,9 @@ $slide = ControladorSlide::ctrMostrarSlide();
                           
                         <label>Posición HORIZONTAL de la imagen del producto: </label>';
 
-                            if($value["tipoSlide"] == "slideOpcion1"){
+                        if($value["tipoSlide"] == "slideOpcion1"){
 
-                                echo '<input type="text" indice="'.$key.'" value="" class="slider form-control posHorizontal posHorizontal'.$key.'" 
+                        echo '<input type="text" indice="'.$key.'" value="" class="slider form-control posHorizontal posHorizontal'.$key.'" 
                           tipoSlide = "'.$value["tipoSlide"] .'"
                           data-slider-min="0" 
                           data-slider-max="50"
@@ -297,9 +297,9 @@ $slide = ControladorSlide::ctrMostrarSlide();
                           data-slider-tooltip="show" 
                           data-slider-id="blue">';
 
-                            }else{
+                        }else{
 
-                                echo '<input type="text" indice="'.$key.'" value="" class="slider form-control posHorizontal posHorizontal'.$key.'" 
+                          echo '<input type="text" indice="'.$key.'" value="" class="slider form-control posHorizontal posHorizontal'.$key.'" 
                           tipoSlide = "'.$value["tipoSlide"] .'"
                           data-slider-min="0" 
                           data-slider-max="50"
@@ -310,10 +310,10 @@ $slide = ControladorSlide::ctrMostrarSlide();
                           data-slider-tooltip="show" 
                           data-slider-id="blue">';
 
-                            }
+                        }
 
 
-                            echo '<label>ANCHO de la imagen del producto: </label>
+                      echo '<label>ANCHO de la imagen del producto: </label>
 
                         <input type="text" indice="'.$key.'" value="" class="slider form-control anchoImagen anchoImagen'.$key.'" data-slider-min="0" 
                           data-slider-max="50"
@@ -429,9 +429,9 @@ $slide = ControladorSlide::ctrMostrarSlide();
                           
                         <label>Posición HORIZONTAL del texto: </label>';
 
-                            if($value["tipoSlide"] == "slideOpcion1"){
+                        if($value["tipoSlide"] == "slideOpcion1"){
 
-                                echo '<input type="text" indice="'.$key.'" value="" class="slider form-control posHorizontalTexto posHorizontalTexto'.$key.'" 
+                        echo '<input type="text" indice="'.$key.'" value="" class="slider form-control posHorizontalTexto posHorizontalTexto'.$key.'" 
                           tipoSlide = "'.$value["tipoSlide"] .'"
                           data-slider-min="0" 
                           data-slider-max="50"
@@ -442,9 +442,9 @@ $slide = ControladorSlide::ctrMostrarSlide();
                           data-slider-tooltip="show" 
                           data-slider-id="blue">';
 
-                            }else{
+                        }else{
 
-                                echo '<input type="text" indice="'.$key.'" value="" class="slider form-control posHorizontalTexto posHorizontalTexto'.$key.'" 
+                          echo '<input type="text" indice="'.$key.'" value="" class="slider form-control posHorizontalTexto posHorizontalTexto'.$key.'" 
                           tipoSlide = "'.$value["tipoSlide"] .'"
                           data-slider-min="0" 
                           data-slider-max="50"
@@ -455,10 +455,10 @@ $slide = ControladorSlide::ctrMostrarSlide();
                           data-slider-tooltip="show" 
                           data-slider-id="blue">';
 
-                            }
+                        }
 
 
-                            echo '<label>ANCHO del texto: </label>
+                      echo '<label>ANCHO del texto: </label>
 
                         <input type="text" indice="'.$key.'" value="" class="slider form-control anchoTexto anchoTexto'.$key.'" data-slider-min="0" 
                           data-slider-max="50"
@@ -497,9 +497,9 @@ $slide = ControladorSlide::ctrMostrarSlide();
 
                       <h3 style="color:'.$titulo3["color"].'">'.$titulo3["texto"].'</h3>';
 
-                            if($value["boton"] != ""){
+                    if($value["boton"] != ""){
 
-                                echo '<a href="'.$value["url"].'">
+                      echo '<a href="'.$value["url"].'">
                         
                         <button class="btn btn-default backColor text-uppercase">
 
@@ -509,9 +509,9 @@ $slide = ControladorSlide::ctrMostrarSlide();
 
                       </a>';
 
-                            }
+                    }
 
-                            echo '</div>  
+                    echo '</div>  
 
                   </div>
 
@@ -525,25 +525,24 @@ $slide = ControladorSlide::ctrMostrarSlide();
 
         </li>';
 
-                        }
+}
 
 
-                        ?>
+?>   
 
-                    </ul>
+        </ul>
 
-                </div>
-
-            </div>
-
-        </section>
+      </div>
 
     </div>
+    
+  </section>
+
+</div>
 
 <?php
 
-//Recibimos por GET, la variable para eliminar el slide
-$eliminarSlide = new ControladorSlide();
-$eliminarSlide -> ctrEliminarSlide();
+  $eliminarSlide = new ControladorSlide();
+  $eliminarSlide -> ctrEliminarSlide();
 
 ?>

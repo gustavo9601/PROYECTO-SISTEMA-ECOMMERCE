@@ -2,201 +2,198 @@
 
 class ControladorComercio{
 
-    /*=============================================
-    SELECCIONAR PLANTILLA
-    =============================================*/
+	/*=============================================
+	SELECCIONAR PLANTILLA
+	=============================================*/
 
-    static public function ctrSeleccionarPlantilla(){
+	static public function ctrSeleccionarPlantilla(){
 
-        $tabla = "plantilla";
+		$tabla = "plantilla";
 
-        $respuesta = ModeloComercio::mdlSeleccionarPlantilla($tabla);
+		$respuesta = ModeloComercio::mdlSeleccionarPlantilla($tabla);
 
-        return $respuesta;
+		return $respuesta;
 
-    }
+	}
 
-    /*=============================================
-    ACTUALIZAR LOGO O ICONO
-    =============================================*/
+	/*=============================================
+	ACTUALIZAR LOGO O ICONO
+	=============================================*/
 
-    static public function ctrActualizarLogoIcono($item, $valor){
+	static public function ctrActualizarLogoIcono($item, $valor){
 
-        $tabla = "plantilla";
-        $id = 1;
+		$tabla = "plantilla";
+		$id = 1;
 
-        $plantilla = ModeloComercio::mdlSeleccionarPlantilla($tabla);
+		$plantilla = ModeloComercio::mdlSeleccionarPlantilla($tabla);
 
-        /*=============================================
-        CAMBIANDO LOGOTIPO O ICONO
-        =============================================*/
+		/*=============================================
+		CAMBIANDO LOGOTIPO O ICONO
+		=============================================*/	
 
-        $valorNuevo = $valor;
+		$valorNuevo = $valor;
 
-        if(isset($valor["tmp_name"])){
+		if(isset($valor["tmp_name"])){
 
-            list($ancho, $alto) = getimagesize($valor["tmp_name"]);
+			list($ancho, $alto) = getimagesize($valor["tmp_name"]);
 
-            /*=============================================
-            CAMBIANDO LOGOTIPO
-            =============================================*/
+			/*=============================================
+			CAMBIANDO LOGOTIPO
+			=============================================*/	
 
-            if($item == "logo"){
+			if($item == "logo"){
 
-                unlink("../".$plantilla["logo"]);
+				unlink("../".$plantilla["logo"]);
 
-                $nuevoAncho = 500;
-                $nuevoAlto = 100;
+				$nuevoAncho = 500;
+				$nuevoAlto = 100;
 
-                $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+				$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
 
-                if($valor["type"] == "image/jpeg"){
+				if($valor["type"] == "image/jpeg"){
 
-                    $ruta = "../vistas/img/plantilla/logo.jpg";
+					$ruta = "../vistas/img/plantilla/logo.jpg";
 
-                    $origen = imagecreatefromjpeg($valor["tmp_name"]);
+					$origen = imagecreatefromjpeg($valor["tmp_name"]);
 
-                    imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+					imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
 
-                    imagejpeg($destino, $ruta);
+					imagejpeg($destino, $ruta);
 
-                }
+				}
 
-                if($valor["type"] == "image/png") {
+				if($valor["type"] == "image/png"){
 
-                    $ruta = "../vistas/img/plantilla/logo.png";
+					$ruta = "../vistas/img/plantilla/logo.png";
 
-                    $origen = imagecreatefrompng($valor["tmp_name"]);
+					$origen = imagecreatefrompng($valor["tmp_name"]);
 
+					imagealphablending($destino, FALSE);
 
-                    //generando la imagen como png con la opacidad
-                    imagealphablending($destino, FALSE);
+					imagesavealpha($destino, TRUE);
 
-                    imagesavealpha($destino, TRUE);
+					imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
 
-                    imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+					imagepng($destino, $ruta);
 
-                    imagepng($destino, $ruta);
+				}
 
-                }
+			}
 
-            }
+			/*=============================================
+			CAMBIANDO ICONO
+			=============================================*/	
 
-            /*=============================================
-            CAMBIANDO ICONO
-            =============================================*/
+			if($item == "icono"){
 
-            if($item == "icono"){
+				unlink("../".$plantilla["icono"]);
 
-                unlink("../".$plantilla["icono"]);
+				$nuevoAncho = 100;
+				$nuevoAlto = 100;
 
-                $nuevoAncho = 100;
-                $nuevoAlto = 100;
+				$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
 
-                $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+				if($valor["type"] == "image/jpeg"){
 
-                if($valor["type"] == "image/jpeg"){
+					$ruta = "../vistas/img/plantilla/icono.jpg";
 
-                    $ruta = "../vistas/img/plantilla/icono.jpg";
+					$origen = imagecreatefromjpeg($valor["tmp_name"]);					
 
-                    $origen = imagecreatefromjpeg($valor["tmp_name"]);
+					imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
 
-                    imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+					imagejpeg($destino, $ruta);
+			
+				}
 
-                    imagejpeg($destino, $ruta);
+				if($valor["type"] == "image/png"){
 
-                }
+					$ruta = "../vistas/img/plantilla/icono.png";
 
-                if($valor["type"] == "image/png"){
+					$origen = imagecreatefrompng($valor["tmp_name"]);
 
-                    $ruta = "../vistas/img/plantilla/icono.png";
+					imagealphablending($destino, FALSE);
+        			
+        			imagesavealpha($destino, TRUE);
 
-                    $origen = imagecreatefrompng($valor["tmp_name"]);
+					imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
 
-                    //generando la imagen como png con la opacidad
-                    imagealphablending($destino, FALSE);
+					imagepng($destino, $ruta);
+			
+				}
 
-                    imagesavealpha($destino, TRUE);
+			}
 
-                    imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+			$valorNuevo = substr($ruta, 3);
 
-                    imagepng($destino, $ruta);
+		}
 
-                }
+		$respuesta = ModeloComercio::mdlActualizarLogoIcono($tabla, $id, $item, $valorNuevo);
 
-            }
+		return $respuesta;
 
-            $valorNuevo = substr($ruta, 3);
+	}
 
-        }
+	/*=============================================
+	ACTUALIZAR COLORES
+	=============================================*/
 
-        $respuesta = ModeloComercio::mdlActualizarLogoIcono($tabla, $id, $item, $valorNuevo);
+	static public function ctrActualizarColores($datos){
 
-        return $respuesta;
+		$tabla = "plantilla";
+		$id = 1;
 
-    }
+		$respuesta = ModeloComercio::mdlActualizarColores($tabla, $id, $datos);
 
-    /*=============================================
-    ACTUALIZAR COLORES
-    =============================================*/
+		return $respuesta;
 
-    static public function ctrActualizarColores($datos){
 
-        $tabla = "plantilla";
-        $id = 1;
+	}
 
-        $respuesta = ModeloComercio::mdlActualizarColores($tabla, $id, $datos);
+	/*=============================================
+	ACTUALIZAR SCRIPT
+	=============================================*/
 
-        return $respuesta;
+	static public function ctrActualizarScript($datos){
 
+		$tabla = "plantilla";
+		$id = 1;
 
-    }
+		$respuesta = ModeloComercio::mdlActualizarScript($tabla, $id, $datos);
 
-    /*=============================================
-    ACTUALIZAR SCRIPT
-    =============================================*/
+		return $respuesta;
 
-    static public function ctrActualizarScript($datos){
 
-        $tabla = "plantilla";
-        $id = 1;
+	}
 
-        $respuesta = ModeloComercio::mdlActualizarScript($tabla, $id, $datos);
+	/*=============================================
+	SELECCIONAR COMERCIO
+	=============================================*/
 
-        return $respuesta;
+	static public function ctrSeleccionarComercio(){
 
+		$tabla = "comercio";
 
-    }
+		$respuesta = ModeloComercio::mdlSeleccionarComercio($tabla);
 
-    /*=============================================
-    SELECCIONAR COMERCIO
-    =============================================*/
+		return $respuesta;
 
-    static public function ctrSeleccionarComercio(){
+	}
 
-        $tabla = "comercio";
+	/*=============================================
+	ACTUALIZAR INFORMACION
+	=============================================*/
 
-        $respuesta = ModeloComercio::mdlSeleccionarComercio($tabla);
+	static public function ctrActualizarInformacion($datos){
 
-        return $respuesta;
+		$tabla = "comercio";
+		$id = 1;
 
-    }
+		$respuesta = ModeloComercio::mdlActualizarInformacion($tabla, $id, $datos);
 
-    /*=============================================
-    ACTUALIZAR INFORMACION
-    =============================================*/
+		return $respuesta;
 
-    static public function ctrActualizarInformacion($datos){
 
-        $tabla = "comercio";
-        $id = 1;
-
-        $respuesta = ModeloComercio::mdlActualizarInformacion($tabla, $id, $datos);
-
-        return $respuesta;
-
-
-    }
+	}
 
 
 }

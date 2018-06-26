@@ -4,24 +4,24 @@ require_once "conexion.php";
 
 class ModeloAdministradores{
 
-    /*=============================================
-    MOSTRAR ADMINISTRADORES
-    =============================================*/
+	/*=============================================
+	MOSTRAR ADMINISTRADORES
+	=============================================*/
 
-    static public function mdlMostrarAdministradores($tabla, $item, $valor){
+	static public function mdlMostrarAdministradores($tabla, $item, $valor){
 
-        $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
 
-        $stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+		$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
 
-        $stmt -> execute();
+		$stmt -> execute();
 
-        return $stmt -> fetch();
+		return $stmt -> fetch();
 
-        $stmt-> close();
+		$stmt-> close();
 
-        $stmt = null;
+		$stmt = null;
 
-    }
+	}
 
 }

@@ -2,243 +2,243 @@
 
 class ControladorSlide{
 
-    /*=============================================
-    MOSTRAR SLIDE
-    =============================================*/
+	/*=============================================
+	MOSTRAR SLIDE
+	=============================================*/
 
-    static public function ctrMostrarSlide(){
+	static public function ctrMostrarSlide(){
 
-        $tabla = "slide";
+		$tabla = "slide";
 
-        $respuesta = ModeloSlide::mdlMostrarSlide($tabla);
+		$respuesta = ModeloSlide::mdlMostrarSlide($tabla);
 
-        return $respuesta;
+		return $respuesta;
+		
+	}
 
-    }
+	/*=============================================
+	CREAR SLIDE
+	=============================================*/
 
-    /*=============================================
-    CREAR SLIDE
-    =============================================*/
+	static public function ctrCrearSlide($datos){
 
-    static public function ctrCrearSlide($datos){
+		$tabla = "slide";
 
-        $tabla = "slide";
+		$traerSlide = ModeloSlide::mdlMostrarSlide($tabla);
 
-        $traerSlide = ModeloSlide::mdlMostrarSlide($tabla);
+		foreach ($traerSlide as $key => $value) {
+			
+		}
 
-        foreach ($traerSlide as $key => $value) {
+		$orden = $value["orden"] + 1;
 
-        }
+		$respuesta = ModeloSlide::mdlCrearSlide($tabla, $datos, $orden);
 
-        $orden = $value["orden"] + 1;
+		return $respuesta;
 
-        $respuesta = ModeloSlide::mdlCrearSlide($tabla, $datos, $orden);
+	}
 
-        return $respuesta;
+	/*=============================================
+	ACTUALIZAR ORDEN SLIDE
+	=============================================*/
 
-    }
+	static public function ctrActualizarOrdenSlide($datos){
 
-    /*=============================================
-    ACTUALIZAR ORDEN SLIDE
-    =============================================*/
+		$tabla = "slide";
 
-    static public function ctrActualizarOrdenSlide($datos){
+		$respuesta = ModeloSlide::mdlActualizarOrdenSlide($tabla, $datos);
 
-        $tabla = "slide";
+		return $respuesta;
 
-        $respuesta = ModeloSlide::mdlActualizarOrdenSlide($tabla, $datos);
+	}
 
-        return $respuesta;
+	/*=============================================
+	ACTUALIZAR SLIDE
+	=============================================*/
 
-    }
+	static public function ctrActualizarSlide($datos){
 
-    /*=============================================
-    ACTUALIZAR SLIDE
-    =============================================*/
+		$tabla = "slide";
+		$ruta1 = null;
+		$ruta2 = null;
 
-    static public function ctrActualizarSlide($datos){
+		/*=============================================
+		SI HAY CAMBIO DE FONDO
+		=============================================*/	
 
-        $tabla = "slide";
-        $ruta1 = null;
-        $ruta2 = null;
+		if($datos["subirFondo"] != null){
 
-        /*=============================================
-        SI HAY CAMBIO DE FONDO
-        =============================================*/
+			/*=============================================
+			BORRAMOS EL ANTIGUO FONDO DEL SLIDE
+			=============================================*/	
 
-        if($datos["subirFondo"] != null){
+			if($datos["imgFondo"] != "vistas/img/slide/default/fondo.jpg"){	
 
-            /*=============================================
-            BORRAMOS EL ANTIGUO FONDO DEL SLIDE
-            =============================================*/
+				unlink("../".$datos["imgFondo"]);
 
-            if($datos["imgFondo"] != "vistas/img/slide/default/fondo.jpg"){
+			}
 
-                unlink("../".$datos["imgFondo"]);
+			/*=============================================
+			CREAMOS EL DIRECTORIO SI NO EXISTE
+			=============================================*/	
 
-            }
+			$directorio = "../vistas/img/slide/slide".$datos["id"];
 
-            /*=============================================
-            CREAMOS EL DIRECTORIO SI NO EXISTE
-            =============================================*/
+			if(!file_exists($directorio)){
 
-            $directorio = "../vistas/img/slide/slide".$datos["id"];
+				mkdir($directorio, 0755);
 
-            if(!file_exists($directorio)){
+			}
 
-                mkdir($directorio, 0755);
+			/*=============================================
+			CAPTURAMOS EL ANCHO Y ALTO DEL FONDO DEL SLIDE
+			=============================================*/
 
-            }
+			list($ancho, $alto) = getimagesize($datos["subirFondo"]["tmp_name"]);	
 
-            /*=============================================
-            CAPTURAMOS EL ANCHO Y ALTO DEL FONDO DEL SLIDE
-            =============================================*/
+			$nuevoAncho = 1600;
+			$nuevoAlto = 520;
 
-            list($ancho, $alto) = getimagesize($datos["subirFondo"]["tmp_name"]);
+			$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
 
-            $nuevoAncho = 1600;
-            $nuevoAlto = 520;
+			if($datos["subirFondo"]["type"] == "image/jpeg"){
 
-            $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+				$ruta1 = $directorio."/fondo.jpg";
 
-            if($datos["subirFondo"]["type"] == "image/jpeg"){
+				$origen = imagecreatefromjpeg($datos["subirFondo"]["tmp_name"]);
 
-                $ruta1 = $directorio."/fondo.jpg";
+				imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
 
-                $origen = imagecreatefromjpeg($datos["subirFondo"]["tmp_name"]);
+				imagejpeg($destino, $ruta1);
+		
+			}
 
-                imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+			if($datos["subirFondo"]["type"] == "image/png"){
 
-                imagejpeg($destino, $ruta1);
+				$ruta1 = $directorio."/fondo.png";
 
-            }
+				$origen = imagecreatefrompng($datos["subirFondo"]["tmp_name"]);
 
-            if($datos["subirFondo"]["type"] == "image/png"){
+				imagealphablending($destino, FALSE);
+    			
+    			imagesavealpha($destino, TRUE);
 
-                $ruta1 = $directorio."/fondo.png";
+				imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
 
-                $origen = imagecreatefrompng($datos["subirFondo"]["tmp_name"]);
+				imagepng($destino, $ruta1);
+		
+			}
 
-                imagealphablending($destino, FALSE);
 
-                imagesavealpha($destino, TRUE);
+			$rutaFondo = substr($ruta1, 3);
 
-                imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+		}else{
 
-                imagepng($destino, $ruta1);
+			$rutaFondo = $datos["imgFondo"];
 
-            }
+		}
 
+		/*=============================================
+		SI HAY CAMBIO DE PRODUCTO
+		=============================================*/		
 
-            $rutaFondo = substr($ruta1, 3);
+		if($datos["subirImgProducto"] != null){
 
-        }else{
+			/*=============================================
+			CREAMOS EL DIRECTORIO SI NO EXISTE
+			=============================================*/		
 
-            $rutaFondo = $datos["imgFondo"];
+			$directorio = "../vistas/img/slide/slide".$datos["id"];
 
-        }
+			if(!file_exists($directorio)){
 
-        /*=============================================
-        SI HAY CAMBIO DE PRODUCTO
-        =============================================*/
+				mkdir($directorio, 0755);
 
-        if($datos["subirImgProducto"] != null){
+			}
 
-            /*=============================================
-            CREAMOS EL DIRECTORIO SI NO EXISTE
-            =============================================*/
+			/*=============================================
+			CAPTURAMOS EL ANCHO Y ALTO DE LA IMAGEN DEL PRODUCTO
+			=============================================*/		
 
-            $directorio = "../vistas/img/slide/slide".$datos["id"];
+			list($ancho, $alto) = getimagesize($datos["subirImgProducto"]["tmp_name"]);
 
-            if(!file_exists($directorio)){
+			$nuevoAncho = 600;
+			$nuevoAlto = 600;
 
-                mkdir($directorio, 0755);
+			$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
 
-            }
+			if($datos["subirImgProducto"]["type"] == "image/jpeg"){
 
-            /*=============================================
-            CAPTURAMOS EL ANCHO Y ALTO DE LA IMAGEN DEL PRODUCTO
-            =============================================*/
+				$ruta2 = $directorio."/producto.jpg";
 
-            list($ancho, $alto) = getimagesize($datos["subirImgProducto"]["tmp_name"]);
+				$origen = imagecreatefromjpeg($datos["subirImgProducto"]["tmp_name"]);
 
-            $nuevoAncho = 600;
-            $nuevoAlto = 600;
+				imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
 
-            $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+				imagejpeg($destino, $ruta2);
+		
+			}
 
-            if($datos["subirImgProducto"]["type"] == "image/jpeg"){
+			if($datos["subirImgProducto"]["type"] == "image/png"){
 
-                $ruta2 = $directorio."/producto.jpg";
+				$ruta2 = $directorio."/producto.png";
 
-                $origen = imagecreatefromjpeg($datos["subirImgProducto"]["tmp_name"]);
+				$origen = imagecreatefrompng($datos["subirImgProducto"]["tmp_name"]);
 
-                imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+				imagealphablending($destino, FALSE);
+    			
+    			imagesavealpha($destino, TRUE);
 
-                imagejpeg($destino, $ruta2);
+				imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
 
-            }
+				imagepng($destino, $ruta2);
+		
+			}
 
-            if($datos["subirImgProducto"]["type"] == "image/png"){
+			$rutaProducto = substr($ruta2, 3);
 
-                $ruta2 = $directorio."/producto.png";
+		}else{
 
-                $origen = imagecreatefrompng($datos["subirImgProducto"]["tmp_name"]);
+			$rutaProducto = $datos["imgProducto"];
 
-                imagealphablending($destino, FALSE);
+		}
 
-                imagesavealpha($destino, TRUE);
+		$respuesta = ModeloSlide::mdlActualizarSlide($tabla, $rutaFondo, $rutaProducto, $datos);
 
-                imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+		return $respuesta;
 
-                imagepng($destino, $ruta2);
+	}
 
-            }
+	/*=============================================
+	ELIMINAR SLIDE
+	=============================================*/
 
-            $rutaProducto = substr($ruta2, 3);
+	public function ctrEliminarSlide(){
 
-        }else{
+		if(isset($_GET["idSlide"])){
 
-            $rutaProducto = $datos["imgProducto"];
+			if($_GET["imgFondo"] != "vistas/img/slide/default/fondo.jpg"){
 
-        }
+				unlink($_GET["imgFondo"]);
 
-        $respuesta = ModeloSlide::mdlActualizarSlide($tabla, $rutaFondo, $rutaProducto, $datos);
+			}
 
-        return $respuesta;
+			if($_GET["imgProducto"] != ""){
 
-    }
+				unlink($_GET["imgProducto"]);
 
-    /*=============================================
-    ELIMINAR SLIDE
-    =============================================*/
+			}
 
-    public function ctrEliminarSlide(){
+			rmdir('vistas/img/slide/slide'.$_GET["idSlide"]);
 
-        if(isset($_GET["idSlide"])){
+			$tabla = "slide";
+			$id = $_GET["idSlide"];
 
-            if($_GET["imgFondo"] != "vistas/img/slide/default/fondo.jpg"){
+			$respuesta = ModeloSlide::mdlEliminarSlide($tabla, $id);
 
-                unlink($_GET["imgFondo"]);
+			if($respuesta == "ok"){
 
-            }
-
-            if($_GET["imgProducto"] != ""){
-
-                unlink($_GET["imgProducto"]);
-
-            }
-
-            rmdir('vistas/img/slide/slide'.$_GET["idSlide"]);
-
-            $tabla = "slide";
-            $id = $_GET["idSlide"];
-
-            $respuesta = ModeloSlide::mdlEliminarSlide($tabla, $id);
-
-            if($respuesta == "ok"){
-
-                echo'<script>
+				echo'<script>
 
 				swal({
 					  type: "success",
@@ -255,12 +255,12 @@ class ControladorSlide{
 
 				</script>';
 
-            }
+			}		
 
-        }
+		}
 
 
-    }
+	}
 
 
 }

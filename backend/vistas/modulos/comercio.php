@@ -1,82 +1,82 @@
 <div class="content-wrapper">
 
-    <section class="content-header">
+  <section class="content-header">
 
-        <h1>
-            Gestor comercio
-        </h1>
+    <h1>
+      Gestor comercio
+    </h1>
 
-        <ol class="breadcrumb">
+    <ol class="breadcrumb">
+      
+      <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      
+      <li class="active">Gestor comercio</li>
+    
+    </ol>
 
-            <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
+  </section>
 
-            <li class="active">Gestor comercio</li>
+  <section class="content">
 
-        </ol>
+    <div class="row">
 
-    </section>
+      <div class="col-md-6 col-xs-12">
+        
+      <!--=====================================
+      BLOQUE 1
+      ======================================-->
+      
+      <?php
 
-    <section class="content">
+        /*=============================================
+        ADMINISTRACIÓN DE LOGOTIPO E ICONO
+        =============================================*/
 
-        <div class="row">
+        include "comercio/logotipo.php";
 
-            <div class="col-md-6 col-xs-12">
+        /*=====================================
+        ADMINISTRAR COLORES
+        ======================================*/
+  
+        include "comercio/colores.php";
 
-                <!--=====================================
-                BLOQUE 1
-                ======================================-->
-
-                <?php
-
-                /*=============================================
-                ADMINISTRACIÓN DE LOGOTIPO E ICONO
-                =============================================*/
-
-                include "comercio/logotipo.php";
-
-                /*=====================================
-                ADMINISTRAR COLORES
-                ======================================*/
-
-                include "comercio/colores.php";
-
-                /*=====================================
-                ADMINISTRAR REDES SOCIALES
-                ======================================*/
-
-                include "comercio/redSocial.php";
-
-                ?>
-
-            </div>
+        /*=====================================
+        ADMINISTRAR REDES SOCIALES
+        ======================================*/
+  
+        include "comercio/redSocial.php";
+        
+      ?>
+      
+      </div>
 
 
-            <div class="col-md-6">
+      <div class="col-md-6">
+        
+      <!--=====================================
+      BLOQUE 2
+      ======================================-->
 
-                <!--=====================================
-                BLOQUE 2
-                ======================================-->
+        <?php
+        
+       /*=====================================
+        ADMINISTRAR CÓDIGOS
+        ======================================*/
+  
+        include "comercio/codigos.php";
 
-                <?php
+        /*=====================================
+        ADMINISTRAR COMERCIO
+        ======================================*/
+  
+        include "comercio/informacion.php";
 
-                /*=====================================
-                 ADMINISTRAR CÓDIGOS
-                 ======================================*/
+        ?>
+   
+      </div>
 
-                include "comercio/codigos.php";
-
-                /*=====================================
-                ADMINISTRAR COMERCIO
-                ======================================*/
-
-                include "comercio/informacion.php";
-
-                ?>
-
-            </div>
-
-        </div>
-
-    </section>
+    </div>
+ 
+  </section>
 
 </div>
