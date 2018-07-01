@@ -10,22 +10,173 @@ BANNER
 $ruta = $rutas[0];  //captura la url amigable, si tiene en la bd mostrara el banner
 $banner = ControladorProductos::ctrMostrarBanner($ruta);
 
-if ($banner) {
-    /*Recibimos jesion en formato string desde la bd, por ende lso convertrenmos a array*/
-    $titulo1 = json_decode($banner["titulo1"], true);
-    $titulo2 = json_decode($banner["titulo2"], true);
-    $titulo3 = json_decode($banner["titulo3"], true);
+if($banner != null){
 
-    echo '<figure class="banner">
-    <img src="' . $servidor . $banner['img'] . '"
-         class="img-responsive" width="100%" alt="">
-    <div class="textoBanner ' . $banner['estilo'] . '">
-        <h1 style="color: ' . $titulo1['color'] . '">' . $titulo1['texto'] . '</h1>
-        <h2 style="color: ' . $titulo2['color'] . '">' . $titulo2['texto'] . '</h2>
-        <h3 style="color: ' . $titulo3['color'] . '">' . $titulo3['texto'] . '</h3>
-    </div>
-</figure>';
+    if($banner["estado"] != 0){
+
+        echo '<figure class="banner">
+
+				<img src="'.$servidor.$banner["img"].'" class="img-responsive" width="100%">';
+
+        if($banner["ruta"] != "sin-categoria"){
+
+            /*=============================================
+            BANNER PARA CATEGORÍAS
+            =============================================*/
+
+            if($banner["tipo"] == "categorias"){
+
+                $item = "ruta";
+                $valor = $banner["ruta"];
+
+                $ofertas = ControladorProductos::ctrMostrarCategorias($item, $valor);
+
+                if($ofertas["oferta"] == 1){
+
+                    echo '<div class="textoBanner textoIzq">
+
+								<h1 style="color:#fff" class="text-uppercase">'.$ofertas["categoria"].'</h1>
+
+							</div>
+
+							<div class="textoBanner textoDer">
+							
+								<h1 style="color:#fff">OFERTAS ESPECIALES</h1>';
+
+                    if($ofertas["precioOferta"] != 0){
+
+                        echo '<h2 style="color:#fff"><strong>Todos los productos a $ '.$ofertas["precioOferta"].'</strong></h2>';
+
+                    }
+
+                    if($ofertas["descuentoOferta"] != 0){
+
+                        echo '<h2 style="color:#fff"><strong>Todos los productos con '.$ofertas["descuentoOferta"].'% OFF</strong></h2>';
+                    }
+
+                    echo '<h3 class="col-md-0 col-sm-0 col-xs-0" style="color:#fff">
+								
+								La oferta termina en<br>
+
+								<div class="countdown2" finOferta="'.$ofertas["finOferta"].'">
+
+
+							</h3>';
+
+                    $fechaActual = date('y-m-d');
+                    $datetime1 = new DateTime($ofertas["finOferta"]);
+                    $datetime2 = new DateTime($fechaActual);
+
+                    $interval = date_diff($datetime1, $datetime2);
+
+                    $finOferta = $interval->format('%a');
+
+                    if($finOferta == 0){
+
+                        echo '<h3 class="col-lg-0" style="color:#fff">La oferta termina hoy</h3>';
+
+                    }else if($finOferta == 1){
+
+                        echo '<h3 class="col-lg-0" style="color:#fff">La oferta termina en '.$finOferta.' día</h3>';
+
+                    }else{
+
+                        echo '<h3 class="col-lg-0" style="color:#fff">La oferta termina en '.$finOferta.' días</h3>';
+
+                    }
+
+
+                    echo '</div>';
+
+                }
+
+            }
+
+            /*=============================================
+            BANNER PARA SUBCATEGORÍAS
+            =============================================*/
+
+            if($banner["tipo"] == "subcategorias"){
+
+                $item = "ruta";
+                $valor = $banner["ruta"];
+
+                $ofertas = ControladorProductos::ctrMostrarSubCategorias($item, $valor);
+
+                if($ofertas[0]["oferta"] == 1){
+
+                    echo '<div class="textoBanner textoIzq">
+
+								<h1 style="color:#fff" class="text-uppercase">'.$ofertas[0]["subcategoria"].'</h1>
+
+							</div>
+
+							<div class="textoBanner textoDer">
+							
+								<h1 style="color:#fff">OFERTAS ESPECIALES</h1>';
+
+                    if($ofertas[0]["precioOferta"] != 0){
+
+                        echo '<h2 style="color:#fff"><strong>Todos los productos a $ '.$ofertas[0]["precioOferta"].'</strong></h2>';
+
+                    }
+
+                    if($ofertas[0]["descuentoOferta"] != 0){
+
+                        echo '<h2 style="color:#fff"><strong>Todos los productos con '.$ofertas[0]["descuentoOferta"].'% OFF</strong></h2>';
+                    }
+
+                    echo '<h3 class="col-md-0 col-sm-0 col-xs-0" style="color:#fff">
+								
+								La oferta termina en<br>
+
+								<div class="countdown2" finOferta="'.$ofertas[0]["finOferta"].'">
+
+
+							</h3>';
+
+                    $datetime1 = new DateTime($ofertas[0]["finOferta"]);
+                    $datetime2 = new DateTime($fechaActual);
+
+                    $interval = date_diff($datetime1, $datetime2);
+
+                    $finOferta = $interval->format('%a');
+
+                    if($finOferta == 0){
+
+                        echo '<h3 class="col-lg-0" style="color:#fff">La oferta termina hoy</h3>';
+
+                    }else if($finOferta == 1){
+
+                        echo '<h3 class="col-lg-0" style="color:#fff">La oferta termina en '.$finOferta.' día</h3>';
+
+                    }else{
+
+                        echo '<h3 class="col-lg-0" style="color:#fff">La oferta termina en '.$finOferta.' días</h3>';
+
+                    }
+
+
+                    echo '</div>';
+
+                }
+
+
+
+
+
+            }
+
+
+
+        }
+
+        echo '</figure>';
+
+    }
+
 }
+
 ?>
 
 
@@ -223,8 +374,13 @@ LLAMADO DE PRODUCTOS  CATEGORIA, SUBCATEOGRIAS Y DESTACADOS
                     echo 'COD - ' . $value['id'] . '- ';
 
 
-                    //0 -> en la BD siginidica que no es nuevo
-                    if ($value['nuevo'] != 0) {
+                    //validacion de si el producto no de alta del producto es menor a 30 dias, entonces en NUEVO
+                    $fecha = date('y-m-d');
+                    $fechaActual = strtotime('-30 day', strtotime($fecha) );
+                    $fechaNueva = date('y-m-d', $fechaActual); // parseamos el resultado de arriba con los - 30 days
+
+                    //comparacion de fecha, si es menor la fecha actual -30 dias a la fecha de publicacion
+                    if ($fechaNueva < $value['fecha']) {
                         echo '<span class="label label-warning fonstSize">Nuevo </span> <span style="color:rgba(0,0,0,0)">-</span>';
                     }
 
@@ -338,7 +494,13 @@ LLAMADO DE PRODUCTOS  CATEGORIA, SUBCATEOGRIAS Y DESTACADOS
 											
 											' . $value["titulo"] . '<br>';
 
-                    if ($value["nuevo"] != 0) {
+                    //validacion de si el producto no de alta del producto es menor a 30 dias, entonces en NUEVO
+                    $fecha = date('y-m-d');
+                    $fechaActual = strtotime('-30 day', strtotime($fecha) );
+                    $fechaNueva = date('y-m-d', $fechaActual); // parseamos el resultado de arriba con los - 30 days
+
+                    //comparacion de fecha, si es menor la fecha actual -30 dias a la fecha de publicacion
+                    if ($fechaNueva < $value['fecha']) {
 
                         echo '<span class="label label-warning">Nuevo</span> ';
 

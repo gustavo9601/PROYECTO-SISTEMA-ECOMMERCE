@@ -14,6 +14,8 @@ require_once "controladores/slide.controlador.php";
 require_once "controladores/usuarios.controlador.php";
 require_once "controladores/ventas.controlador.php";
 require_once "controladores/visitas.controlador.php";
+require_once "controladores/notificaciones.controlador.php";
+
 
 require_once "modelos/administradores.modelo.php";
 require_once "modelos/banner.modelo.php";
@@ -28,6 +30,7 @@ require_once "modelos/slide.modelo.php";
 require_once "modelos/usuarios.modelo.php";
 require_once "modelos/ventas.modelo.php";
 require_once "modelos/visitas.modelo.php";
+require_once "modelos/notificaciones.modelo.php";
 
 require_once "modelos/rutas.php";
 

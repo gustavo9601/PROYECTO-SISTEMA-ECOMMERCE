@@ -36,6 +36,19 @@ class ControladorUsuarios
                 $respuesta = @ModeloUsuarios::mdlRegistroUsuario($tabla, $datos);
 
                 if ($respuesta == 'ok') {
+
+                    /*=============================================
+                ACTUALIZAR NOTIFICACIONES NUEVOS USUARIOS
+                =============================================*/
+
+                    $traerNotificaciones = ControladorNotificaciones::ctrMostrarNotificaciones();
+
+                    $nuevoUsuario = $traerNotificaciones["nuevosUsuarios"] + 1;
+
+                    ModeloNotificaciones::mdlActualizarNotificaciones("notificaciones", "nuevosUsuarios", $nuevoUsuario);
+
+
+
                     /*=============================================
                 VERIFICACIÓN CORREO ELECTRÓNICO
                 =============================================*/
@@ -538,6 +551,19 @@ class ControladorUsuarios
 
             /*Si no viene con informacion filtrado por email, registramos el usuario*/
             $respuesta = @ModeloUsuarios::mdlRegistroUsuario($tabla, $datos);
+
+
+            /*=============================================
+         ACTUALIZAR NOTIFICACIONES NUEVOS USUARIOS
+         =============================================*/
+
+            $traerNotificaciones = ControladorNotificaciones::ctrMostrarNotificaciones();
+
+            $nuevoUsuario = $traerNotificaciones["nuevosUsuarios"] + 1;
+
+            ModeloNotificaciones::mdlActualizarNotificaciones("notificaciones", "nuevosUsuarios", $nuevoUsuario);
+
+
         }
 
 

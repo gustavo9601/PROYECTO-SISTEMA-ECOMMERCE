@@ -1,69 +1,83 @@
+<?php
+
+if($_SESSION["perfil"] != "administrador"){
+
+    return;
+
+}
+
+$notificaciones = ControladorNotificaciones::ctrMostrarNotificaciones();
+
+$totalNotificaciones = $notificaciones["nuevosUsuarios"] + $notificaciones["nuevasVentas"] + $notificaciones["nuevasVisitas"];
+
+?>
+
 <!--=====================================
 NOTIFICACIONES
 ======================================-->
 
 <!-- notifications-menu -->
 <li class="dropdown notifications-menu">
-	
-	<!-- dropdown-toggle -->
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-		
-		<i class="fa fa-bell-o"></i>
-		
-		<span class="label label-warning">10</span>
-	
-	</a>
-	<!-- dropdown-toggle -->
 
-	<!--dropdown-menu -->
-	<ul class="dropdown-menu">
+    <!-- dropdown-toggle -->
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
-		<li class="header">Tu tienes 3 notificaciones</li>
+        <i class="fa fa-bell-o"></i>
 
-		<li>
-			<!-- menu -->
-			<ul class="menu">
+        <span class="label label-warning"><?php  echo $totalNotificaciones; ?></span>
 
-				<!-- usuarios -->
-				<li>
-				
-					<a href="usuarios">
-					
-						<i class="fa fa-users text-aqua"></i> 5 nuevos usuarios registrados hoy
-					
-					</a>
+    </a>
+    <!-- dropdown-toggle -->
 
-				</li>
+    <!--dropdown-menu -->
+    <ul class="dropdown-menu">
 
-				<!-- ventas -->
-				<li>
-				
-					<a href="ventas">
-					
-						<i class="fa fa-shopping-cart text-aqua"></i> 3 nuevas ventas hoy
-					
-					</a>
+        <li class="header">Tu tienes <?php  echo $totalNotificaciones; ?> notificaciones</li>
 
-				</li>
-				
-				<!-- visitas -->
-				<li>
-				
-					<a href="visitas">
-					
-						<i class="fa fa-map-marker text-aqua"></i> 55 nuevas visitas hoy
-					
-					</a>
+        <li>
+            <!-- menu -->
+            <ul class="menu">
 
-				</li>
+                <!-- usuarios -->
+                <li>
 
-			</ul>
-			<!-- menu -->
+                    <a href="" class="actualizarNotificaciones" item="nuevosUsuarios">
 
-		</li>
+                        <i class="fa fa-users text-aqua"></i> <?php  echo $notificaciones["nuevosUsuarios"] ?> nuevos usuarios registrados
 
-	</ul>
-	<!--dropdown-menu -->
+                    </a>
+
+                </li>
+
+                <!-- ventas -->
+                <li>
+
+                    <a href="" class="actualizarNotificaciones" item="nuevasVentas">
+
+                        <i class="fa fa-shopping-cart text-aqua"></i> <?php  echo $notificaciones["nuevasVentas"] ?> nuevas ventas
+
+                    </a>
+
+                </li>
+
+                <!-- visitas -->
+                <li>
+
+                    <a href="" class="actualizarNotificaciones" item="nuevasVisitas">
+
+                        <i class="fa fa-map-marker text-aqua"></i> <?php  echo $notificaciones["nuevasVisitas"] ?> nuevas visitas
+
+                    </a>
+
+                </li>
+
+            </ul>
+            <!-- menu -->
+
+        </li>
+
+    </ul>
+    <!--dropdown-menu -->
 
 </li>
 <!-- notifications-menu -->	

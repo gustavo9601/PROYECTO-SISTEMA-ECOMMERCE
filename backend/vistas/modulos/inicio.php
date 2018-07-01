@@ -5,79 +5,106 @@ PÁGINA DE INICIO
 <!-- content-wrapper -->
 <div class="content-wrapper">
 
-  <!-- content-header -->
-  <section class="content-header">
-    
-    <h1>
-    Tablero
-    <small>Panel de Control</small>
-    </h1>
+    <!-- content-header -->
+    <section class="content-header">
 
-    <ol class="breadcrumb">
+        <h1>
+            Tablero
+            <small>Panel de Control</small>
+        </h1>
 
-      <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
-      <li class="active">Tablero</li>
+        <ol class="breadcrumb">
 
-    </ol>
+            <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li class="active">Tablero</li>
 
-  </section>
-  <!-- content-header -->
+        </ol>
 
-  <!-- content -->
-  <section class="content">
-    
-    <!-- row -->
-    <div class="row">
+    </section>
+    <!-- content-header -->
 
-       <?php
+    <!-- content -->
+    <section class="content">
 
-        include "inicio/cajas-superiores.php";
-      
-      ?>
+        <!-- row -->
+        <div class="row">
 
-    </div>
-    <!-- row -->
+            <?php
 
-    <!-- row -->
-    <div class="row">
+            if($_SESSION["perfil"] == "administrador"){
 
-      <div class="col-lg-6">
-        
-         <?php
-       
-          include "inicio/grafico-ventas.php";
-          include "inicio/productos-mas-vendidos.php";      
+                include "inicio/cajas-superiores.php";
 
-        ?>
+            }
 
-      </div>
+            ?>
 
-       <div class="col-lg-6">
-        
-         <?php
-       
-          include "inicio/grafico-visitas.php";
-          include "inicio/ultimos-usuarios.php";     
+        </div>
+        <!-- row -->
 
-        ?>
+        <!-- row -->
+        <div class="row">
 
-      </div>
 
-       <div class="col-lg-12">
 
-        <?php
+            <?php
 
-        include "inicio/productos-recientes.php";
+            if($_SESSION["perfil"] == "administrador"){
 
-        ?>
+                echo '<div class="col-lg-6">';
 
-      </div>
+                include "inicio/grafico-ventas.php";
+                include "inicio/productos-mas-vendidos.php";
 
-    </div>
-    <!-- row -->
+                echo '</div>';
 
- </section>
-  <!-- content -->
+            }
+
+            ?>
+
+
+
+
+
+            <?php
+
+            if($_SESSION["perfil"] == "administrador"){
+
+                echo ' <div class="col-lg-6">';
+
+                include "inicio/grafico-visitas.php";
+                include "inicio/ultimos-usuarios.php";
+
+                echo '</div>';
+
+            }else{
+
+                echo ' <div class="col-lg-12">';
+
+                include "inicio/grafico-visitas.php";
+                include "inicio/ultimos-usuarios.php";
+
+                echo '</div>';
+
+            }
+
+            ?>
+
+            <div class="col-lg-12">
+
+                <?php
+
+                include "inicio/productos-recientes.php";
+
+                ?>
+
+            </div>
+
+        </div>
+        <!-- row -->
+
+    </section>
+    <!-- content -->
 
 </div>
 <!-- content-wrapper -->

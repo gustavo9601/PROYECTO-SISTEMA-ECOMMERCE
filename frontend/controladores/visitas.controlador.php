@@ -59,6 +59,18 @@ class ControladorVisitas{
 
         if($respuestaInsertarIp == "ok" || $respuestaActualizarIp == "ok"){
 
+            /*=============================================
+    ACTUALIZAR NOTIFICACIONES NUEVAS VISITAS
+    =============================================*/
+
+            $traerNotificaciones = ControladorNotificaciones::ctrMostrarNotificaciones();
+
+            $nuevaVisita = $traerNotificaciones["nuevasVisitas"] + 1;
+
+
+            ModeloNotificaciones::mdlActualizarNotificaciones("notificaciones", "nuevasVisitas", $nuevaVisita);
+
+
             $tablaPais = "visitaspaises";
 
             /*=============================================

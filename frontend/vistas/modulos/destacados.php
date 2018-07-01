@@ -10,21 +10,18 @@ $ruta = "sin-categoria";
 //funcion que traera el banner desde la BD
 $banner = ControladorProductos::ctrMostrarBanner($ruta);
 
-if ($banner) {
-    /*Recibimos jesion en formato string desde la bd, por ende lso convertrenmos a array*/
-    $titulo1 = json_decode($banner["titulo1"], true);
-    $titulo2 = json_decode($banner["titulo2"], true);
-    $titulo3 = json_decode($banner["titulo3"], true);
+if($banner != null){
 
-    echo '<figure class="banner">
-    <img src="' . $servidor . $banner['img'] . '"
-         class="img-responsive" width="100%" alt="">
-    <div class="textoBanner ' . $banner['estilo'] . '">
-        <h1 style="color: ' . $titulo1['color'] . '">' . $titulo1['texto'] . '</h1>
-        <h2 style="color: ' . $titulo2['color'] . '">' . $titulo2['texto'] . '</h2>
-        <h3 style="color: ' . $titulo3['color'] . '">' . $titulo3['texto'] . '</h3>
-    </div>
-</figure>';
+    if($banner["estado"] != 0){
+
+        echo '<figure class="banner">
+
+				<img src="'.$servidor.$banner["img"].'" class="img-responsive" width="100%">	
+
+			  </figure>';
+
+    }
+
 }
 
 ?>
@@ -141,8 +138,14 @@ for ($i = 0; $i < count($titulosModulos); $i++) {
                             <span style="color:rgba(0,0,0,0)">-</span>';
 
 
-        //0 -> en la BD siginidica que no es nuevo
-        if ($value['nuevo'] != 0) {
+
+        //validacion de si el producto no de alta del producto es menor a 30 dias, entonces en NUEVO
+        $fecha = date('y-m-d');
+        $fechaActual = strtotime('-30 day', strtotime($fecha) );
+        $fechaNueva = date('y-m-d', $fechaActual); // parseamos el resultado de arriba con los - 30 days
+
+        //comparacion de fecha, si es menor la fecha actual -30 dias a la fecha de publicacion
+        if ($fechaNueva < $value['fecha']) {
             echo '<span class="label label-warning fonstSize">Nuevo </span> <span style="color:rgba(0,0,0,0)">-</span>';
         }
 
@@ -255,7 +258,13 @@ for ($i = 0; $i < count($titulosModulos); $i++) {
 											
 											' . $value["titulo"] . '<br>';
 
-        if ($value["nuevo"] != 0) {
+        //validacion de si el producto no de alta del producto es menor a 30 dias, entonces en NUEVO
+        $fecha = date('y-m-d');
+        $fechaActual = strtotime('-30 day', strtotime($fecha) );
+        $fechaNueva = date('y-m-d', $fechaActual); // parseamos el resultado de arriba con los - 30 days
+
+        //comparacion de fecha, si es menor la fecha actual -30 dias a la fecha de publicacion
+        if ($fechaNueva < $value['fecha']) {
 
             echo '<span class="label label-warning">Nuevo</span> ';
 

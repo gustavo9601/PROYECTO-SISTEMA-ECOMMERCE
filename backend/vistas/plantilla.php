@@ -180,6 +180,9 @@ session_start();
 
         }
 
+     }else{
+         include "modulos/inicio.php";
+
      }
 
      /*=============================================
@@ -210,6 +213,12 @@ JS PERSONALIZADO
 <script src="vistas/js/gestorCategorias.js"></script>
 <script src="vistas/js/gestorSubCategorias.js"></script>
 <script src="vistas/js/gestorProductos.js"></script>
+<script src="vistas/js/gestorBanner.js"></script>
+<script src="vistas/js/gestorVentas.js"></script>
+<script src="vistas/js/gestorVisitas.js"></script>
+<script src="vistas/js/gestorUsuarios.js"></script>
+<script src="vistas/js/gestorAdministradores.js"></script>
+<script src="vistas/js/gestorNotificaciones.js"></script>
 
 </body>
 </html>

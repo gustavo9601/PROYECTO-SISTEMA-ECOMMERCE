@@ -203,7 +203,13 @@ $url = @Ruta::ctrRuta();
             if ($infoproducto['oferta'] == 0) {
 
 
-                if ($infoproducto["nuevo"] == 0) {
+                //validacion de si el producto no de alta del producto es menor a 30 dias, entonces en NUEVO
+                $fecha = date('y-m-d');
+                $fechaActual = strtotime('-30 day', strtotime($fecha) );
+                $fechaNueva = date('y-m-d', $fechaActual); // parseamos el resultado de arriba con los - 30 days
+
+                //comparacion de fecha, si es menor la fecha actual -30 dias a la fecha de publicacion
+                if ($fechaNueva > $infoproducto['fecha']) {
                     echo '<h1 class="text-mute text-uppercase">' . $infoproducto['titulo'] . '</h1>';
 
                 } else {
@@ -216,7 +222,13 @@ $url = @Ruta::ctrRuta();
 
             } else {
 
-                if ($infoproducto["nuevo"] == 0) {
+                //validacion de si el producto no de alta del producto es menor a 30 dias, entonces en NUEVO
+                $fecha = date('y-m-d');
+                $fechaActual = strtotime('-30 day', strtotime($fecha) );
+                $fechaNueva = date('y-m-d', $fechaActual); // parseamos el resultado de arriba con los - 30 days
+
+                //comparacion de fecha, si es menor la fecha actual -30 dias a la fecha de publicacion
+                if ($fechaNueva > $infoproducto['fecha']) {
                     echo '<h1 class="text-mute text-uppercase">' . $infoproducto['titulo'] . '<br>
                     <small>
                         <span class="label label-warning">' . $infoproducto['descuentoOferta'] . ' % off</span>
@@ -975,7 +987,13 @@ if (!$relacionados) {
 
 
         //0 -> en la BD siginidica que no es nuevo
-        if ($value['nuevo'] != 0) {
+        //validacion de si el producto no de alta del producto es menor a 30 dias, entonces en NUEVO
+        $fecha = date('y-m-d');
+        $fechaActual = strtotime('-30 day', strtotime($fecha) );
+        $fechaNueva = date('y-m-d', $fechaActual); // parseamos el resultado de arriba con los - 30 days
+
+        //comparacion de fecha, si es menor la fecha actual -30 dias a la fecha de publicacion
+        if ($fechaNueva < $value['fecha']) {
             echo '<span class="label label-warning fonstSize">Nuevo </span> <span style="color:rgba(0,0,0,0)">-</span>';
         }
 

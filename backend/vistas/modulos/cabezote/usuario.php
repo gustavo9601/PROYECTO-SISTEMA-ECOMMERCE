@@ -1,50 +1,72 @@
 <!--=====================================
 USUARIOS
-======================================-->	
+======================================-->
 
 <!-- user-menu -->
 <li class="dropdown user user-menu">
 
-	<!-- dropdown-toggle -->
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-	
-		<img src="vistas/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-		
-		<span class="hidden-xs">Tutoriales a tu Alcance</span>
-	
-	</a>
-	<!-- dropdown-toggle -->
+    <!-- dropdown-toggle -->
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
-	<!-- dropdown-menu -->
-	<ul class="dropdown-menu">
+        <?php
 
-		<li class="user-header">
-		
-			<img src="vistas/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+        if($_SESSION["foto"] == ""){
 
-			<p>
-			Tutoriales a tu Alcance
-			</p>
-		
-		</li>
+            echo '<img src="vistas/img/perfiles/default/anonymous.png" class="user-image" alt="User Image">';
 
-		<li class="user-footer">
-		
-			<div class="pull-left">
-				
-				<a href="perfil" class="btn btn-default btn-flat">Perfil</a>
-			
-			</div>
-			
-			<div class="pull-right">
-			
-				<a href="salir" class="btn btn-default btn-flat">Salir</a>
-			
-			</div>
-		</li>
+        }else{
 
-	</ul>
-	<!-- dropdown-menu -->
+            echo '<img src="'.$_SESSION["foto"].'" class="user-image" alt="User Image">';
+
+        }
+
+
+        ?>
+
+        <span class="hidden-xs"><?php echo $_SESSION["nombre"]; ?></span>
+
+    </a>
+    <!-- dropdown-toggle -->
+
+    <!-- dropdown-menu -->
+    <ul class="dropdown-menu">
+
+        <li class="user-header">
+
+            <?php
+
+            if($_SESSION["foto"] == ""){
+
+                echo '<img src="vistas/img/perfiles/default/anonymous.png" class="user-image" alt="User Image">';
+
+            }else{
+
+                echo '<img src="'.$_SESSION["foto"].'" class="user-image" alt="User Image">';
+
+            }
+
+
+            ?>
+
+            <p>
+                <?php echo $_SESSION["nombre"]; ?>
+            <h4 style="color:white"><?php echo $_SESSION["perfil"]; ?></h4>
+            </p>
+
+        </li>
+
+        <li class="user-footer">
+
+
+            <div class="pull-right">
+
+                <a href="salir" class="btn btn-default btn-flat">Salir</a>
+
+            </div>
+        </li>
+
+    </ul>
+    <!-- dropdown-menu -->
 
 </li>
 <!-- user-menu -->

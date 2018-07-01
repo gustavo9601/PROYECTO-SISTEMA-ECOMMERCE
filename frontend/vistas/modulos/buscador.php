@@ -155,8 +155,13 @@ LLAMADO DE PRODUCTOS  POR BUSQUEDA
                     echo 'COD - ' . $value['id'] . '- ';
 
 
-                    //0 -> en la BD siginidica que no es nuevo
-                    if ($value['nuevo'] != 0) {
+                    //validacion de si el producto no de alta del producto es menor a 30 dias, entonces en NUEVO
+                    $fecha = date('y-m-d');
+                    $fechaActual = strtotime('-30 day', strtotime($fecha) );
+                    $fechaNueva = date('y-m-d', $fechaActual); // parseamos el resultado de arriba con los - 30 days
+
+                    //comparacion de fecha, si es menor la fecha actual -30 dias a la fecha de publicacion
+                    if ($fechaNueva < $value['fecha']) {
                         echo '<span class="label label-warning fonstSize">Nuevo </span> <span style="color:rgba(0,0,0,0)">-</span>';
                     }
 
@@ -269,7 +274,13 @@ LLAMADO DE PRODUCTOS  POR BUSQUEDA
 											
 											' . $value["titulo"] . '<br>';
 
-                    if ($value["nuevo"] != 0) {
+                    //validacion de si el producto no de alta del producto es menor a 30 dias, entonces en NUEVO
+                    $fecha = date('y-m-d');
+                    $fechaActual = strtotime('-30 day', strtotime($fecha) );
+                    $fechaNueva = date('y-m-d', $fechaActual); // parseamos el resultado de arriba con los - 30 days
+
+                    //comparacion de fecha, si es menor la fecha actual -30 dias a la fecha de publicacion
+                    if ($fechaNueva < $value['fecha']) {
 
                         echo '<span class="label label-warning">Nuevo</span> ';
 

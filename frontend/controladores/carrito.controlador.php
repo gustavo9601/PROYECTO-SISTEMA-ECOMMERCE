@@ -1,39 +1,56 @@
 <?php
 
-class ControladorCarrito
-{
+class ControladorCarrito{
 
-    /*=======================================
+    /*=============================================
     MOSTRAR TARIFAS
-    ========================================*/
-    static public function ctrMostrarTarifas()
-    {
-        $tabla = 'comercio';
+    =============================================*/
+
+    public function ctrMostrarTarifas(){
+
+        $tabla = "comercio";
 
         $respuesta = ModeloCarrito::mdlMostrarTarifas($tabla);
 
         return $respuesta;
+
     }
 
-
     /*=============================================
-        NUEVAS COMPRAS
-        =============================================*/
+    NUEVAS COMPRAS
+    =============================================*/
 
-    static public function ctrNuevasCompras($datos)
-    {
+    static public function ctrNuevasCompras($datos){
 
         $tabla = "compras";
 
         $respuesta = ModeloCarrito::mdlNuevasCompras($tabla, $datos);
 
+        if($respuesta == "ok"){
+
+            $tabla = "comentarios";
+            ModeloUsuarios::mdlIngresoComentarios($tabla, $datos);
+
+            /*=============================================
+            ACTUALIZAR NOTIFICACIONES NUEVAS VENTAS
+            =============================================*/
+
+            $traerNotificaciones = ControladorNotificaciones::ctrMostrarNotificaciones();
+
+            $nuevaVenta = $traerNotificaciones["nuevasVentas"] + 1;
+
+            ModeloNotificaciones::mdlActualizarNotificaciones("notificaciones", "nuevasVentas", $nuevaVenta);
+
+
+        }
+
         return $respuesta;
 
     }
 
     /*=============================================
-VERIFICAR PRODUCTO COMPRADO
-=============================================*/
+    VERIFICAR PRODUCTO COMPRADO
+    =============================================*/
 
     static public function ctrVerificarProducto($datos){
 
@@ -41,16 +58,9 @@ VERIFICAR PRODUCTO COMPRADO
 
         $respuesta = ModeloCarrito::mdlVerificarProducto($tabla, $datos);
 
-      return $respuesta;
+        return $respuesta;
 
 
     }
 
-
-
-
-
 }
-
-
-?>

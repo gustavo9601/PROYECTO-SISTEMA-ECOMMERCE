@@ -38,5 +38,24 @@ class ModeloVisitas{
 	
 	}
 
+	/*=============================================
+	MOSTRAR VISITAS
+	=============================================*/	
+
+	static public function mdlMostrarVisitas($tabla){
+
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla ORDER BY id DESC");
+
+		$stmt -> execute();
+
+		return $stmt -> fetchAll();
+
+		$stmt -> close();
+
+		$stmt = null;
+
+	}
+
+
 
 }
